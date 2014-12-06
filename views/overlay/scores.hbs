@@ -1,0 +1,22 @@
+<span id="lplayer"></span>
+<span>[<span id="lscore"></span>]</span>
+ vs 
+<span id="rplayer"></span>
+<span>[<span id="rscore"></span>]</span>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+	socket.on('connect', function() {
+		socket.emit('request overlay');
+		//socket.emit('join', { room: 'overlay' });
+	});
+
+	socket.on('update overlay', function(data) {
+		document.getElementById('lplayer').innerText = data.lplayer || "";
+		document.getElementById('rplayer').innerText = data.rplayer || "";
+		//document.getElementById('title').value = data.title || "";
+		document.getElementById('lscore').innerText = data.lscore || 0;
+		document.getElementById('rscore').innerText = data.rscore || 0;
+	});
+</script>
