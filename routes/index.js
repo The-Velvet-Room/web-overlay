@@ -26,6 +26,11 @@ router.get('/overlays/grimetime/game4by3', function(req, res) {
   res.render('overlays/grimetime/game4by3', { title: 'Overlay', layout: false });
 });
 
+/* GET home page. */
+router.get('/overlays/grimetime/game16by9', function(req, res) {
+  res.render('overlays/grimetime/game16by9', { title: 'Overlay', layout: false });
+});
+
 /* GET commentators. */
 router.get('/overlays/commentators', function(req, res) {
   res.render('overlays/commentators', { title: 'Overlay', layout: false });
