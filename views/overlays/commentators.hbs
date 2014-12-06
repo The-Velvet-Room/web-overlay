@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/overlays/commentators.css' />
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+  	<div id="container">
+  		<div id="commentators" class="playertext"></div>
+  	</div>
+    <script>
+		var socket = io();
+		
+		socket.on('connect', function() {
+			socket.emit('request overlay');
+		});
+		
+		socket.on('update overlay', function(data) {
+			document.getElementById('commentators').innerText = data.commentators || "";
+		});
+    </script>
+  </body>
+</html>

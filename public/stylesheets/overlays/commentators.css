@@ -1,0 +1,32 @@
+body {
+	margin: 0px;
+}
+
+a {
+	color: #00B7FF;
+}
+
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(https://i.imgur.com/VeDdEp2.png);
+	position: relative;
+}
+
+.playertext {
+	position: absolute;
+	color: white;
+	font-size: 42px;
+	font-family: Arial, sans-serif;
+	overflow: hidden;
+	overflow-wrap: break-word;
+}
+
+#commentators {
+	top: 933px;
+	left: 500px;
+	height: 83px;
+	width: 880px;
+	text-align: center;
+	font-size: 48px;
+}

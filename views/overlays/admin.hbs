@@ -22,10 +22,18 @@
 		</label>
 		<button type="button" onclick="plusOneRight()">+1</button>
 	</p>
+	<p>
 		<label for="title">
 			Title
 			<input id="title"></input>
 		</label>
+	</p>
+	<p>
+		<label for="commentators">
+			Commentators
+			<input id="commentators"></input>
+		</label>
+	</p>
 	<p>
 	<button type="button" onclick="swapNames()">Swap Names</button>
 	<button type="button" onclick="zeroScores()">Zero Scores</button>
@@ -82,6 +90,7 @@
 			'title': document.getElementById('title').value,
 			'lscore': document.getElementById('lscore').value,
 			'rscore': document.getElementById('rscore').value,
+			'commentators': document.getElementById('commentators').value,
 		};
 		socket.emit('update overlay', data);
 		// TODO: figure out how to make this an acknowledgment callback
