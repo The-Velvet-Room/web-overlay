@@ -36,4 +36,9 @@ router.get('/overlays/commentators', function(req, res) {
   res.render('overlays/commentators', { title: 'Overlay', layout: false });
 });
 
+/* GET pardon the smash. */
+router.get('/overlays/pardonthesmash', function(req, res) {
+  res.render('overlays/pardonthesmash/overlay', { title: 'Overlay', layout: false });
+});
+
 module.exports = router;
