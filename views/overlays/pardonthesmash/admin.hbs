@@ -1,34 +1,68 @@
 <h1>{{title}}</h1>
-<form action="javascript:sendUpdate()">
+<form action="javascript:startTimer()">
 	<p>
-		<label for="time">
-			Time
-			<input type="time" id="time"></input>
+		<label for="minutes">
+			Minutes
+			<input type="number" id="minutes"></input>
+		</label>
+		<label for="seconds">
+			Seconds
+			<input type="number" id="seconds"></input>
 		</label>
 	</p>
+	<div id="timer"></div>
 	<p>
-	<input type="submit"/>
+	<button>Start Timer</button>
 	<div id="info" style="display:none;">Overlay Updated!</div>
 	</p>
 </form>
+
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
 	var socket = io();
+	var endTime;
+	var timerTimeout;
+
 	socket.on('connect', function() {
-		socket.emit('request overlay pts');
+		socket.emit('request timer pts');
 		//socket.emit('join', { room: 'overlay' });
 	});
 
-	socket.on('update overlay pts', function(data) {
-		document.getElementById('time').value = data.time || "";
+	socket.on('start timer pts', function(data) {
+		endTime = data.endTime;
+		clearTimer();
+		updateTimer();
 	});
 
-	function sendUpdate() {
+	function clearTimer() {
+		clearTimeout(timerTimeout);
+	}
+
+	function updateTimer() {
+		var time = timeLeft(endTime);
+		document.getElementById('timer').innerText = formatTime(time);
+		if (time.minutes !== 0 || time.seconds !== 0) {
+			timerTimeout = setTimeout(updateTimer, 1000);
+		}
+	}
+
+	function startTimer() {
+		var minutes = document.getElementById('minutes').valueAsNumber || 0;
+		var seconds = document.getElementById('seconds').valueAsNumber || 0;
+		if (minutes === 0 && seconds === 0) {
+			return;
+		}
+
+		var date = new Date();
+		date.setMinutes(date.getMinutes() + minutes);
+		date.setSeconds(date.getSeconds() + seconds);
+
 		var data = {
-			'timer': document.getElementById('timer').value,
+			'endTime': date.toISOString(),
 		};
-		socket.emit('update overlay pts', data);
+		socket.emit('start timer pts', data);
 		// TODO: figure out how to make this an acknowledgment callback
 		var info = $('#info');
 		info.show();

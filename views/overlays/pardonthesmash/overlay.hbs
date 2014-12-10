@@ -3,30 +3,39 @@
   <head>
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/overlays/pardonthesmash/overlay.css' />
+    <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
   	<div id="container">
-  		<div id="title" class="playertext"></div>
-  		<div id="lscore" class="playertext"></div>
-  		<div id="lplayer" class="playertext"></div>
-  		<div id="rplayer" class="playertext"></div>
-  		<div id="rscore" class="playertext"></div>
+  		<div id="timer"></div>
   	</div>
     <script>
 		var socket = io();
+    var endTime;
+    var timerTimeout;
 		
 		socket.on('connect', function() {
-			socket.emit('request overlay');
+			socket.emit('request timer pts');
 		});
 		
-		socket.on('update overlay', function(data) {
-			document.getElementById('title').innerText = data.title || "";
-			document.getElementById('lplayer').innerText = data.lplayer || "";
-			document.getElementById('rplayer').innerText = data.rplayer || "";
-			document.getElementById('lscore').innerText = data.lscore || "";
-			document.getElementById('rscore').innerText = data.rscore || "";
+		socket.on('start timer pts', function(data) {
+      endTime = data.endTime;
+      clearTimer();
+      updateTimer();
 		});
+
+    function clearTimer() {
+      clearTimeout(timerTimeout);
+    }
+
+    function updateTimer() {
+      var time = timeLeft(endTime);
+      document.getElementById('timer').innerText = formatTime(time);
+      if (time.minutes !== 0 || time.seconds !== 0) {
+        timerTimeout = setTimeout(updateTimer, 1000);
+      }
+    }
     </script>
   </body>
 </html>
