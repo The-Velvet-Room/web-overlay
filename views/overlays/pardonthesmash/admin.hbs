@@ -1,0 +1,37 @@
+<h1>{{title}}</h1>
+<form action="javascript:sendUpdate()">
+	<p>
+		<label for="time">
+			Time
+			<input type="time" id="time"></input>
+		</label>
+	</p>
+	<p>
+	<input type="submit"/>
+	<div id="info" style="display:none;">Overlay Updated!</div>
+	</p>
+</form>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+	socket.on('connect', function() {
+		socket.emit('request overlay pts');
+		//socket.emit('join', { room: 'overlay' });
+	});
+
+	socket.on('update overlay pts', function(data) {
+		document.getElementById('time').value = data.time || "";
+	});
+
+	function sendUpdate() {
+		var data = {
+			'timer': document.getElementById('timer').value,
+		};
+		socket.emit('update overlay pts', data);
+		// TODO: figure out how to make this an acknowledgment callback
+		var info = $('#info');
+		info.show();
+		info.fadeOut(1200);
+	}
+</script>
