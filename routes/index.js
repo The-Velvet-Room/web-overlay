@@ -43,7 +43,7 @@ router.get('/overlays/pardonthesmash', function(req, res) {
 
 /* GET pardon the smash admin. */
 router.get('/overlays/pardonthesmash/admin', function(req, res) {
-  res.render('overlays/pardonthesmash/admin', { title: 'PTS Admin', layout: false });
+  res.render('overlays/pardonthesmash/admin', { title: 'PTS Admin' });
 });
 
 module.exports = router;
