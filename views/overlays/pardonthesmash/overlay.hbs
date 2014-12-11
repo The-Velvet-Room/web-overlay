@@ -20,9 +20,11 @@
 		});
 		
 		socket.on('start timer pts', function(data) {
-      endTime = data.endTime;
-      clearTimer();
-      updateTimer();
+      if (data.endTime) {
+        endTime = data.endTime;
+        clearTimer();
+        updateTimer();
+      }
 		});
 
     function clearTimer() {
