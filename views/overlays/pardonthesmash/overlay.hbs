@@ -9,11 +9,16 @@
   <body>
   	<div id="container">
   		<div id="timer"></div>
+      <div id="sidebar-container">
+        <div class="topic">
+        </div>
+      </div>
   	</div>
     <script>
 		var socket = io();
     var endTime;
     var timerTimeout;
+    var topics;
 		
 		socket.on('connect', function() {
 			socket.emit('request timer pts');
@@ -27,6 +32,10 @@
       }
 		});
 
+    socket.on('update topics pts', function(data) {
+      renderTopics(data);
+    });
+
     function clearTimer() {
       clearTimeout(timerTimeout);
     }
@@ -36,6 +45,18 @@
       document.getElementById('timer').innerText = formatTime(time);
       if (time.minutes !== 0 || time.seconds !== 0) {
         timerTimeout = setTimeout(updateTimer, 1000);
+      }
+    }
+
+    function renderTopics(data) {
+      topics = data;
+      var container = document.getElementById('sidebar-container');
+      var template = container.children[0].cloneNode(true);
+      container.innerHTML = "";
+      for (var i = 0; i < topics.length; i++) {
+        var newTopic = template.cloneNode(true);
+        newTopic.innerText = topics[i].sidebar;
+        container.appendChild(newTopic);
       }
     }
     </script>

@@ -2,6 +2,7 @@ module.exports = function (io) {
 
   var data = {};
   var ptsData = {};
+  var ptsTopics = [];
 
   io.on('connection', function(socket){
     console.log('user connected');
@@ -34,6 +35,12 @@ module.exports = function (io) {
     socket.on('request timer pts', function() {
       console.log('fetching old timer pts: ' + JSON.stringify(ptsData));
       socket.emit('start timer pts', ptsData);
+    });
+
+    socket.on('update topics pts', function (msg) {
+      ptsTopics = msg;
+      console.log('update topics pts: ' + JSON.stringify(ptsTopics));
+      io.emit('update topics pts', ptsTopics);
     });
   });
 

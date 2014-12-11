@@ -13,8 +13,27 @@
 	<div id="timer"></div>
 	<p>
 	<button>Start Timer</button>
-	<div id="info" style="display:none;">Overlay Updated!</div>
+	<div id="info" style="display:none;">Timer Updated!</div>
 	</p>
+</form>
+<form action="javascript:saveTopics()">
+	<h3>Topics</h3>
+	<table>
+		<thead>
+	        <tr>
+		        <td>Side bar</td>
+		        <td>Main bar</td>
+	        </tr>
+		</thead>
+		<tbody id="topic-table-body">
+			<tr>
+				<td><input class="sidebar"/></td>
+				<td><input class="mainbar"/></td>
+			</tr>
+		</tbody>
+	</table>
+	<button>Update Topics</button>
+	<button type="button" onclick="addTopicRow()">Add a Row</button>
 </form>
 
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -69,5 +88,31 @@
 		var info = $('#info');
 		info.show();
 		info.fadeOut(1200);
+	}
+
+	function saveTopics() {
+		var tbody = document.getElementById('topic-table-body');
+		var topics = [];
+		for (var i = 0; i < tbody.children.length; i++) {
+			var child = tbody.children[i];
+			var mainbar = child.getElementsByClassName('mainbar')[0];
+			var sidebar = child.getElementsByClassName('sidebar')[0];
+			if (mainbar.value || sidebar.value) {
+				topics.push({'mainbar': mainbar.value, 'sidebar': sidebar.value});
+			}
+		}
+		socket.emit('update topics pts', topics);
+	}
+
+	function addTopicRow() {
+		var tbody = document.getElementById('topic-table-body');
+		var child = tbody.children[0];
+		var newRow = child.cloneNode(true);
+		for (var i = 0; i < newRow.children.length; i++) {
+			if (newRow.children[i].nodeName === "INPUT") {
+				newRow.children[i].value = "";
+			}
+		}
+		tbody.appendChild(newRow);
 	}
 </script>
