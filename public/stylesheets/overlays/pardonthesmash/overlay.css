@@ -22,6 +22,10 @@ a {
 	overflow-wrap: break-word;
 }
 
+.active {
+	color: red;
+}
+
 #lplayer {
 	top: 1031px;
 	left: 133px;
