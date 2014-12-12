@@ -13,6 +13,7 @@
         <div class="topic">
         </div>
       </div>
+      <div id="mainbar"></div>
   	</div>
     <script>
 		var socket = io();
@@ -51,12 +52,17 @@
     function renderTopics(data) {
       topics = data;
       var container = document.getElementById('sidebar-container');
+      var mainbar = document.getElementById('mainbar');
       var template = container.children[0].cloneNode(true);
       container.innerHTML = "";
       for (var i = 0; i < topics.length; i++) {
         var newTopic = template.cloneNode(true);
-        newTopic.innerText = topics[i].sidebar;
+        var topicData = topics[i];
+        newTopic.innerText = topicData.sidebar;
         container.appendChild(newTopic);
+        if (topicData.active) {
+          mainbar.innerText = topicData.mainbar;
+        }
       }
     }
     </script>

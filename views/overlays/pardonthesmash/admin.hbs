@@ -23,12 +23,14 @@
 	        <tr>
 		        <td>Side bar</td>
 		        <td>Main bar</td>
+		        <td>Active</td>
 	        </tr>
 		</thead>
 		<tbody id="topic-table-body">
 			<tr>
 				<td><input class="sidebar"/></td>
 				<td><input class="mainbar"/></td>
+				<td><input type="radio" class="active" name="active" checked /></td>
 			</tr>
 		</tbody>
 	</table>
@@ -97,8 +99,13 @@
 			var child = tbody.children[i];
 			var mainbar = child.getElementsByClassName('mainbar')[0];
 			var sidebar = child.getElementsByClassName('sidebar')[0];
+			var active = child.getElementsByClassName('active')[0];
 			if (mainbar.value || sidebar.value) {
-				topics.push({'mainbar': mainbar.value, 'sidebar': sidebar.value});
+				topics.push({
+					'mainbar': mainbar.value,
+					'sidebar': sidebar.value,
+					'active': active.checked,
+				});
 			}
 		}
 		socket.emit('update topics pts', topics);
