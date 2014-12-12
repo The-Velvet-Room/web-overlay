@@ -48,7 +48,14 @@
 
 	socket.on('connect', function() {
 		socket.emit('request timer pts');
+		socket.emit('request topics pts');
 		//socket.emit('join', { room: 'overlay' });
+	});
+
+	socket.on('update topics pts', function(data) {
+		if (data.length !== 0) {
+			addExistingTopicRows(data);
+		}
 	});
 
 	socket.on('start timer pts', function(data) {
@@ -121,5 +128,22 @@
 			}
 		}
 		tbody.appendChild(newRow);
+	}
+
+	function addExistingTopicRows(data) {
+		var tbody = document.getElementById('topic-table-body');
+		var child = tbody.children[0];
+		tbody.innerHTML = "";
+
+		for (var i = 0; i < data.length; i++) {
+			var newRow = child.cloneNode(true);
+			var mainbar = newRow.getElementsByClassName('mainbar')[0];
+			var sidebar = newRow.getElementsByClassName('sidebar')[0];
+			var active = newRow.getElementsByClassName('active')[0];
+			mainbar.value = data[i].mainbar;
+			sidebar.value = data[i].sidebar;
+			active.checked = data[i].active;
+			tbody.appendChild(newRow);
+		}
 	}
 </script>

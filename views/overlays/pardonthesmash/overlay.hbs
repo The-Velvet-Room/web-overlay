@@ -56,7 +56,7 @@
       topics = data;
       var container = document.getElementById('sidebar-container');
       var mainbar = document.getElementById('mainbar');
-      var template = container.children[0].cloneNode(true);
+      var template = container.children[0];
       container.innerHTML = "";
       for (var i = 0; i < topics.length; i++) {
         var newTopic = template.cloneNode(true);
