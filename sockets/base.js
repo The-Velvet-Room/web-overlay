@@ -42,6 +42,11 @@ module.exports = function (io) {
       console.log('update topics pts: ' + JSON.stringify(ptsTopics));
       io.emit('update topics pts', ptsTopics);
     });
+
+    socket.on('request topics pts', function() {
+      console.log('fetching old topics pts: ' + JSON.stringify(ptsTopics));
+      socket.emit('update topics pts', ptsTopics);
+    });
   });
 
 }

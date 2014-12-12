@@ -23,6 +23,7 @@
 		
 		socket.on('connect', function() {
 			socket.emit('request timer pts');
+      socket.emit('request topics pts');
 		});
 		
 		socket.on('start timer pts', function(data) {
@@ -34,7 +35,9 @@
 		});
 
     socket.on('update topics pts', function(data) {
-      renderTopics(data);
+      if (data.length !== 0) {
+        renderTopics(data);
+      }
     });
 
     function clearTimer() {
