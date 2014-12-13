@@ -10,4 +10,4 @@ How to run
 1. Make sure you have [node.js](http://nodejs.org/) installed.
 2. Clone the repo change directory to the repo's root.
 3. Run `npm install`.
-4. Run `DEBUG=web-overlay bin/www` to start the project.
+4. Mac/Linux, run `DEBUG=web-overlay bin/www` to start the project. In Powershell, set an environment variable with `$env:DEBUG = "web-overlay"` before running `node bin/www`.
