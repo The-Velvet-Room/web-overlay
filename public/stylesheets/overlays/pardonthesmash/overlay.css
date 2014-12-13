@@ -23,7 +23,17 @@ a {
 }
 
 .active {
-	color: red;
+	-webkit-animation: fade 1s;
+    animation: fade 1s;
+    color: red;
+}
+
+@-webkit-keyframes fade {
+    from {color: black}
+    to {color: red}
+}@keyframes fade {
+    from {color: black}
+    to {color: red}
 }
 
 #lplayer {

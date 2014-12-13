@@ -58,7 +58,7 @@
       var mainbar = document.getElementById('mainbar');
 
       var template = container.children[0];
-      template.className = "";
+      template.classList.remove('active');
 
       container.innerHTML = "";
       for (var i = 0; i < topics.length; i++) {
@@ -66,12 +66,12 @@
         var topicData = topics[i];
         newTopic.innerText = topicData.sidebar;
 
+        container.appendChild(newTopic);
+
         if (topicData.active) {
           newTopic.classList.add('active');
           mainbar.innerText = topicData.mainbar;
-        }
-
-        container.appendChild(newTopic);
+        }      
       }
     }
     </script>
