@@ -35,6 +35,7 @@
 		</label>
 	</p>
 	<p>
+	<button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
 	<button type="button" onclick="swapNames()">Swap Names</button>
 	<button type="button" onclick="zeroScores()">Zero Scores</button>
 	<input type="submit"/>
@@ -98,5 +99,19 @@
 		var info = $('#info');
 		info.show();
 		info.fadeOut(1200);
+	}
+
+	function toggleNightMode() {
+		var body = document.body;
+		var style = window.getComputedStyle(body);
+		var color = style.getPropertyValue('background');
+		if(body.style.background == 'black') {
+			body.style.color = 'black';
+			body.style.background = 'white';
+			return;
+		}
+		
+		body.style.color = 'white';
+		body.style.background = 'black';
 	}
 </script>
