@@ -4,6 +4,10 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 module.exports = function (io) {
 
   var data = {};
+  var twitchPollingInterval = null;
+  //In millis
+  var twitchPollFrequency = 60000;
+  var twitchPollCache = {};
   data.config = config;
 
   io.on('connection', function(socket){
@@ -25,11 +29,22 @@ module.exports = function (io) {
       	if(!data.twitchGame)
       	{
       		data = initializeTwitchData(data);
+      		twitchPollCache = data;
+      		getTwitchPollableData(data);
+      		twitchPollingInterval = setInterval(
+      			function() {
+      				getTwitchPollableData(twitchPollCache)
+      			}, twitchPollFrequency);
       	}
       	else
       	{
       		//data = updateTwitchData(data);
       	}
+      }
+      else
+      {
+      	console.log('Stopping Twitch polling...');
+      	clearInterval(twitchPollingInterval);
       }
       	
       io.emit('update overlay', data);
@@ -41,10 +56,30 @@ module.exports = function (io) {
       socket.emit('update overlay', data);
     });
 
+    function getTwitchPollableData(data) {
+    	data = getTwitchFollowerData(data);
+    	console.log('Polling Twitch for updates...');
+    	socket.emit('update twitch readonly data', data);
+    }
+
+    function getTwitchFollowerData(data) {
+    	var requestUrl = config.twitchApiRoot + '/channels/'+data.twitchUsername+'/follows/';
+    	var xmlhttp = new XMLHttpRequest();
+    	xmlhttp.open('GET',requestUrl,false);
+		xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
+		xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
+		xmlhttp.send();
+		console.log('Requesting follower data for '+data.twitchUsername);
+		var twitchResponse = JSON.parse(xmlhttp.responseText);
+		data.twitchFollowers = twitchResponse._total;
+		data.twitchLastFollower = twitchResponse.follows[0].user.name;
+		return data;
+    }
+
     function updateTwitchData(data) {
     	var channelName = data.twitchUsername;
     	var game = setTwitchGame(data.twitchUsername, data.twitchGame).game;
-    	var status = set
+    	//var status = set
     };
 
     function initializeTwitchData(data) {

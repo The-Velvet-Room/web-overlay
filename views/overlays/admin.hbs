@@ -56,11 +56,13 @@
 	<p class="requires-twitch">
 	<label for="twitchViewers">
 		Current Viewers:
+		<input id="twitchViewers" class="twitch-pollable"></input>
 	</label>
 	</p>
 	<p class="requires-twitch">
 	<label for="twitchFollowers">
 		Followers:
+		<input id="twitchFollowers" class="twitch-pollable"></input>
 	</label>
 	</p>
 	<p>
@@ -99,6 +101,11 @@
 		{
 			$('.requires-twitch').hide(200);
 		}
+	});
+
+	socket.on('update twitch readonly data', function(data) {
+		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
+		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
 	});
 
 	function plusOneLeft() {
