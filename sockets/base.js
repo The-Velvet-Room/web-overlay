@@ -2,7 +2,6 @@ var config = require('../config');
 module.exports = function (io) {
 
   var data = {};
-  data.config = config;
 
   io.on('connection', function(socket){
     console.log('user connected');
@@ -17,7 +16,6 @@ module.exports = function (io) {
 
     socket.on('update overlay', function(msg){
       data = msg;
-      data.config = config;
     	io.emit('update overlay', data);
     	console.log('update overlay: ' + JSON.stringify(data));
   	});
