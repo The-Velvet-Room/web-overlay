@@ -1,3 +1,4 @@
+var config = require('../config');
 module.exports = function (io) {
 
   var data = {};
