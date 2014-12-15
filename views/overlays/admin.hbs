@@ -34,6 +34,35 @@
 			<input id="commentators"></input>
 		</label>
 	</p>
+	<h2>Twitch</h2>
+	<p>
+		<label for="twitchUsername">
+			Twitch username:
+			<input id="twitchUsername"></input>
+		</label>
+	</p>
+	<p class="requires-twitch">
+		<label for="twitchStatus">
+			Status:
+			<input id="twitchStatus" style="width: 90%"></input>
+		</label>
+	</p>
+	<p class="requires-twitch">
+		<label for="twitchGame">
+			Playing:
+			<input id="twitchGame"></input>
+		</label>
+	</p>
+	<p class="requires-twitch">
+	<label for="twitchViewers">
+		Current Viewers:
+	</label>
+	</p>
+	<p class="requires-twitch">
+	<label for="twitchFollowers">
+		Followers:
+	</label>
+	</p>
 	<p>
 	<button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
 	<button type="button" onclick="swapNames()">Swap Names</button>
@@ -42,6 +71,7 @@
 	<div id="info" style="display:none;">Overlay Updated!</div>
 	</p>
 </form>
+
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -58,6 +88,17 @@
 		document.getElementById('commentators').value = data.commentators || "";
 		document.getElementById('lscore').value = data.lscore || 0;
 		document.getElementById('rscore').value = data.rscore || 0;
+		document.getElementById('twitchUsername').value = data.twitchUsername || "";
+		document.getElementById('twitchStatus').value = data.twitchStatus || "";
+		document.getElementById('twitchGame').value = data.twitchGame || "";
+
+		if(data.twitchUsername) {
+			$('.requires-twitch').show(200);
+		}
+		else
+		{
+			$('.requires-twitch').hide(200);
+		}
 	});
 
 	function plusOneLeft() {
@@ -93,6 +134,9 @@
 			'lscore': document.getElementById('lscore').value,
 			'rscore': document.getElementById('rscore').value,
 			'commentators': document.getElementById('commentators').value,
+			'twitchUsername': document.getElementById('twitchUsername').value,
+			'twitchStatus': document.getElementById('twitchStatus').value,
+			'twitchGame': document.getElementById('twitchGame').value,
 		};
 		socket.emit('update overlay', data);
 		// TODO: figure out how to make this an acknowledgment callback
