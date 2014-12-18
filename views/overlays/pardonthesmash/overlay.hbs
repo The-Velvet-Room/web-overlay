@@ -3,17 +3,31 @@
   <head>
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/overlays/pardonthesmash/overlay.css' />
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
     <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
   	<div id="container">
-  		<div id="timer"></div>
-      <div id="sidebar-container">
-        <div class="topic">
+      <div id="video"></div>
+      <div id="sidebar">
+        <div id="timer-container">
+          <div id="timer"></div>
+        </div>
+        <div id="topic-container">
+          <div id="topic-header">
+            TOPICS
+          </div>
+          <div id="topic-list">
+            <div class="topic">
+            </div>
+          </div>
         </div>
       </div>
-      <div id="mainbar"></div>
+      <div id="mainbar-container">
+      <img src="http://i.imgur.com/reVFLOP.png" id="smashball">
+
+      <div id="mainbar"></div></div>
   	</div>
     <script>
 		var socket = io();
@@ -53,12 +67,14 @@
     }
 
     function renderTopics(data) {
+      var foundActive = false;
       topics = data;
-      var container = document.getElementById('sidebar-container');
+      var container = document.getElementById('topic-list');
       var mainbar = document.getElementById('mainbar');
 
       var template = container.children[0];
       template.classList.remove('active');
+      template.classList.remove('old');
 
       container.innerHTML = "";
       for (var i = 0; i < topics.length; i++) {
@@ -71,7 +87,10 @@
         if (topicData.active) {
           newTopic.classList.add('active');
           mainbar.innerText = topicData.mainbar;
-        }      
+          foundActive = true;
+        } else if (!foundActive) {
+          newTopic.classList.add('old');
+        }
       }
     }
     </script>
