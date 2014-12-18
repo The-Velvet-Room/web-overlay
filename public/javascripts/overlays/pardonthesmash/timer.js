@@ -8,6 +8,10 @@ function formatTime(timeRemaining) {
 }
 
 function timeLeft(endTime) {
+	if (!endTime) {
+		return {'minutes': 0, 'seconds': 0};
+	}
+
 	var end = new Date(endTime);
 	var now = new Date();
 	

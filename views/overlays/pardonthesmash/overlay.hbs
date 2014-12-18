@@ -41,11 +41,9 @@
 		});
 		
 		socket.on('start timer pts', function(data) {
-      if (data.endTime) {
-        endTime = data.endTime;
-        clearTimer();
-        updateTimer();
-      }
+      endTime = data.endTime;
+      clearTimer();
+      updateTimer();
 		});
 
     socket.on('update topics pts', function(data) {
@@ -59,7 +57,7 @@
     }
 
     function updateTimer() {
-      var time = timeLeft(endTime);
+      var time = timeLeft(endTime); 
       document.getElementById('timer').innerText = formatTime(time);
       if (time.minutes !== 0 || time.seconds !== 0) {
         timerTimeout = setTimeout(updateTimer, 1000);
