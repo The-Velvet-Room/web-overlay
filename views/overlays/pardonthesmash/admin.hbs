@@ -1,0 +1,184 @@
+<h1>{{title}}</h1>
+<form action="javascript:startTimer()">
+	<p>
+		<label for="minutes">
+			Minutes
+			<input type="number" id="minutes"></input>
+		</label>
+		<label for="seconds">
+			Seconds
+			<input type="number" id="seconds"></input>
+		</label>
+	</p>
+	<div id="timer"></div>
+	<p>
+	<button>Start Timer</button>
+	<div id="info" style="display:none;">Timer Updated!</div>
+	</p>
+</form>
+<form action="javascript:saveTopics()">
+	<h3>Topics</h3>
+	<table>
+		<thead>
+	        <tr>
+		        <td>Side bar</td>
+		        <td>Main bar</td>
+		        <td>Active</td>
+	        </tr>
+		</thead>
+		<tbody id="topic-table-body">
+			<tr>
+				<td><input class="sidebar"/></td>
+				<td><input class="mainbar"/></td>
+				<td><input type="radio" class="active" name="active" checked /></td>
+			</tr>
+		</tbody>
+	</table>
+	<button>Update Topics</button>
+	<button type="button" onclick="addTopicRow()">Add a Row</button>
+</form>
+<p>
+<button onclick="previousTopic()">Previous Topic</button>
+<button onclick="nextTopic()">Next Topic</button>
+</p>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+	var endTime;
+	var timerTimeout;
+
+	socket.on('connect', function() {
+		socket.emit('request timer pts');
+		socket.emit('request topics pts');
+		//socket.emit('join', { room: 'overlay' });
+	});
+
+	socket.on('update topics pts', function(data) {
+		if (data.length !== 0) {
+			addExistingTopicRows(data);
+		}
+	});
+
+	socket.on('start timer pts', function(data) {
+		if (data.endTime) {
+			endTime = data.endTime;
+			clearTimer();
+			updateTimer();
+		}
+	});
+
+	function clearTimer() {
+		clearTimeout(timerTimeout);
+	}
+
+	function updateTimer() {
+		var time = timeLeft(endTime);
+		document.getElementById('timer').innerText = formatTime(time);
+		if (time.minutes !== 0 || time.seconds !== 0) {
+			timerTimeout = setTimeout(updateTimer, 1000);
+		}
+	}
+
+	function startTimer() {
+		var minutes = document.getElementById('minutes').valueAsNumber || 0;
+		var seconds = document.getElementById('seconds').valueAsNumber || 0;
+		if (minutes === 0 && seconds === 0) {
+			return;
+		}
+
+		var date = new Date();
+		date.setMinutes(date.getMinutes() + minutes);
+		date.setSeconds(date.getSeconds() + seconds);
+
+		var data = {
+			'endTime': date.toISOString(),
+		};
+		socket.emit('start timer pts', data);
+		// TODO: figure out how to make this an acknowledgment callback
+		var info = $('#info');
+		info.show();
+		info.fadeOut(1200);
+	}
+
+	function saveTopics() {
+		var tbody = document.getElementById('topic-table-body');
+		var topics = [];
+		for (var i = 0; i < tbody.children.length; i++) {
+			var child = tbody.children[i];
+			var mainbar = child.getElementsByClassName('mainbar')[0];
+			var sidebar = child.getElementsByClassName('sidebar')[0];
+			var active = child.getElementsByClassName('active')[0];
+			if (mainbar.value || sidebar.value) {
+				topics.push({
+					'mainbar': mainbar.value,
+					'sidebar': sidebar.value,
+					'active': active.checked,
+				});
+			}
+		}
+		socket.emit('update topics pts', topics);
+	}
+
+	function addTopicRow() {
+		var tbody = document.getElementById('topic-table-body');
+		var child = tbody.children[0];
+		var newRow = child.cloneNode(true);
+		for (var i = 0; i < newRow.children.length; i++) {
+			if (newRow.children[i].nodeName === "INPUT") {
+				newRow.children[i].value = "";
+			}
+		}
+		tbody.appendChild(newRow);
+	}
+
+	function addExistingTopicRows(data) {
+		var tbody = document.getElementById('topic-table-body');
+		var child = tbody.children[0];
+		tbody.innerHTML = "";
+
+		for (var i = 0; i < data.length; i++) {
+			var newRow = child.cloneNode(true);
+			var mainbar = newRow.getElementsByClassName('mainbar')[0];
+			var sidebar = newRow.getElementsByClassName('sidebar')[0];
+			var active = newRow.getElementsByClassName('active')[0];
+			mainbar.value = data[i].mainbar;
+			sidebar.value = data[i].sidebar;
+			active.checked = data[i].active;
+			tbody.appendChild(newRow);
+		}
+	}
+
+	function previousTopic() {
+		var tbody = document.getElementById('topic-table-body');
+		// don't check the last child. we don't want to loop, so
+		// it's not important if it's active
+		for (var i = 1; i < tbody.children.length; i++) {
+			var tr = tbody.children[i];
+			var active = tr.getElementsByClassName('active')[0];
+			if (active.checked) {
+				var nextTr = tbody.children[i - 1];
+				nextTr.getElementsByClassName('active')[0].checked = true;
+				break;
+			}
+		}
+		saveTopics();
+	}
+
+	function nextTopic() {
+		var tbody = document.getElementById('topic-table-body');
+		// don't check the last child. we don't want to loop, so
+		// it's not important if it's active
+		for (var i = 0; i < tbody.children.length - 1; i++) {
+			var tr = tbody.children[i];
+			var active = tr.getElementsByClassName('active')[0];
+			if (active.checked) {
+				var nextTr = tbody.children[i + 1];
+				nextTr.getElementsByClassName('active')[0].checked = true;
+				break;
+			}
+		}
+		saveTopics();
+	}
+</script>
