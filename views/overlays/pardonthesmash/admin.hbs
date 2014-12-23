@@ -37,7 +37,10 @@
 	<button>Update Topics</button>
 	<button type="button" onclick="addTopicRow()">Add a Row</button>
 </form>
-
+<p>
+<button onclick="previousTopic()">Previous Topic</button>
+<button onclick="nextTopic()">Next Topic</button>
+</p>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
 <script src="/socket.io/socket.io.js"></script>
@@ -145,5 +148,37 @@
 			active.checked = data[i].active;
 			tbody.appendChild(newRow);
 		}
+	}
+
+	function previousTopic() {
+		var tbody = document.getElementById('topic-table-body');
+		// don't check the last child. we don't want to loop, so
+		// it's not important if it's active
+		for (var i = 1; i < tbody.children.length; i++) {
+			var tr = tbody.children[i];
+			var active = tr.getElementsByClassName('active')[0];
+			if (active.checked) {
+				var nextTr = tbody.children[i - 1];
+				nextTr.getElementsByClassName('active')[0].checked = true;
+				break;
+			}
+		}
+		saveTopics();
+	}
+
+	function nextTopic() {
+		var tbody = document.getElementById('topic-table-body');
+		// don't check the last child. we don't want to loop, so
+		// it's not important if it's active
+		for (var i = 0; i < tbody.children.length - 1; i++) {
+			var tr = tbody.children[i];
+			var active = tr.getElementsByClassName('active')[0];
+			if (active.checked) {
+				var nextTr = tbody.children[i + 1];
+				nextTr.getElementsByClassName('active')[0].checked = true;
+				break;
+			}
+		}
+		saveTopics();
 	}
 </script>
