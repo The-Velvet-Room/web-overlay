@@ -98,7 +98,7 @@ module.exports = function (io) {
       console.log('Requesting viewer data for '+twitchData.twitchUsername);
       var twitchResponse = JSON.parse(xmlhttp.responseText);
       var stream = twitchResponse.stream;
-      twitchData.twitchViewers = stream.viewers;
+      twitchData.twitchViewers = stream ? stream.viewers : null;
       return twitchData;
     }
 
