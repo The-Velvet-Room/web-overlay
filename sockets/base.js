@@ -67,8 +67,10 @@ module.exports = function (io) {
     });
 
     function getTwitchPollableData(twitchData) {
+      console.log('Polling Twitch for updates...');
     	twitchData = getTwitchFollowerData(twitchData);
-    	console.log('Polling Twitch for updates...');
+      twitchData = getTwitchViewerData(twitchData);
+      console.log('New Twitch Pollable Data: '+ JSON.stringify(twitchData));
     	socket.emit('update twitch readonly data', twitchData);
     }
 
@@ -84,6 +86,20 @@ module.exports = function (io) {
   		twitchData.twitchFollowers = twitchResponse._total;
   		twitchData.twitchLastFollower = twitchResponse.follows[0].user.name;
   		return twitchData;
+    }
+
+    function getTwitchViewerData(twitchData) {
+      var requestUrl = config.twitchApiRoot + '/streams/'+twitchData.twitchUsername;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open('GET',requestUrl,false);
+      xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
+      xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
+      xmlhttp.send();
+      console.log('Requesting viewer data for '+twitchData.twitchUsername);
+      var twitchResponse = JSON.parse(xmlhttp.responseText);
+      var stream = twitchResponse.stream;
+      twitchData.twitchViewers = stream.viewers;
+      return twitchData;
     }
 
     function updateTwitchData(twitchData) {
