@@ -70,11 +70,19 @@
 		Current Viewers:
 		<input id="twitchViewers" class="twitch-pollable"></input>
 	</label>
+	<label for="twitchPeakViewers">
+		Peak Viewers:
+		<input id="twitchPeakViewers" class="twitch-pollable"></input>
+	</label>
 	</p>
 	<p class="requires-twitch">
 	<label for="twitchFollowers">
 		Followers:
 		<input id="twitchFollowers" class="twitch-pollable"></input>
+	</label>
+	<label for="twitchLastFollower">
+		Most Recent:
+		<input id="twitchLastFollower" class="twitch-pollable"></input>
 	</label>
 	</p>
 	<p>
@@ -116,7 +124,9 @@
 
 	socket.on('update twitch readonly data', function(data) {
 		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
-		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
+		document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
+		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline',
+		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
 	});
 
 	function plusOneLeft() {

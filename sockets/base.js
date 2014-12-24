@@ -99,6 +99,13 @@ module.exports = function (io) {
       var twitchResponse = JSON.parse(xmlhttp.responseText);
       var stream = twitchResponse.stream;
       twitchData.twitchViewers = stream ? stream.viewers : null;
+      if (twitchData.twitchViewers)
+      {
+        if(!twitchData.twitchPeakViewers || twitchData.twitchViewers > twitchData.twitchPeakViewers)
+        {
+          twitchData.twitchPeakViewers = twitchData.twitchViewers;
+        }
+      }
       return twitchData;
     }
 
