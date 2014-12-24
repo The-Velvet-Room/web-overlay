@@ -1,4 +1,5 @@
 <h1>{{title}}</h1>
+<div id="info" style="display:none;">Overlay Updated!</div>
 <form action="javascript:sendUpdate()">
 	<p>
 		<label for="lplayer">
@@ -34,6 +35,17 @@
 			<input id="commentators"></input>
 		</label>
 	</p>
+	
+	<p>
+	<button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
+	<button type="button" onclick="swapNames()">Swap Names</button>
+	<button type="button" onclick="zeroScores()">Zero Scores</button>
+	<input type="submit"/>
+	</p>
+</form>
+
+<!--Twitch Form-->
+<form action="javascript:sendTwitchUpdate()">
 	<h2>Twitch</h2>
 	<p>
 		<label for="twitchUsername">
@@ -66,11 +78,7 @@
 	</label>
 	</p>
 	<p>
-	<button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
-	<button type="button" onclick="swapNames()">Swap Names</button>
-	<button type="button" onclick="zeroScores()">Zero Scores</button>
 	<input type="submit"/>
-	<div id="info" style="display:none;">Overlay Updated!</div>
 	</p>
 </form>
 
@@ -90,6 +98,9 @@
 		document.getElementById('commentators').value = data.commentators || "";
 		document.getElementById('lscore').value = data.lscore || 0;
 		document.getElementById('rscore').value = data.rscore || 0;
+	});
+
+	socket.on('update twitch', function(data){
 		document.getElementById('twitchUsername').value = data.twitchUsername || "";
 		document.getElementById('twitchStatus').value = data.twitchStatus || "";
 		document.getElementById('twitchGame').value = data.twitchGame || "";
@@ -140,12 +151,23 @@
 			'title': document.getElementById('title').value,
 			'lscore': document.getElementById('lscore').value,
 			'rscore': document.getElementById('rscore').value,
-			'commentators': document.getElementById('commentators').value,
+			'commentators': document.getElementById('commentators').value
+		};
+		socket.emit('update overlay', data);
+		toastNotify();
+	}
+
+	function sendTwitchUpdate() {
+		var data = {
 			'twitchUsername': document.getElementById('twitchUsername').value,
 			'twitchStatus': document.getElementById('twitchStatus').value,
 			'twitchGame': document.getElementById('twitchGame').value,
 		};
-		socket.emit('update overlay', data);
+		socket.emit('update twitch', data);
+		toastNotify();
+	}
+
+	function toastNotify() {
 		// TODO: figure out how to make this an acknowledgment callback
 		var info = $('#info');
 		info.show();

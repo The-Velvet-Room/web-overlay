@@ -4,11 +4,13 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 module.exports = function (io) {
 
   var data = {};
+
+  var twitchData = {};
   var twitchPollingInterval = null;
   //In millis
   var twitchPollFrequency = 60000;
   var twitchPollCache = {};
-  data.config = config;
+
   var ptsData = {};
   var ptsTopics = [];
 
@@ -24,99 +26,103 @@ module.exports = function (io) {
     });
 
     socket.on('update overlay', function(msg){
-      data = msg;
-      data.config = config;
-      if (data.twitchUsername)
-      {
-      	if(!data.twitchGame)
-      	{
-      		data = initializeTwitchData(data);
-      		twitchPollCache = data;
-      		getTwitchPollableData(data);
-      		twitchPollingInterval = setInterval(
-      			function() {
-      				getTwitchPollableData(twitchPollCache)
-      			}, twitchPollFrequency);
-      	}
-      	else
-      	{
-      		//data = updateTwitchData(data);
-      	}
-      }
-      else
-      {
-      	console.log('Stopping Twitch polling...');
-      	clearInterval(twitchPollingInterval);
-      }
-      	
+      data = msg;     	
       io.emit('update overlay', data);
       console.log('update overlay: ' + JSON.stringify(data));
   	});
 
+    socket.on('update twitch', function(msg){
+      twitchData = msg;
+      if (twitchData.twitchUsername)
+      {
+        if(!twitchData.twitchGame)
+        {
+          twitchData = initializeTwitchData(twitchData);
+          twitchPollCache = twitchData;
+          getTwitchPollableData(twitchData);
+          twitchPollingInterval = setInterval(
+            function() {
+              getTwitchPollableData(twitchPollCache)
+            }, twitchPollFrequency);
+        }
+        else
+        {
+          //data = updateTwitchData(data);
+        }
+      }
+      else
+      {
+        console.log('Stopping Twitch polling...');
+        clearInterval(twitchPollingInterval);
+      }
+
+      io.emit('update twitch', twitchData);
+      console.log('update twitch: ' + JSON.stringify(twitchData));
+    });
+
     socket.on('request overlay', function() {
       console.log('fetching old overlay: ' + JSON.stringify(data));
       socket.emit('update overlay', data);
+      socket.emit('update twitch', twitchData);
     });
 
-<<<<<<< HEAD
-    function getTwitchPollableData(data) {
-    	data = getTwitchFollowerData(data);
+    function getTwitchPollableData(twitchData) {
+    	twitchData = getTwitchFollowerData(twitchData);
     	console.log('Polling Twitch for updates...');
-    	socket.emit('update twitch readonly data', data);
+    	socket.emit('update twitch readonly data', twitchData);
     }
 
-    function getTwitchFollowerData(data) {
-    	var requestUrl = config.twitchApiRoot + '/channels/'+data.twitchUsername+'/follows/';
+    function getTwitchFollowerData(twitchData) {
+    	var requestUrl = config.twitchApiRoot + '/channels/'+twitchData.twitchUsername+'/follows/';
     	var xmlhttp = new XMLHttpRequest();
     	xmlhttp.open('GET',requestUrl,false);
-		xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
-		xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
-		xmlhttp.send();
-		console.log('Requesting follower data for '+data.twitchUsername);
-		var twitchResponse = JSON.parse(xmlhttp.responseText);
-		data.twitchFollowers = twitchResponse._total;
-		data.twitchLastFollower = twitchResponse.follows[0].user.name;
-		return data;
+  		xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
+  		xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
+  		xmlhttp.send();
+  		console.log('Requesting follower data for '+twitchData.twitchUsername);
+  		var twitchResponse = JSON.parse(xmlhttp.responseText);
+  		twitchData.twitchFollowers = twitchResponse._total;
+  		twitchData.twitchLastFollower = twitchResponse.follows[0].user.name;
+  		return twitchData;
     }
 
-    function updateTwitchData(data) {
-    	var channelName = data.twitchUsername;
-    	var game = setTwitchGame(data.twitchUsername, data.twitchGame).game;
+    function updateTwitchData(twitchData) {
+    	var channelName = twitchData.twitchUsername;
+    	var game = setTwitchGame(twitchData.twitchUsername, twitchData.twitchGame).game;
     	//var status = set
     };
 
-    function initializeTwitchData(data) {
-    	var requestUrl = config.twitchApiRoot + '/channels/'+data.twitchUsername;
+    function initializeTwitchData(twitchData) {
+    	var requestUrl = config.twitchApiRoot + '/channels/'+twitchData.twitchUsername;
     	var xmlhttp = new XMLHttpRequest();
     	xmlhttp.open('GET',requestUrl,false);
-		xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
-		xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
-		xmlhttp.setRequestHeader('Authorization', 'OAuth '+config.twitchAccessToken);
-		xmlhttp.send();
-		console.log('Requesting channel data for '+data.twitchUsername);
-		var twitchResponse = JSON.parse(xmlhttp.responseText);
-		//console.log('Response: %j', twitchResponse);
-		data.twitchGame = twitchResponse.game;
-		data.twitchStatus = twitchResponse.status;
-		return data;
+  		xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
+  		xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
+  		xmlhttp.setRequestHeader('Authorization', 'OAuth '+config.twitchAccessToken);
+  		xmlhttp.send();
+  		console.log('Requesting channel data for '+twitchData.twitchUsername);
+  		var twitchResponse = JSON.parse(xmlhttp.responseText);
+  		//console.log('Response: %j', twitchResponse);
+  		twitchData.twitchGame = twitchResponse.game;
+  		twitchData.twitchStatus = twitchResponse.status;
+  		return twitchData;
     }
 
     function setTwitchGame(channel, gameName) {
-    	var data = {"channel": {"game": game}}
-    	var stringQuery = JSON.stringify(data)
-    	var contentLength = stringQuery.length
+    	var queryData = {"channel": {"game": game}};
+    	var stringQuery = JSON.stringify(queryData);
+    	var contentLength = stringQuery.length;
     	var requestUrl = config.twitchApiRoot + '/channels/'+channel+'?channel[game]='+game;
     	
     	xmlhttp.open('POST',requestUrl,false);
-		xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
-		xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
-		xmlhttp.setRequestHeader('Authorization', 'OAuth '+config.twitchAccessToken);
-		xmlhttp.setRequestHeader('Scope', 'channel-editor');
-		xmlhttp.setRequestHeader('Content-Length', contentLength);
-		xmlhttp.send(stringQuery);
-		return JSON.parse(xmlhttp.responseText);
+		  xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
+		  xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
+		  xmlhttp.setRequestHeader('Authorization', 'OAuth '+config.twitchAccessToken);
+		  xmlhttp.setRequestHeader('Scope', 'channel-editor');
+		  xmlhttp.setRequestHeader('Content-Length', contentLength);
+		  xmlhttp.send(stringQuery);
+		  return JSON.parse(xmlhttp.responseText);
     }
-=======
     socket.on('start timer pts', function(msg){
       ptsData = msg;
       io.emit('start timer pts', ptsData);
@@ -138,7 +144,6 @@ module.exports = function (io) {
       console.log('fetching old topics pts: ' + JSON.stringify(ptsTopics));
       socket.emit('update topics pts', ptsTopics);
     });
->>>>>>> ce1fc96960b40847fc554bad4a3d47750b5fc3b9
   });
 
 }
