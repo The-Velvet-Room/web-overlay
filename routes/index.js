@@ -36,4 +36,14 @@ router.get('/overlays/commentators', function(req, res) {
   res.render('overlays/commentators', { title: 'Overlay', layout: false });
 });
 
+/* GET pardon the smash. */
+router.get('/overlays/pardonthesmash', function(req, res) {
+  res.render('overlays/pardonthesmash/overlay', { title: 'PTS Overlay', layout: false });
+});
+
+/* GET pardon the smash admin. */
+router.get('/overlays/pardonthesmash/admin', function(req, res) {
+  res.render('overlays/pardonthesmash/admin', { title: 'PTS Admin' });
+});
+
 module.exports = router;
