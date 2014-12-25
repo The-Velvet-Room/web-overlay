@@ -3,7 +3,9 @@ module.exports = function (io) {
   var ptsData = {};
   var ptsTopics = [];
 
-  io.on('connection', function(socket){
+  var pts = io.of('/pardonthesmash');
+
+  pts.on('connection', function(socket){
     console.log('user connected');
 
     socket.on('disconnect', function() {
@@ -12,7 +14,7 @@ module.exports = function (io) {
 
     socket.on('start timer pts', function(msg){
       ptsData = msg;
-      io.emit('start timer pts', ptsData);
+      pts.emit('start timer pts', ptsData);
       console.log('start timer pts: ' + JSON.stringify(ptsData));
     });
 
@@ -24,7 +26,7 @@ module.exports = function (io) {
     socket.on('update topics pts', function (msg) {
       ptsTopics = msg;
       console.log('update topics pts: ' + JSON.stringify(ptsTopics));
-      io.emit('update topics pts', ptsTopics);
+      pts.emit('update topics pts', ptsTopics);
     });
 
     socket.on('request topics pts', function() {
