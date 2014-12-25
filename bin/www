@@ -4,7 +4,7 @@ var app = require('../app');
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-require('../sockets/base')(io);
+require('../sockets')(io);
 
 app.set('port', process.env.PORT || 3000);
 
