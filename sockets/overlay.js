@@ -4,11 +4,11 @@ module.exports = function (io) {
 
   var overlay = io.of('/overlay');
 
-  overlay.on('connection', function(socket){
-    console.log('user connected');
+  overlay.on('connection', function(socket) {
+    console.log('overlay user connected');
 
     socket.on('disconnect', function() {
-      console.log('user disconnected');
+      console.log('overlay user disconnected');
     });
 
     socket.on('request overlay', function() {

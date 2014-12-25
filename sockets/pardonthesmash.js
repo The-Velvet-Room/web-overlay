@@ -5,11 +5,11 @@ module.exports = function (io) {
 
   var pts = io.of('/pardonthesmash');
 
-  pts.on('connection', function(socket){
-    console.log('user connected');
+  pts.on('connection', function(socket) {
+    console.log('pardonthesmash user connected');
 
     socket.on('disconnect', function() {
-      console.log('user disconnected');
+      console.log('pardonthesmash user disconnected');
     });
 
     socket.on('start timer pts', function(msg){
