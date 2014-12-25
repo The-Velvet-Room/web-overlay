@@ -14,7 +14,7 @@
   		<div id="rscore" class="playertext"></div>
   	</div>
     <script>
-		var socket = io();
+		var socket = io('/overlay');
 		
 		socket.on('connect', function() {
 			socket.emit('request overlay');

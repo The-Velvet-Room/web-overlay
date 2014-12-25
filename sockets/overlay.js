@@ -2,7 +2,9 @@ module.exports = function (io) {
 
   var data = {};
 
-  io.on('connection', function(socket){
+  var overlay = io.of('/overlay');
+
+  overlay.on('connection', function(socket){
     console.log('user connected');
 
     socket.on('disconnect', function() {
@@ -16,7 +18,7 @@ module.exports = function (io) {
 
     socket.on('update overlay', function(msg) {
       data = msg;
-    	io.emit('update overlay', data);
+    	overlay.emit('update overlay', data);
     	console.log('update overlay: ' + JSON.stringify(data));
   	});
   });
