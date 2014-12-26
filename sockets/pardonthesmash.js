@@ -6,10 +6,10 @@ module.exports = function (io) {
   var pts = io.of('/pardonthesmash');
 
   pts.on('connection', function(socket) {
-    console.log('pardonthesmash user connected');
+    console.log('pardonthesmash user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
     socket.on('disconnect', function() {
-      console.log('pardonthesmash user disconnected');
+      console.log('pardonthesmash user disconnected: ' + socket.handshake.address);
     });
 
     socket.on('start timer pts', function(msg){
