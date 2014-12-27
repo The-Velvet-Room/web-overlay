@@ -5,15 +5,14 @@ module.exports = function (io) {
   var overlay = io.of('/overlay');
 
   overlay.on('connection', function(socket) {
+    // Log the new connection
     console.log('overlay user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
+
+    // Send out existing data to the new connection
+    socket.emit('update overlay', data);
 
     socket.on('disconnect', function() {
       console.log('overlay user disconnected: ' + socket.handshake.address);
-    });
-
-    socket.on('request overlay', function() {
-      console.log('fetching old overlay: ' + JSON.stringify(data));
-      socket.emit('update overlay', data);
     });
 
     socket.on('update overlay', function(msg) {

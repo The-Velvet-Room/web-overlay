@@ -6,7 +6,12 @@ module.exports = function (io) {
   var pts = io.of('/pardonthesmash');
 
   pts.on('connection', function(socket) {
+    // Log the new connection
     console.log('pardonthesmash user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
+
+    // Send out existing data to the new connection
+    socket.emit('start timer pts', ptsData);
+    socket.emit('update topics pts', ptsTopics);
 
     socket.on('disconnect', function() {
       console.log('pardonthesmash user disconnected: ' + socket.handshake.address);
@@ -18,20 +23,10 @@ module.exports = function (io) {
       console.log('start timer pts: ' + JSON.stringify(ptsData));
     });
 
-    socket.on('request timer pts', function() {
-      console.log('fetching old timer pts: ' + JSON.stringify(ptsData));
-      socket.emit('start timer pts', ptsData);
-    });
-
     socket.on('update topics pts', function (msg) {
       ptsTopics = msg;
       console.log('update topics pts: ' + JSON.stringify(ptsTopics));
       pts.emit('update topics pts', ptsTopics);
-    });
-
-    socket.on('request topics pts', function() {
-      console.log('fetching old topics pts: ' + JSON.stringify(ptsTopics));
-      socket.emit('update topics pts', ptsTopics);
     });
   });
 
