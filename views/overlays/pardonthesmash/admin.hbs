@@ -45,23 +45,23 @@
 <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-	var socket = io();
+	var socket = io('/pardonthesmash');
 	var endTime;
 	var timerTimeout;
 
 	socket.on('connect', function() {
-		socket.emit('request timer pts');
-		socket.emit('request topics pts');
+		socket.emit('request timer');
+		socket.emit('request topics');
 		//socket.emit('join', { room: 'overlay' });
 	});
 
-	socket.on('update topics pts', function(data) {
+	socket.on('update topics', function(data) {
 		if (data.length !== 0) {
 			addExistingTopicRows(data);
 		}
 	});
 
-	socket.on('start timer pts', function(data) {
+	socket.on('start timer', function(data) {
 		if (data.endTime) {
 			endTime = data.endTime;
 			clearTimer();
@@ -95,7 +95,7 @@
 		var data = {
 			'endTime': date.toISOString(),
 		};
-		socket.emit('start timer pts', data);
+		socket.emit('start timer', data);
 		// TODO: figure out how to make this an acknowledgment callback
 		var info = $('#info');
 		info.show();
@@ -118,7 +118,7 @@
 				});
 			}
 		}
-		socket.emit('update topics pts', topics);
+		socket.emit('update topics', topics);
 	}
 
 	function addTopicRow() {

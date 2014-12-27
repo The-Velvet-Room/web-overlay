@@ -45,7 +45,7 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-	var socket = io();
+	var socket = io('/overlay');
 	socket.on('connect', function() {
 		socket.emit('request overlay');
 		//socket.emit('join', { room: 'overlay' });
