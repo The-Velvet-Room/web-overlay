@@ -38,13 +38,13 @@
       var timerTimeout;
       var topics;
       
-      socket.on('start timer pts', function(data) {
+      socket.on('start timer', function(data) {
         endTime = data.endTime;
         clearTimer();
         updateTimer();
       });
 
-      socket.on('update topics pts', function(data) {
+      socket.on('update topics', function(data) {
         if (data.length !== 0) {
           renderTopics(data);
         }
