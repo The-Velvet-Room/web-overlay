@@ -59,6 +59,8 @@ a {
 }
 
 #mainbar {
+	overflow: hidden;
+	white-space: nowrap;
 	text-shadow: 2px 3px 3px black;
 	margin-left: 170px;
 	margin-top: 15px;
