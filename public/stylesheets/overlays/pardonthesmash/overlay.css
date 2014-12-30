@@ -13,7 +13,7 @@ a {
 }
 
 #video {
-	background-color: black;
+	background-color: rgba(0, 0, 0, 0);
 	width: 80%;
 	display: inline-block;
 	position: relative;
@@ -89,6 +89,11 @@ a {
 	font-family: 'Roboto Condensed', sans-serif;
 	font-weight: 700;
 	color: white;
+}
+
+#topic-container {
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 #topic-header {
