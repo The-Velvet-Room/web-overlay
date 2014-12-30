@@ -29,9 +29,11 @@
         <img src="http://i.imgur.com/Kbbt5oE.png" id="pts-bottom-right">
       </div>
       <div id="mainbar-container">
-      <img src="http://i.imgur.com/reVFLOP.png" id="smashball">
-
-      <div id="mainbar"></div></div>
+        <img src="http://i.imgur.com/reVFLOP.png" id="smashball">
+        <div id="mainbar">
+          <div id="mainbar-text"></div>
+        </div>
+      </div>
   	</div>
     <script>
     $(function () {
@@ -69,7 +71,9 @@
         var foundActive = false;
         topics = data;
         var container = document.getElementById('topic-list');
-        var mainbar = document.getElementById('mainbar');
+
+        var mainbarText; 
+        var $mainbar = $('#mainbar-text');
 
         var template = container.children[0];
         template.classList.remove('active');
@@ -85,13 +89,19 @@
 
           if (topicData.active) {
             newTopic.classList.add('active');
-            mainbar.innerText = topicData.mainbar;
+            mainbarText = topicData.mainbar;
             foundActive = true;
           } else if (!foundActive) {
             newTopic.classList.add('old');
           }
         }
+
+        $mainbar.animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+            $(this).text(mainbarText);
+          })
+          .animate({'opacity': '1', 'margin-left': '0'}, 350);
       }
+
 
     });
     </script>
