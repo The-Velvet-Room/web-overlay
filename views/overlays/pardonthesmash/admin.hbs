@@ -1,5 +1,4 @@
 <h1>{{title}}</h1>
-<form action="javascript:startTimer()">
 	<p>
 		<label for="minutes">
 			Minutes
@@ -12,10 +11,10 @@
 	</p>
 	<div id="timer"></div>
 	<p>
-	<button>Start Timer</button>
+	<button onclick="startTimer()">Start Timer</button>
+	<button onclick="resetTimer()">Reset Timer</button>
 	<div id="info" style="display:none;">Timer Updated!</div>
 	</p>
-</form>
 <form action="javascript:saveTopics()">
 	<h3>Topics</h3>
 	<table>
@@ -89,10 +88,11 @@
 	function startTimer() {
 		var minutes = document.getElementById('minutes').valueAsNumber || 0;
 		var seconds = document.getElementById('seconds').valueAsNumber || 0;
-		if (minutes === 0 && seconds === 0) {
-			return;
-		}
+		
+		sendTimerUpdate(minutes, seconds);
+	}
 
+	function sendTimerUpdate(minutes, seconds) {
 		var date = new Date();
 		date.setMinutes(date.getMinutes() + minutes);
 		date.setSeconds(date.getSeconds() + seconds);
@@ -105,6 +105,10 @@
 		var info = $('#info');
 		info.show();
 		info.fadeOut(1200);
+	}
+
+	function resetTimer() {
+		sendTimerUpdate(0, 0);
 	}
 
 	function saveTopics() {
