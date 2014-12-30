@@ -95,8 +95,12 @@
 
 	function sendTimerUpdate(minutes, seconds) {
 		var date = new Date();
+		// TODO: Figure out what calculation causes seconds to need a plus one.
+		// Without the plus one, entering in 3 minutes will start the timer
+		// showing 2:59, and it'll sit there for a bit longer than a second before
+		// it starts ticking.
 		date.setMinutes(date.getMinutes() + minutes);
-		date.setSeconds(date.getSeconds() + seconds);
+		date.setSeconds(date.getSeconds() + seconds + 1);
 
 		var data = {
 			'endTime': date.toISOString(),
