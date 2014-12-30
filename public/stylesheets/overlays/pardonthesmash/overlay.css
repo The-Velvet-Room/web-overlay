@@ -13,7 +13,7 @@ a {
 }
 
 #video {
-	background-color: black;
+	background-color: rgba(0, 0, 0, 0);
 	width: 80%;
 	display: inline-block;
 	position: relative;
