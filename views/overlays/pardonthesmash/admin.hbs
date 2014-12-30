@@ -1,4 +1,5 @@
 <h1>{{title}}</h1>
+	<h3>Timer</h3>
 	<p>
 		<label for="minutes">
 			Minutes
@@ -13,7 +14,7 @@
 	<p>
 	<button onclick="startTimer()">Start Timer</button>
 	<button onclick="resetTimer()">Reset Timer</button>
-	<div id="info" style="display:none;">Timer Updated!</div>
+	<div id="timer-info" style="opacity: 0">Timer Updated!</div>
 	</p>
 <form action="javascript:saveTopics()">
 	<h3>Topics</h3>
@@ -43,7 +44,7 @@
 <label for="restart">Restart timer on topic change
 	<input type="checkbox" id="restart" />
 </label>
-
+<div id="topic-info" style="opacity: 0">Topics Updated!</div>
 </p>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
@@ -102,9 +103,9 @@
 		};
 		socket.emit('start timer', data);
 		// TODO: figure out how to make this an acknowledgment callback
-		var info = $('#info');
-		info.show();
-		info.fadeOut(1200);
+		var info = $('#timer-info');
+		info.css({ 'opacity': 1 });
+		info.animate({ 'opacity': 0 }, 1200);
 	}
 
 	function resetTimer() {
@@ -128,6 +129,10 @@
 			}
 		}
 		socket.emit('update topics', topics);
+		// TODO: figure out how to make this an acknowledgment callback
+		var info = $('#topic-info');
+		info.css({ 'opacity': 1 });
+		info.animate({ 'opacity': 0 }, 1200);
 	}
 
 	function addTopicRow() {
