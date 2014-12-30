@@ -34,8 +34,9 @@
 			</tr>
 		</tbody>
 	</table>
-	<button>Update Topics</button>
-	<button type="button" onclick="addTopicRow()">Add a Row</button>
+	<button id="updateTopics">Update Topics</button>
+	<button id="addRow" type="button" onclick="addTopicRow()">Add a Row</button>
+	<label for="locked"> Locked<input type="checkbox" id="locked" onchange="toggleLock()"/></label>
 </form>
 <p>
 <button onclick="previousTopic()">Previous Topic</button>
@@ -180,5 +181,13 @@
 			}
 		}
 		saveTopics();
+	}
+
+	function toggleLock() {
+		if ($('#locked').prop('checked')) {
+			$('#updateTopics, #addRow, .active, .mainbar, .sidebar').prop('disabled', true);
+		} else {
+			$('#updateTopics, #addRow, .active, .mainbar, .sidebar').prop('disabled', false);
+		}
 	}
 </script>
