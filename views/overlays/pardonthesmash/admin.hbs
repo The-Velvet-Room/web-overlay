@@ -36,11 +36,15 @@
 	</table>
 	<button id="updateTopics">Update Topics</button>
 	<button id="addRow" type="button" onclick="addTopicRow()">Add a Row</button>
-	<label for="locked"> Locked<input type="checkbox" id="locked" onchange="toggleLock()"/></label>
+	<label for="locked">Locked<input type="checkbox" id="locked" onchange="toggleLock()"/></label>
 </form>
 <p>
 <button onclick="previousTopic()">Previous Topic</button>
 <button onclick="nextTopic()">Next Topic</button>
+<label for="restart">Restart timer on topic change
+	<input type="checkbox" id="restart" />
+</label>
+
 </p>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
@@ -165,6 +169,9 @@
 			}
 		}
 		saveTopics();
+		if ($('#restart').prop('checked')) {
+			startTimer();
+		}
 	}
 
 	function nextTopic() {
@@ -181,6 +188,9 @@
 			}
 		}
 		saveTopics();
+		if ($('#restart').prop('checked')) {
+			startTimer();
+		}
 	}
 
 	function toggleLock() {
