@@ -1,0 +1,91 @@
+<div id="container">
+  <div id="video"></div>
+  <div id="sidebar">
+    <div id="timer-container">
+      <div id="timer"></div>
+    </div>
+    <div id="topic-container">
+      <div id="topic-header">
+        Topics
+      </div>
+      <div id="topic-list">
+        <div class="topic">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="mainbar-container">
+    <div id="mainbar">
+      <div id="mainbar-text"></div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
+<script>
+  $(function () {
+
+    var socket = io('/pardonthesmash');
+    var endTime;
+    var timerTimeout;
+    var topics;
+    
+    socket.on('start timer', function(data) {
+      endTime = data.endTime;
+      clearTimer();
+      updateTimer();
+    });
+
+    socket.on('update topics', function(data) {
+      if (data.length !== 0) {
+        renderTopics(data);
+      }
+    });
+
+    function clearTimer() {
+      clearTimeout(timerTimeout);
+    }
+
+    function updateTimer() {
+      var time = timeLeft(endTime);
+      document.getElementById('timer').innerText = formatTime(time);
+      if (time.minutes !== 0 || time.seconds !== 0) {
+        timerTimeout = setTimeout(updateTimer, 1000);
+      }
+    }
+
+    function renderTopics(data) {
+      var foundActive = false;
+      topics = data;
+      var container = document.getElementById('topic-list');
+
+      var mainbarText; 
+      var $mainbar = $('#mainbar-text');
+
+      var template = container.children[0];
+      template.classList.remove('active');
+      template.classList.remove('old');
+
+      container.innerHTML = "";
+      for (var i = 0; i < topics.length; i++) {
+        var newTopic = template.cloneNode(true);
+        var topicData = topics[i];
+        newTopic.innerText = topicData.sidebar;
+
+        container.appendChild(newTopic);
+
+        if (topicData.active) {
+          newTopic.classList.add('active');
+          mainbarText = topicData.mainbar;
+          foundActive = true;
+        } else if (!foundActive) {
+          newTopic.classList.add('old');
+        }
+      }
+      $mainbar.text(mainbarText);
+    }
+
+
+  });
+</script>
