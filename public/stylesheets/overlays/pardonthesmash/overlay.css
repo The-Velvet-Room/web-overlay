@@ -29,8 +29,22 @@ a {
 #sidebar {
 	background-color: #333;
 	width: 20%;
-	height: 100%;
+	height: 952px;
 	float: right;
+}
+
+#bottom-right {
+	background-color: #d5d5d5;
+	float: right;
+	width: 20%;
+	height: 128px;
+	text-align: center;
+	overflow: hidden;
+}
+
+#pts-bottom-right {
+	margin-top: 12px;
+	box-shadow: 0 0 100px rgb(131, 131, 131);
 }
 
 #mainbar-container {
