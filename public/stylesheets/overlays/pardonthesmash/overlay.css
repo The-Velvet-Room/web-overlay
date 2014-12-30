@@ -91,6 +91,11 @@ a {
 	color: white;
 }
 
+#topic-container {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
 #topic-header {
 	background-color: white;
 	padding: 0px 10px;
