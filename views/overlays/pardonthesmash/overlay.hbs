@@ -4,8 +4,9 @@
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/overlays/pardonthesmash/overlay.css' />
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
-    <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
   </head>
   <body>
   	<div id="container">
@@ -24,73 +25,85 @@
           </div>
         </div>
       </div>
+      <div id="bottom-right">
+        <img src="http://i.imgur.com/Kbbt5oE.png" id="pts-bottom-right">
+      </div>
       <div id="mainbar-container">
-      <img src="http://i.imgur.com/reVFLOP.png" id="smashball">
-
-      <div id="mainbar"></div></div>
+        <img src="http://i.imgur.com/reVFLOP.png" id="smashball">
+        <div id="mainbar">
+          <div id="mainbar-text"></div>
+        </div>
+      </div>
   	</div>
     <script>
-		var socket = io();
-    var endTime;
-    var timerTimeout;
-    var topics;
-		
-		socket.on('connect', function() {
-			socket.emit('request timer pts');
-      socket.emit('request topics pts');
-		});
-		
-		socket.on('start timer pts', function(data) {
-      endTime = data.endTime;
-      clearTimer();
-      updateTimer();
-		});
+    $(function () {
 
-    socket.on('update topics pts', function(data) {
-      if (data.length !== 0) {
-        renderTopics(data);
+      var socket = io('/pardonthesmash');
+      var endTime;
+      var timerTimeout;
+      var topics;
+      
+      socket.on('start timer', function(data) {
+        endTime = data.endTime;
+        clearTimer();
+        updateTimer();
+      });
+
+      socket.on('update topics', function(data) {
+        if (data.length !== 0) {
+          renderTopics(data);
+        }
+      });
+
+      function clearTimer() {
+        clearTimeout(timerTimeout);
       }
-    });
 
-    function clearTimer() {
-      clearTimeout(timerTimeout);
-    }
-
-    function updateTimer() {
-      var time = timeLeft(endTime); 
-      document.getElementById('timer').innerText = formatTime(time);
-      if (time.minutes !== 0 || time.seconds !== 0) {
-        timerTimeout = setTimeout(updateTimer, 1000);
-      }
-    }
-
-    function renderTopics(data) {
-      var foundActive = false;
-      topics = data;
-      var container = document.getElementById('topic-list');
-      var mainbar = document.getElementById('mainbar');
-
-      var template = container.children[0];
-      template.classList.remove('active');
-      template.classList.remove('old');
-
-      container.innerHTML = "";
-      for (var i = 0; i < topics.length; i++) {
-        var newTopic = template.cloneNode(true);
-        var topicData = topics[i];
-        newTopic.innerText = topicData.sidebar;
-
-        container.appendChild(newTopic);
-
-        if (topicData.active) {
-          newTopic.classList.add('active');
-          mainbar.innerText = topicData.mainbar;
-          foundActive = true;
-        } else if (!foundActive) {
-          newTopic.classList.add('old');
+      function updateTimer() {
+        var time = timeLeft(endTime);
+        document.getElementById('timer').innerText = formatTime(time);
+        if (time.minutes !== 0 || time.seconds !== 0) {
+          timerTimeout = setTimeout(updateTimer, 1000);
         }
       }
-    }
+
+      function renderTopics(data) {
+        var foundActive = false;
+        topics = data;
+        var container = document.getElementById('topic-list');
+
+        var mainbarText; 
+        var $mainbar = $('#mainbar-text');
+
+        var template = container.children[0];
+        template.classList.remove('active');
+        template.classList.remove('old');
+
+        container.innerHTML = "";
+        for (var i = 0; i < topics.length; i++) {
+          var newTopic = template.cloneNode(true);
+          var topicData = topics[i];
+          newTopic.innerText = topicData.sidebar;
+
+          container.appendChild(newTopic);
+
+          if (topicData.active) {
+            newTopic.classList.add('active');
+            mainbarText = topicData.mainbar;
+            foundActive = true;
+          } else if (!foundActive) {
+            newTopic.classList.add('old');
+          }
+        }
+
+        $mainbar.animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+            $(this).text(mainbarText);
+          })
+          .animate({'opacity': '1', 'margin-left': '0'}, 350);
+      }
+
+
+    });
     </script>
   </body>
 </html>

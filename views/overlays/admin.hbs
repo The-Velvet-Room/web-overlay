@@ -93,7 +93,7 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-	var socket = io();
+	var socket = io('/overlay');
 	socket.on('connect', function() {
 		socket.emit('request overlay');
 		//socket.emit('join', { room: 'overlay' });
@@ -108,11 +108,30 @@
 		document.getElementById('rscore').value = data.rscore || 0;
 	});
 
-	socket.on('update twitch', function(data){
+	var twitchSocket = io('/twitch');
+
+	twitchSocket.on('connect', function() {
+		socket.emit('request twitch');
+	});
+
+	twitchSocket.on('update twitch', function(data){
 		document.getElementById('twitchUsername').value = data.twitchUsername || "";
 		document.getElementById('twitchStatus').value = data.twitchStatus || "";
 		document.getElementById('twitchGame').value = data.twitchGame || "";
 
+		animateTwitchData(data);
+	});
+
+	twitchSocket.on('update twitch readonly data', function(data) {
+		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
+		document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
+		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline',
+		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
+
+		animateTwitchData(data);
+	});
+
+	function animateTwitchData(data) {
 		if(data.twitchUsername) {
 			$('.requires-twitch').show(200);
 		}
@@ -120,14 +139,7 @@
 		{
 			$('.requires-twitch').hide(200);
 		}
-	});
-
-	socket.on('update twitch readonly data', function(data) {
-		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
-		document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
-		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline',
-		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
-	});
+	}
 
 	function plusOneLeft() {
 		var numVal = parseInt(document.getElementById('lscore').value);
@@ -173,7 +185,7 @@
 			'twitchStatus': document.getElementById('twitchStatus').value,
 			'twitchGame': document.getElementById('twitchGame').value,
 		};
-		socket.emit('update twitch', data);
+		twitchSocket.emit('update twitch', data);
 		toastNotify();
 	}
 

@@ -1,5 +1,5 @@
 <h1>{{title}}</h1>
-<form action="javascript:startTimer()">
+	<h3>Timer</h3>
 	<p>
 		<label for="minutes">
 			Minutes
@@ -12,10 +12,10 @@
 	</p>
 	<div id="timer"></div>
 	<p>
-	<button>Start Timer</button>
-	<div id="info" style="display:none;">Timer Updated!</div>
+	<button onclick="startTimer()">Start Timer</button>
+	<button onclick="resetTimer()">Reset Timer</button>
+	<div id="timer-info" style="opacity: 0">Timer Updated!</div>
 	</p>
-</form>
 <form action="javascript:saveTopics()">
 	<h3>Topics</h3>
 	<table>
@@ -28,40 +28,45 @@
 		</thead>
 		<tbody id="topic-table-body">
 			<tr>
-				<td><input class="sidebar"/></td>
-				<td><input class="mainbar"/></td>
+				<td><input class="sidebar" maxlength="15" /></td>
+				<td><input class="mainbar" maxlength="38" /></td>
 				<td><input type="radio" class="active" name="active" checked /></td>
 			</tr>
 		</tbody>
 	</table>
-	<button>Update Topics</button>
-	<button type="button" onclick="addTopicRow()">Add a Row</button>
+	<button id="updateTopics">Update Topics</button>
+	<button id="addRow" type="button" onclick="addTopicRow()">Add a Row</button>
+	<label for="locked">Locked<input type="checkbox" id="locked" onchange="toggleLock()"/></label>
 </form>
 <p>
 <button onclick="previousTopic()">Previous Topic</button>
 <button onclick="nextTopic()">Next Topic</button>
+<label for="restart">Restart timer on topic change
+	<input type="checkbox" id="restart" />
+</label>
+<div id="topic-info" style="opacity: 0">Topics Updated!</div>
 </p>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-	var socket = io();
+	var socket = io('/pardonthesmash');
 	var endTime;
 	var timerTimeout;
 
 	socket.on('connect', function() {
-		socket.emit('request timer pts');
-		socket.emit('request topics pts');
+		socket.emit('request timer');
+		socket.emit('request topics');
 		//socket.emit('join', { room: 'overlay' });
 	});
 
-	socket.on('update topics pts', function(data) {
+	socket.on('update topics', function(data) {
 		if (data.length !== 0) {
 			addExistingTopicRows(data);
 		}
 	});
 
-	socket.on('start timer pts', function(data) {
+	socket.on('start timer', function(data) {
 		if (data.endTime) {
 			endTime = data.endTime;
 			clearTimer();
@@ -84,22 +89,31 @@
 	function startTimer() {
 		var minutes = document.getElementById('minutes').valueAsNumber || 0;
 		var seconds = document.getElementById('seconds').valueAsNumber || 0;
-		if (minutes === 0 && seconds === 0) {
-			return;
-		}
+		
+		sendTimerUpdate(minutes, seconds);
+	}
 
+	function sendTimerUpdate(minutes, seconds) {
 		var date = new Date();
+		// TODO: Figure out what calculation causes seconds to need a plus one.
+		// Without the plus one, entering in 3 minutes will start the timer
+		// showing 2:59, and it'll sit there for a bit longer than a second before
+		// it starts ticking.
 		date.setMinutes(date.getMinutes() + minutes);
-		date.setSeconds(date.getSeconds() + seconds);
+		date.setSeconds(date.getSeconds() + seconds + 1);
 
 		var data = {
 			'endTime': date.toISOString(),
 		};
-		socket.emit('start timer pts', data);
+		socket.emit('start timer', data);
 		// TODO: figure out how to make this an acknowledgment callback
-		var info = $('#info');
-		info.show();
-		info.fadeOut(1200);
+		var info = $('#timer-info');
+		info.css({ 'opacity': 1 });
+		info.animate({ 'opacity': 0 }, 1200);
+	}
+
+	function resetTimer() {
+		sendTimerUpdate(0, 0);
 	}
 
 	function saveTopics() {
@@ -118,7 +132,11 @@
 				});
 			}
 		}
-		socket.emit('update topics pts', topics);
+		socket.emit('update topics', topics);
+		// TODO: figure out how to make this an acknowledgment callback
+		var info = $('#topic-info');
+		info.css({ 'opacity': 1 });
+		info.animate({ 'opacity': 0 }, 1200);
 	}
 
 	function addTopicRow() {
@@ -164,6 +182,9 @@
 			}
 		}
 		saveTopics();
+		if ($('#restart').prop('checked')) {
+			startTimer();
+		}
 	}
 
 	function nextTopic() {
@@ -180,5 +201,16 @@
 			}
 		}
 		saveTopics();
+		if ($('#restart').prop('checked')) {
+			startTimer();
+		}
+	}
+
+	function toggleLock() {
+		if ($('#locked').prop('checked')) {
+			$('#updateTopics, #addRow, .active, .mainbar, .sidebar').prop('disabled', true);
+		} else {
+			$('#updateTopics, #addRow, .active, .mainbar, .sidebar').prop('disabled', false);
+		}
 	}
 </script>

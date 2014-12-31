@@ -1,0 +1,12 @@
+.active {
+	font-weight: bold;
+	display: list-item;
+}
+
+#mainbar {
+	font-size: 24px;
+}
+
+#topic-header {
+	text-decoration: underline;
+}
