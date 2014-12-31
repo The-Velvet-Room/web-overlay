@@ -26,20 +26,21 @@ module.exports = function (io) {
       twitchData = msg;
       if (twitchData.twitchUsername)
       {
-        if(!twitchData.twitchGame)
+        if(!twitchData.twitchGame && !twitchData.twitchStatus)
         {
           twitchData = initializeTwitchData(twitchData);
-          twitchPollCache = twitchData;
-          getTwitchPollableData(twitchData);
-          twitchPollingInterval = setInterval(
-            function() {
-              getTwitchPollableData(twitchPollCache)
-            }, twitchPollFrequency);
         }
         else
         {
-          //data = updateTwitchData(data);
+          twitchData = updateTwitchData(twitchData);
         }
+
+        twitchPollCache = twitchData;
+        getTwitchPollableData(twitchData);
+        twitchPollingInterval = setInterval(
+          function() {
+            getTwitchPollableData(twitchPollCache)
+          }, twitchPollFrequency);
       }
       else
       {
@@ -102,7 +103,10 @@ module.exports = function (io) {
     function updateTwitchData(twitchData) {
     	var channelName = twitchData.twitchUsername;
     	var game = setTwitchGame(twitchData.twitchUsername, twitchData.twitchGame).game;
-    	//var status = set
+      var status = setTwitchStatus(twitchData.twitchUsername, twitchData.twitchStatus).status;
+      twitchData.twitchGame = game;
+      twitchData.twitchStatus = status;
+      return twitchData;
     };
 
     function initializeTwitchData(twitchData) {
@@ -115,19 +119,18 @@ module.exports = function (io) {
   		xmlhttp.send();
   		console.log('Requesting channel data for '+twitchData.twitchUsername);
   		var twitchResponse = JSON.parse(xmlhttp.responseText);
-  		//console.log('Response: %j', twitchResponse);
   		twitchData.twitchGame = twitchResponse.game;
   		twitchData.twitchStatus = twitchResponse.status;
   		return twitchData;
     }
 
     function setTwitchGame(channel, gameName) {
-    	var queryData = {"channel": {"game": game}};
+    	var queryData = {"channel": {"game": gameName}};
     	var stringQuery = JSON.stringify(queryData);
     	var contentLength = stringQuery.length;
-    	var requestUrl = config.twitchApiRoot + '/channels/'+channel+'?channel[game]='+game;
-    	
-    	xmlhttp.open('POST',requestUrl,false);
+    	var requestUrl = config.twitchApiRoot + '/channels/'+channel+'?channel[game]='+gameName;
+    	var xmlhttp = new XMLHttpRequest();
+    	xmlhttp.open('PUT',requestUrl,false);
 		  xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
 		  xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
 		  xmlhttp.setRequestHeader('Authorization', 'OAuth '+config.twitchAccessToken);
@@ -135,6 +138,22 @@ module.exports = function (io) {
 		  xmlhttp.setRequestHeader('Content-Length', contentLength);
 		  xmlhttp.send(stringQuery);
 		  return JSON.parse(xmlhttp.responseText);
+    }
+
+    function setTwitchStatus(channel, status) {
+      var queryData = {"channel": {"status": status}};
+      var stringQuery = JSON.stringify(queryData);
+      var contentLength = stringQuery.length;
+      var requestUrl = config.twitchApiRoot + '/channels/'+channel+'?channel[status]='+status;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open('PUT',requestUrl,false);
+      xmlhttp.setRequestHeader('Accept','application/vnd.twitchtv.v2+json');
+      xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
+      xmlhttp.setRequestHeader('Authorization', 'OAuth '+config.twitchAccessToken);
+      xmlhttp.setRequestHeader('Scope', 'channel-editor');
+      xmlhttp.setRequestHeader('Content-Length', contentLength);
+      xmlhttp.send(stringQuery);
+      return JSON.parse(xmlhttp.responseText);
     }
   });
 
