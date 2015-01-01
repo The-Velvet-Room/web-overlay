@@ -5,7 +5,7 @@ module.exports = function(io) {
     var twitchData = {};
     var twitchPollingInterval = null;
     //In millis
-    var twitchPollFrequency = 60000;
+    var twitchPollFrequency = 30000;
     var twitchPollCache = {};
     var connectedSockets = 0;
 
@@ -19,11 +19,6 @@ module.exports = function(io) {
         socket.on('disconnect', function() {
             console.log('Twitch disconnected');
             connectedSockets--;
-            if (connectedSockets <= 0) {
-                //Not sure how the server will handle write-locking, so just in case
-                connectedSockets = 0;
-                clearInterval(twitchPollingInterval);
-            }
         });
 
         socket.on('update twitch', function(msg) {
@@ -37,18 +32,18 @@ module.exports = function(io) {
 
                 twitchPollCache = twitchData;
                 getTwitchPollableData(twitchData);
-                twitchPollingInterval = setInterval(
-                    function() {
-                        getTwitchPollableData(twitchPollCache)
-                    }, twitchPollFrequency);
-            } else {
-                console.log('Stopping Twitch polling...');
-                clearInterval(twitchPollingInterval);
+                setTimeout(pollTwitch, twitchPollFrequency);
             }
 
             twitchIO.emit('update twitch', twitchData);
             console.log('update twitch: ' + JSON.stringify(twitchData));
         });
+
+        function pollTwitch() {
+            getTwitchPollableData(twitchPollCache);
+            if (connectedSockets > 0 && twitchData.twitchUsername)
+              setTimeout(pollTwitch, twitchPollFrequency);
+        }
 
         function getTwitchPollableData(twitchData) {
             console.log('Polling Twitch for updates...');
