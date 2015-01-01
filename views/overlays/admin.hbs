@@ -110,10 +110,6 @@
 
 	var twitchSocket = io('/twitch');
 
-	twitchSocket.on('connect', function() {
-		socket.emit('request twitch');
-	});
-
 	twitchSocket.on('update twitch', function(data){
 		document.getElementById('twitchUsername').value = data.twitchUsername || "";
 		document.getElementById('twitchStatus').value = data.twitchStatus || "";

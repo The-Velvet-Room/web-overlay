@@ -42,11 +42,6 @@ module.exports = function(io) {
             console.log('update twitch: ' + JSON.stringify(twitchData));
         });
 
-        socket.on('request twitch', function() {
-            console.log('fetching old Twitch data: ' + JSON.stringify(data));
-            socket.emit('update twitch', twitchData);
-        });
-
         function getTwitchPollableData(twitchData) {
             console.log('Polling Twitch for updates...');
             twitchData = getTwitchFollowerData(twitchData);
