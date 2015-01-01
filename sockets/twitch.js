@@ -7,15 +7,23 @@ module.exports = function(io) {
     //In millis
     var twitchPollFrequency = 60000;
     var twitchPollCache = {};
+    var connectedSockets = 0;
 
     var twitchIO = io.of('/twitch');
 
     twitchIO.on('connection', function(socket) {
         console.log('Twitch connected');
         socket.emit('update twitch', twitchData);
+        connectedSockets++;
 
         socket.on('disconnect', function() {
             console.log('Twitch disconnected');
+            connectedSockets--;
+            if (connectedSockets <= 0) {
+                //Not sure how the server will handle write-locking, so just in case
+                connectedSockets = 0;
+                clearInterval(twitchPollingInterval);
+            }
         });
 
         socket.on('update twitch', function(msg) {
