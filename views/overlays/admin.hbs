@@ -90,6 +90,21 @@
 	</p>
 </form>
 
+<!--Challonge Form-->
+<form action="javascript:sendChallongeUpdate()">
+	<h2>Challonge</h2>
+	<p>
+		<label for="challongeUrl">
+			Challonge URL:
+			<input id="challongeUrl"></input>
+		</label>
+	</p>
+	<p id="challongeMatchListPlaceholder"></p>
+	<p>
+	<input type="submit"/>
+	</p>
+</form>
+
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -137,6 +152,15 @@
 		}
 	}
 
+	var challongeSocket = io('/challonge');
+
+	challongeSocket.on('update challonge', function(data){
+		document.getElementById('challongeUrl').value = data.challongeUrl || "";
+
+		if(data.upcomingMatches)
+			createMatchList(data);
+	});
+
 	function plusOneLeft() {
 		var numVal = parseInt(document.getElementById('lscore').value);
 		document.getElementById('lscore').value = numVal + 1;
@@ -183,6 +207,44 @@
 		};
 		twitchSocket.emit('update twitch', data);
 		toastNotify();
+	}
+
+	function sendChallongeUpdate() {
+		var data = {
+			'challongeUrl': document.getElementById('challongeUrl').value,
+		};
+		challongeSocket.emit('update challonge', data);
+		toastNotify();
+	}
+
+	function createMatchList(data) {
+		var selectList = document.createElement('select');
+		selectList.id = 'challongeMatchList';
+		document.getElementById('challongeMatchListPlaceholder').appendChild(selectList);
+
+		var defaultOption = document.createElement('option');
+		defaultOption.text = 'Select a match to display';
+		defaultOption.selected = 'selected';
+		selectList.appendChild(defaultOption);
+
+		data.upcomingMatches.forEach(function(match){
+			var option = document.createElement('option');
+			var playerOne = data.players[match.match.player1_id];
+			var playerTwo = data.players[match.match.player2_id];
+			option.text = match.match.identifier+': '+playerOne+' vs. '+playerTwo;
+			option.value = playerOne+','+playerTwo;
+			selectList.appendChild(option);
+		});
+
+		$('#challongeMatchList').change(function(){
+			var selectedOption = $('#challongeMatchList option:selected');
+			if (selectedOption.text().indexOf('vs.') > -1) {
+				playerArray = selectedOption.val().split(',');
+				document.getElementById('lplayer').value = playerArray[0];
+				document.getElementById('rplayer').value = playerArray[1];
+				sendUpdate();
+			}
+		});
 	}
 
 	function toastNotify() {

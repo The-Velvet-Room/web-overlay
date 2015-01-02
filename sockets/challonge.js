@@ -4,8 +4,8 @@ module.exports = function(io) {
     var challongeData = {};
     var challongePollFrequency = 10000;
     var connectedSockets = 0;
-    var challongeApiRoot = 'https://Camtendo:'+config.challongeApiKey+'@api.challonge.com/v1';
-    var challongeHash = '';
+    var challongeApiRoot = 'https://api.challonge.com/v1';
+    var challongeHash = null;
     var matches = [];
     var players = [];
 
@@ -13,7 +13,7 @@ module.exports = function(io) {
 
     challongeIO.on('connection', function(socket) {
         console.log('Challonge connected');
-        socket.emit('update challonge', challonge);
+        socket.emit('update challonge', challongeData);
         connectedSockets++;
 
         socket.on('disconnect', function() {
@@ -25,11 +25,11 @@ module.exports = function(io) {
             challongeData = msg;
             if (challongeData.challongeUrl) {
                 if (!challongeHash) {
-                    challongeData = createChallongeHash(challongeData.challongeUrl);
+                    challongeHash = createChallongeHash(challongeData.challongeUrl);
                 }
 
                 getchallongePollableData(challongeData);
-                setTimeout(pollchallonge, challongePollFrequency);
+                setTimeout(pollChallonge, challongePollFrequency);
             }
 
             challongeIO.emit('update challonge', challongeData);
@@ -39,13 +39,14 @@ module.exports = function(io) {
         function pollChallonge() {
             getchallongePollableData(challongeData);
             if (connectedSockets > 0 && challongeData.challongeUsername)
-              setTimeout(pollchallonge, challongePollFrequency);
+              setTimeout(pollChallonge, challongePollFrequency);
         }
 
         function getchallongePollableData(challongeData) {
             console.log('Polling challonge for updates...');
             challongeData = fetchChallongeData(challongeData);
             challongeData.upcomingMatches = getUpcomingMatches();
+            challongeData.players = getPlayerDictionary();
             console.log('New challonge Pollable Data: ' + JSON.stringify(challongeData));
             socket.emit('update challonge readonly data', challongeData);
         }
@@ -54,8 +55,10 @@ module.exports = function(io) {
             var requestUrl = challongeApiRoot + '/tournaments/' + challongeHash + '.json?include_matches=1&include_participants=1';
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', requestUrl, false);
+            //Basic Auth must be encoded or request will be denied
+            xmlhttp.setRequestHeader("Authorization", "Basic " + new Buffer('Camtendo' + ':' + config.challongeApiKey).toString('base64')); 
             xmlhttp.send();
-            console.log('Requesting channel data for ' + challongeData.challongeUrl);
+            console.log('Requesting tournament data for ' + challongeData.challongeUrl);
             var challongeResponse = JSON.parse(xmlhttp.responseText);
             matches = challongeResponse.tournament.matches;
             players = challongeResponse.tournament.participants;
@@ -74,6 +77,16 @@ module.exports = function(io) {
             return upcomingMatches;
         }
 
+        function getPlayerDictionary() {
+            var playerDict = {};
+
+            players.forEach(function(player){
+                playerDict[player.participant.id] = player.participant.name || player.participant.username;
+            });
+
+            return playerDict;
+        }
+
         function createChallongeHash(challongeUrl) {
             tourneyHash = challongeUrl.substring(challongeUrl.lastIndexOf('/') + 1).trim();
 
@@ -82,11 +95,12 @@ module.exports = function(io) {
             if (challongeUrl.split('.').length - 1 > 1) {
                 orgHash = challongeUrl.substring(challongeUrl.lastIndexOf('http://') + 7, challongeUrl.indexOf('.'));
                 challongeHash = orgHash + '-' + tourneyHash;    
-                return;
+                return challongeHash;
             }
 
             //Standard tournament
             challongeHash = tourneyHash;
+            return challongeHash;
         }
     });
 }
