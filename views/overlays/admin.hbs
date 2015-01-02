@@ -218,13 +218,20 @@
 	}
 
 	function createMatchList(data) {
+		console.log('Creating match list...');
+		var matchList = $('#challongeMatchList');
+		if (matchList) {
+			matchList.remove();
+			console.log('Destroyed old match list.');
+		}
+
 		var selectList = document.createElement('select');
 		selectList.id = 'challongeMatchList';
 		document.getElementById('challongeMatchListPlaceholder').appendChild(selectList);
 
 		var defaultOption = document.createElement('option');
 		defaultOption.text = 'Select a match to display';
-		defaultOption.selected = 'selected';
+		//defaultOption.selected = 'selected';
 		selectList.appendChild(defaultOption);
 
 		data.upcomingMatches.forEach(function(match){

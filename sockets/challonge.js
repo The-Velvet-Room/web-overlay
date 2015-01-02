@@ -38,7 +38,7 @@ module.exports = function(io) {
 
         function pollChallonge() {
             getchallongePollableData(challongeData);
-            if (connectedSockets > 0 && challongeData.challongeUsername)
+            if (connectedSockets > 0 && challongeHash)
               setTimeout(pollChallonge, challongePollFrequency);
         }
 
@@ -47,8 +47,9 @@ module.exports = function(io) {
             challongeData = fetchChallongeData(challongeData);
             challongeData.upcomingMatches = getUpcomingMatches();
             challongeData.players = getPlayerDictionary();
-            console.log('New challonge Pollable Data: ' + JSON.stringify(challongeData));
-            socket.emit('update challonge readonly data', challongeData);
+            //console.log('New challonge Pollable Data: ' + JSON.stringify(challongeData));
+            console.log('Challonge update complete');
+            socket.emit('update challonge', challongeData);
         }
 
         function fetchChallongeData(challongeData) {
