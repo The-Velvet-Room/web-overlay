@@ -100,6 +100,7 @@
 		</label>
 	</p>
 	<p id="challongeMatchListPlaceholder"></p>
+	<p id="challongeEmbedPlaceholder"></p>
 	<p>
 	<input type="submit"/>
 	</p>
@@ -159,6 +160,7 @@
 
 		if(data.upcomingMatches)
 			createMatchList(data);
+		embedChallongeBracket(data);
 	});
 
 	function plusOneLeft() {
@@ -218,11 +220,9 @@
 	}
 
 	function createMatchList(data) {
-		console.log('Creating match list...');
 		var matchList = $('#challongeMatchList');
 		if (matchList) {
 			matchList.remove();
-			console.log('Destroyed old match list.');
 		}
 
 		var selectList = document.createElement('select');
@@ -231,7 +231,6 @@
 
 		var defaultOption = document.createElement('option');
 		defaultOption.text = 'Select a match to display';
-		//defaultOption.selected = 'selected';
 		selectList.appendChild(defaultOption);
 
 		data.upcomingMatches.forEach(function(match){
@@ -259,6 +258,20 @@
 		var info = $('#info');
 		info.show();
 		info.fadeOut(1200);
+	}
+
+	function embedChallongeBracket(data) {
+		var bracket = document.getElementById('challongeBracket');
+		if (data.challongeUrl && bracket == null) {
+			var embedded = document.createElement('iframe');
+			embedded.id = 'challongeBracket';
+			embedded.src = data.challongeUrl+'/module';
+			embedded.width = '100%';
+			embedded.height = '500';
+			embedded.frameboarder = '0';
+			embedded.scrolling = 'auto';
+			document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
+		}
 	}
 
 	function toggleNightMode() {
