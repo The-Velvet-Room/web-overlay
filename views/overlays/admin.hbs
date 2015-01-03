@@ -154,12 +154,15 @@
 	}
 
 	var challongeSocket = io('/challonge');
+	var challongeMatches = [];
 
 	challongeSocket.on('update challonge', function(data){
 		document.getElementById('challongeUrl').value = data.challongeUrl || "";
 
-		if(data.upcomingMatches)
+		if(data.upcomingMatches && data.matchesChanged) {
+			challongeMatches = data.upcomingMatches;
 			createMatchList(data);
+		}
 		embedChallongeBracket(data);
 	});
 
@@ -231,6 +234,7 @@
 
 		var defaultOption = document.createElement('option');
 		defaultOption.text = 'Select a match to display';
+		defaultOption.value = null;
 		selectList.appendChild(defaultOption);
 
 		data.upcomingMatches.forEach(function(match){
@@ -238,19 +242,33 @@
 			var playerOne = data.players[match.match.player1_id];
 			var playerTwo = data.players[match.match.player2_id];
 			option.text = match.match.identifier+': '+playerOne+' vs. '+playerTwo;
-			option.value = playerOne+','+playerTwo;
+			option.value = match.match.identifier;
 			selectList.appendChild(option);
 		});
 
 		$('#challongeMatchList').change(function(){
 			var selectedOption = $('#challongeMatchList option:selected');
-			if (selectedOption.text().indexOf('vs.') > -1) {
-				playerArray = selectedOption.val().split(',');
-				document.getElementById('lplayer').value = playerArray[0];
-				document.getElementById('rplayer').value = playerArray[1];
+			var identifier = selectedOption.val();
+			if (selectedOption.val()) {
+				console.log('Updating match...');
+				var match = getMatchForIdentifier(identifier);
+				var playerOne = data.players[match.match.player1_id];
+				var playerTwo = data.players[match.match.player2_id];
+				document.getElementById('lplayer').value = playerOne;
+				document.getElementById('rplayer').value = playerTwo;
 				sendUpdate();
 			}
 		});
+	}
+
+	function getMatchForIdentifier(identifier) {
+		//Sublime Text autocompleted a backwards loop because they are fast
+		for (var i = challongeMatches.length - 1; i >= 0; i--) {
+			if (challongeMatches[i].match.identifier == identifier)
+				return challongeMatches[i];
+		};
+
+		return null;
 	}
 
 	function toastNotify() {
