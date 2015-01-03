@@ -90,6 +90,22 @@
 	</p>
 </form>
 
+<!--Challonge Form-->
+<form action="javascript:sendChallongeUpdate()">
+	<h2>Challonge</h2>
+	<p>
+		<label for="challongeUrl">
+			Challonge URL:
+			<input id="challongeUrl"></input>
+		</label>
+	</p>
+	<p id="challongeMatchListPlaceholder"></p>
+	<p id="challongeEmbedPlaceholder"></p>
+	<p>
+	<input type="submit"/>
+	</p>
+</form>
+
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -136,6 +152,19 @@
 			$('.requires-twitch').hide(200);
 		}
 	}
+
+	var challongeSocket = io('/challonge');
+	var challongeMatches = [];
+
+	challongeSocket.on('update challonge', function(data){
+		document.getElementById('challongeUrl').value = data.challongeUrl || "";
+
+		if(data.upcomingMatches && data.matchesChanged) {
+			challongeMatches = data.upcomingMatches;
+			createMatchList(data);
+		}
+		embedChallongeBracket(data);
+	});
 
 	function plusOneLeft() {
 		var numVal = parseInt(document.getElementById('lscore').value);
@@ -185,11 +214,82 @@
 		toastNotify();
 	}
 
+	function sendChallongeUpdate() {
+		var data = {
+			'challongeUrl': document.getElementById('challongeUrl').value,
+		};
+		challongeSocket.emit('update challonge', data);
+		toastNotify();
+	}
+
+	function createMatchList(data) {
+		var matchList = $('#challongeMatchList');
+		if (matchList) {
+			matchList.remove();
+		}
+
+		var selectList = document.createElement('select');
+		selectList.id = 'challongeMatchList';
+		document.getElementById('challongeMatchListPlaceholder').appendChild(selectList);
+
+		var defaultOption = document.createElement('option');
+		defaultOption.text = 'Select a match to display';
+		defaultOption.value = null;
+		selectList.appendChild(defaultOption);
+
+		data.upcomingMatches.forEach(function(match){
+			var option = document.createElement('option');
+			var playerOne = data.players[match.match.player1_id];
+			var playerTwo = data.players[match.match.player2_id];
+			option.text = match.match.identifier+': '+playerOne+' vs. '+playerTwo;
+			option.value = match.match.identifier;
+			selectList.appendChild(option);
+		});
+
+		$('#challongeMatchList').change(function(){
+			var selectedOption = $('#challongeMatchList option:selected');
+			var identifier = selectedOption.val();
+			if (selectedOption.val()) {
+				console.log('Updating match...');
+				var match = getMatchForIdentifier(identifier);
+				var playerOne = data.players[match.match.player1_id];
+				var playerTwo = data.players[match.match.player2_id];
+				document.getElementById('lplayer').value = playerOne;
+				document.getElementById('rplayer').value = playerTwo;
+				sendUpdate();
+			}
+		});
+	}
+
+	function getMatchForIdentifier(identifier) {
+		//Sublime Text autocompleted a backwards loop because they are fast
+		for (var i = challongeMatches.length - 1; i >= 0; i--) {
+			if (challongeMatches[i].match.identifier == identifier)
+				return challongeMatches[i];
+		};
+
+		return null;
+	}
+
 	function toastNotify() {
 		// TODO: figure out how to make this an acknowledgment callback
 		var info = $('#info');
 		info.show();
 		info.fadeOut(1200);
+	}
+
+	function embedChallongeBracket(data) {
+		var bracket = document.getElementById('challongeBracket');
+		if (data.challongeUrl && bracket == null) {
+			var embedded = document.createElement('iframe');
+			embedded.id = 'challongeBracket';
+			embedded.src = data.challongeUrl+'/module';
+			embedded.width = '100%';
+			embedded.height = '500';
+			embedded.frameboarder = '0';
+			embedded.scrolling = 'auto';
+			document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
+		}
 	}
 
 	function toggleNightMode() {
