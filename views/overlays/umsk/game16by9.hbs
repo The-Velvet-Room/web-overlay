@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/overlays/grimetime/game16by9.css' />
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+  	<div id="container">
+  		<div id="title" class="playertext"></div>
+  		<div id="lscore" class="playertext"></div>
+  		<div id="lplayer" class="playertext"></div>
+  		<div id="rplayer" class="playertext"></div>
+  		<div id="rscore" class="playertext"></div>
+  	</div>
+    <script>
+    $(function () {
+
+      var socket = io('/overlay');
+
+      socket.on('update overlay', function(data) {
+        document.getElementById('title').innerText = data.title || "";
+        document.getElementById('lplayer').innerText = data.lplayer || "";
+        document.getElementById('rplayer').innerText = data.rplayer || "";
+        document.getElementById('lscore').innerText = data.lscore || "";
+        document.getElementById('rscore').innerText = data.rscore || "";
+      });
+
+    });
+    </script>
+  </body>
+</html>
