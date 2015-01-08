@@ -28,7 +28,7 @@ router.get('/overlays/grimetime/game4by3', function(req, res) {
 
 /* GET home page. */
 router.get('/overlays/grimetime/game16by9', function(req, res) {
-  res.render('overlays/grimetime/game16by9', { title: 'Overlay', layout: false });
+  res.render('overlays/grimetime/game16by9', { title: 'Overlay' });
 });
 
 /* GET commentators. */
