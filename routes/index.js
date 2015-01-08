@@ -23,7 +23,7 @@ router.get('/overlays/scores', function(req, res) {
 
 /* GET home page. */
 router.get('/overlays/grimetime/game4by3', function(req, res) {
-  res.render('overlays/grimetime/game4by3', { title: 'Overlay', layout: false });
+  res.render('overlays/grimetime/game4by3', { title: 'Overlay' });
 });
 
 /* GET home page. */
@@ -33,11 +33,11 @@ router.get('/overlays/grimetime/game16by9', function(req, res) {
 
 /*UMSK*/
 router.get('/overlays/umsk/game16by9', function(req, res) {
-  res.render('overlays/umsk/game16by9', { title: 'UMSK Overlay', layout: false });
+  res.render('overlays/umsk/game16by9', { title: 'UMSK Overlay'});
 });
 
 router.get('/overlays/umsk/game4by3', function(req, res) {
-  res.render('overlays/umsk/game4by3', { title: 'UMSK Overlay', layout: false });
+  res.render('overlays/umsk/game4by3', { title: 'UMSK Overlay' });
 });
 
 /* GET commentators. */
