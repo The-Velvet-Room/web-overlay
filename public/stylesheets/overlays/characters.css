@@ -1,0 +1,362 @@
+.stock-icon {
+	width: 20px;
+	height: 20px;
+}
+
+/*Smash 4 Icons*/
+.bowser {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 0 100;
+}
+
+.bowser-jr {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 20 100;
+}
+
+.captain-falcon {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 40 100;
+}
+
+.charizard {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 60 100;
+}
+
+.dark-pit {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 80 100;
+}
+
+.king-dedede {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 100 100;
+}
+
+.diddy-kong {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 120 100;
+}
+
+.donkey-kong {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 140 100;
+}
+
+.dr-mario {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 160 100;
+}
+
+.duck-hunt-dog {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 180 100;
+}
+
+.falco {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 200 100;
+}
+
+.fox {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 220 100;
+}
+
+.ganondorf {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 240 100;
+}
+
+.mr-game-and-watch {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 260 100;
+}
+
+.greninja {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 280 100;
+}
+
+.ike {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 300 100;
+}
+
+.jigglypuff {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 320 100;
+}
+
+.kirby {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 340 100;
+}
+
+.link {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 360 100;
+}
+
+.little-mac {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 380 100;
+}
+
+.lucario {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 400 100;
+}
+
+.lucina {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 420 100;
+}
+
+.luigi {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 440 100;
+}
+
+.mario {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 460 100;
+}
+
+.marth {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 480 100;
+}
+
+.megaman {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 500 100;
+}
+
+.metaknight {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 520 100;
+}
+
+.mii {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 540 100;
+}
+
+.ness {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 560 100;
+}
+
+.olimar {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 580 100;
+}
+
+.pacman {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 600 100;
+}
+
+.palutena {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 620 100;
+}
+
+.peach {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 640 100;
+}
+
+.pikachu {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 660 100;
+}
+
+.pit {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 680 100;
+}
+
+.rob {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 700 100;
+}
+
+.robin {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 720 100;
+}
+
+.rosalina {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 740 100;
+}
+
+.samus {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 760 100;
+}
+
+.sheik {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 780 100;
+}
+
+.shulk {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 800 100;
+}
+
+.sonic {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 820 100;
+}
+
+.toon-link {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 840 100;
+}
+
+.villager {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 860 100;
+}
+
+.wario {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 880 100;
+}
+
+.wii-fit-trainer {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 900 100;
+}
+
+.yoshi {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 920 100;
+}
+
+.zelda {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 940 100;
+}
+
+.zero-suit-samus {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 960 100;
+}
+/*Characters not in Smash 4 as of Jan 8th, 
+Project M: Mewtwo, Ice Climbers, Roy, Wolf, Snake, Squirtle, Ivysaur, Lucas
+Melee Only: Pichu, Young Link*/
+
+.mewtwo {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 800 80;
+}
+
+.ice-climbers {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 520 80;
+}
+
+.roy {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 780 80;
+}
+
+.wolf {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 700 80;
+}
+
+.snake {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 600 80;
+}
+
+.squirtle {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 640 80;
+}
+
+.ivysaur {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 220 80;
+}
+
+.lucas {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 320 80;
+}
+
+.pichu {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 340 20;
+}
+
+.young-link {
+	width: 20px;
+	height: 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) 480 20;
+}
