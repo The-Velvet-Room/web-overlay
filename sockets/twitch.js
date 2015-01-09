@@ -3,7 +3,6 @@ var config = require('../config');
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 module.exports = function(io) {
     var twitchData = {};
-    var twitchPollingInterval = null;
     //In millis
     var twitchPollFrequency = 30000;
     var twitchPollCache = {};
@@ -45,75 +44,75 @@ module.exports = function(io) {
               setTimeout(pollTwitch, twitchPollFrequency);
         }
 
-        function getTwitchPollableData(twitchData) {
+        function getTwitchPollableData(data) {
             console.log('Polling Twitch for updates...');
-            twitchData = getTwitchFollowerData(twitchData);
-            twitchData = getTwitchViewerData(twitchData);
+            twitchData = getTwitchFollowerData(data);
+            twitchData = getTwitchViewerData(data);
             console.log('New Twitch Pollable Data: ' + JSON.stringify(twitchData));
             socket.emit('update twitch readonly data', twitchData);
         }
 
-        function getTwitchFollowerData(twitchData) {
-            var requestUrl = config.twitchApiRoot + '/channels/' + twitchData.twitchUsername + '/follows/';
+        function getTwitchFollowerData(data) {
+            var requestUrl = config.twitchApiRoot + '/channels/' + data.twitchUsername + '/follows/';
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', requestUrl, false);
             xmlhttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v2+json');
             xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
             xmlhttp.send();
-            console.log('Requesting follower data for ' + twitchData.twitchUsername);
+            console.log('Requesting follower data for ' + data.twitchUsername);
             var twitchResponse = JSON.parse(xmlhttp.responseText);
-            twitchData.twitchFollowers = twitchResponse._total;
-            twitchData.twitchLastFollower = twitchResponse.follows[0].user.name;
-            return twitchData;
+            data.twitchFollowers = twitchResponse._total;
+            data.twitchLastFollower = twitchResponse.follows[0].user.name;
+            return data;
         }
 
-        function getTwitchViewerData(twitchData) {
-            var requestUrl = config.twitchApiRoot + '/streams/' + twitchData.twitchUsername;
+        function getTwitchViewerData(data) {
+            var requestUrl = config.twitchApiRoot + '/streams/' + data.twitchUsername;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', requestUrl, false);
             xmlhttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v2+json');
             xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
             xmlhttp.send();
-            console.log('Requesting viewer data for ' + twitchData.twitchUsername);
+            console.log('Requesting viewer data for ' + data.twitchUsername);
             var twitchResponse = JSON.parse(xmlhttp.responseText);
             var stream = twitchResponse.stream;
-            twitchData.twitchViewers = stream ? stream.viewers : null;
-            if (twitchData.twitchViewers) {
-                if (!twitchData.twitchPeakViewers || twitchData.twitchViewers > twitchData.twitchPeakViewers) {
-                    twitchData.twitchPeakViewers = twitchData.twitchViewers;
+            data.twitchViewers = stream ? stream.viewers : null;
+            if (data.twitchViewers) {
+                if (!data.twitchPeakViewers || data.twitchViewers > data.twitchPeakViewers) {
+                    data.twitchPeakViewers = data.twitchViewers;
                 }
             }
-            return twitchData;
+            return data;
         }
 
-        function updateTwitchData(twitchData) {
-            var channelName = twitchData.twitchUsername;
-            var game = setTwitchGame(twitchData.twitchUsername, twitchData.twitchGame).game;
-            var status = setTwitchStatus(twitchData.twitchUsername, twitchData.twitchStatus).status;
-            twitchData.twitchGame = game;
-            twitchData.twitchStatus = status;
-            return twitchData;
-        };
+        function updateTwitchData(data) {
+            var channelName = data.twitchUsername;
+            var game = setTwitchGame(data.twitchUsername, data.twitchGame).game;
+            var status = setTwitchStatus(data.twitchUsername, data.twitchStatus).status;
+            data.twitchGame = game;
+            data.twitchStatus = status;
+            return data;
+        }
 
-        function initializeTwitchData(twitchData) {
-            var requestUrl = config.twitchApiRoot + '/channels/' + twitchData.twitchUsername;
+        function initializeTwitchData(data) {
+            var requestUrl = config.twitchApiRoot + '/channels/' + data.twitchUsername;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open('GET', requestUrl, false);
             xmlhttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v2+json');
             xmlhttp.setRequestHeader('Client-Id', config.twitchClientId);
             xmlhttp.setRequestHeader('Authorization', 'OAuth ' + config.twitchAccessToken);
             xmlhttp.send();
-            console.log('Requesting channel data for ' + twitchData.twitchUsername);
+            console.log('Requesting channel data for ' + data.twitchUsername);
             var twitchResponse = JSON.parse(xmlhttp.responseText);
-            twitchData.twitchGame = twitchResponse.game;
-            twitchData.twitchStatus = twitchResponse.status;
-            return twitchData;
+            data.twitchGame = twitchResponse.game;
+            data.twitchStatus = twitchResponse.status;
+            return data;
         }
 
         function setTwitchGame(channel, gameName) {
             var queryData = {
-                "channel": {
-                    "game": gameName
+                'channel': {
+                    'game': gameName
                 }
             };
             var stringQuery = JSON.stringify(queryData);
@@ -132,8 +131,8 @@ module.exports = function(io) {
 
         function setTwitchStatus(channel, status) {
             var queryData = {
-                "channel": {
-                    "status": status
+                'channel': {
+                    'status': status
                 }
             };
             var stringQuery = JSON.stringify(queryData);
@@ -151,4 +150,4 @@ module.exports = function(io) {
         }
     });
 
-}
+};

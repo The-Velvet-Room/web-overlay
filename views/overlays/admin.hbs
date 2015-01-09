@@ -116,10 +116,10 @@
 	});
 
 	socket.on('update overlay', function(data) {
-		document.getElementById('lplayer').value = data.lplayer || "";
-		document.getElementById('rplayer').value = data.rplayer || "";
-		document.getElementById('title').value = data.title || "";
-		document.getElementById('commentators').value = data.commentators || "";
+		document.getElementById('lplayer').value = data.lplayer || '';
+		document.getElementById('rplayer').value = data.rplayer || '';
+		document.getElementById('title').value = data.title || '';
+		document.getElementById('commentators').value = data.commentators || '';
 		document.getElementById('lscore').value = data.lscore || 0;
 		document.getElementById('rscore').value = data.rscore || 0;
 	});
@@ -127,9 +127,9 @@
 	var twitchSocket = io('/twitch');
 
 	twitchSocket.on('update twitch', function(data){
-		document.getElementById('twitchUsername').value = data.twitchUsername || "";
-		document.getElementById('twitchStatus').value = data.twitchStatus || "";
-		document.getElementById('twitchGame').value = data.twitchGame || "";
+		document.getElementById('twitchUsername').value = data.twitchUsername || '';
+		document.getElementById('twitchStatus').value = data.twitchStatus || '';
+		document.getElementById('twitchGame').value = data.twitchGame || '';
 
 		animateTwitchData(data);
 	});
@@ -137,7 +137,7 @@
 	twitchSocket.on('update twitch readonly data', function(data) {
 		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
 		document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
-		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline',
+		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
 		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
 
 		animateTwitchData(data);
@@ -157,7 +157,7 @@
 	var challongeMatches = [];
 
 	challongeSocket.on('update challonge', function(data){
-		document.getElementById('challongeUrl').value = data.challongeUrl || "";
+		document.getElementById('challongeUrl').value = data.challongeUrl || '';
 
 		if(data.upcomingMatches && data.matchesChanged) {
 			challongeMatches = data.upcomingMatches;
@@ -208,7 +208,7 @@
 		var data = {
 			'twitchUsername': document.getElementById('twitchUsername').value,
 			'twitchStatus': document.getElementById('twitchStatus').value,
-			'twitchGame': document.getElementById('twitchGame').value,
+			'twitchGame': document.getElementById('twitchGame').value
 		};
 		twitchSocket.emit('update twitch', data);
 		toastNotify();
@@ -216,7 +216,7 @@
 
 	function sendChallongeUpdate() {
 		var data = {
-			'challongeUrl': document.getElementById('challongeUrl').value,
+			'challongeUrl': document.getElementById('challongeUrl').value
 		};
 		challongeSocket.emit('update challonge', data);
 		toastNotify();
@@ -241,7 +241,7 @@
 			var option = document.createElement('option');
 			var playerOne = data.players[match.match.player1_id];
 			var playerTwo = data.players[match.match.player2_id];
-			option.text = match.match.identifier+': '+playerOne+' vs. '+playerTwo;
+			option.text = match.match.identifier + ': ' + playerOne + ' vs. ' + playerTwo;
 			option.value = match.match.identifier;
 			selectList.appendChild(option);
 		});
@@ -264,9 +264,9 @@
 	function getMatchForIdentifier(identifier) {
 		//Sublime Text autocompleted a backwards loop because they are fast
 		for (var i = challongeMatches.length - 1; i >= 0; i--) {
-			if (challongeMatches[i].match.identifier == identifier)
+			if (challongeMatches[i].match.identifier === identifier)
 				return challongeMatches[i];
-		};
+		}
 
 		return null;
 	}
@@ -283,7 +283,7 @@
 		if (data.challongeUrl && bracket == null) {
 			var embedded = document.createElement('iframe');
 			embedded.id = 'challongeBracket';
-			embedded.src = data.challongeUrl+'/module';
+			embedded.src = data.challongeUrl + '/module';
 			embedded.width = '100%';
 			embedded.height = '500';
 			embedded.frameboarder = '0';
@@ -294,14 +294,12 @@
 
 	function toggleNightMode() {
 		var body = document.body;
-		var style = window.getComputedStyle(body);
-		var color = style.getPropertyValue('background');
-		if(body.style.background == 'black') {
+		if (body.style.background === 'black') {
 			body.style.color = 'black';
 			body.style.background = 'white';
 			return;
 		}
-		
+
 		body.style.color = 'white';
 		body.style.background = 'black';
 	}
