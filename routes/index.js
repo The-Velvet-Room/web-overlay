@@ -40,6 +40,14 @@ router.get('/overlays/umsk/game4by3', function(req, res) {
   res.render('overlays/umsk/game4by3', { title: 'UMSK Overlay', layout: false });
 });
 
+router.get('/overlays/umsk/all16by9', function(req, res) {
+  res.render('overlays/umsk/all16by9', { title: 'UMSK Overlay', layout: false });
+});
+
+router.get('/overlays/umsk/all4by3', function(req, res) {
+  res.render('overlays/umsk/all4by3', { title: 'UMSK Overlay', layout: false });
+});
+
 /* GET commentators. */
 router.get('/overlays/commentators', function(req, res) {
   res.render('overlays/commentators', { title: 'Overlay', layout: false });

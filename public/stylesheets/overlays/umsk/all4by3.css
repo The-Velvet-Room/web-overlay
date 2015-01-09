@@ -1,0 +1,63 @@
+body {
+	margin: 0px;
+}
+
+a {
+	color: #00B7FF;
+}
+
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(http://fc00.deviantart.net/fs71/f/2015/008/8/2/umsk3_all_4by3_by_t0asterb0t-d8d5vun.png);
+	position: relative;
+}
+
+.playertext {
+	position: absolute;
+	color: white;
+	font-size: 42px;
+	font-family: Arial, sans-serif;
+	overflow: hidden;
+	overflow-wrap: break-word;
+}
+
+#lplayer {
+	top: 1031px;
+	left: 133px;
+	height: 49px;
+	width: 429px;
+	text-align: center;
+}
+
+#lscore {
+	top: 1031px;
+	height: 49px;
+	left: 83px;
+	width: 50px;
+	text-align: center;
+}
+
+#rplayer {
+	top: 1031px;
+	height: 49px;
+	left: 875px;
+	width: 429px;
+	text-align: center;
+}
+
+#rscore {
+	top: 1031px;
+	height: 49px;
+	left: 1304px;
+	width: 50px;
+	text-align: center;
+}
+
+#title {
+	top: 0px;
+	width: 954px;
+	left: 243px;
+	height: 49px;
+	text-align: center;
+}
