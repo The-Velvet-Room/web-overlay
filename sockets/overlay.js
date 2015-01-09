@@ -17,9 +17,9 @@ module.exports = function (io) {
 
     socket.on('update overlay', function(msg) {
       data = msg;
-    	overlay.emit('update overlay', data);
-    	console.log('update overlay: ' + JSON.stringify(data));
-  	});
+      overlay.emit('update overlay', data);
+      console.log('update overlay: ' + JSON.stringify(data));
+    });
   });
 
-}
+};
