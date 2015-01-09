@@ -2,12 +2,38 @@
 	<link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
 </head>
 
-<h3 id="title"></h3>
-<span id="lplayer"><img id="leftCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif"> </span>
-<span>[<span id="lscore"></span>]</span>
- vs 
-<span id="rplayer"><img id="rightCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif"></span>
-<span>[<span id="rscore"></span>]</span>
+<h1 id="title"></h1>
+
+<table border="2" style="text-align: center;">
+	<tr>
+		<td>
+			<h1 id="lplayer"></h1>
+		</td>
+		<th>vs.</th>
+		<td>
+			<h1 id="rplayer"></h1>
+		</td>
+	</tr>
+
+	<tr>
+		<td><img id="leftCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif"> </td>
+		<th>-</th>
+		<td><img id="rightCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif"></td>
+	</tr>
+
+	<tr>
+		<td>
+			<h3><span id="lscore"></span></h3>
+		</td>
+		<th>
+			-
+		</th>
+		<td>
+			<h3><span id="rscore"></span></h3>
+		</td>
+	</tr>
+</table>
+
 <div style="margin-top: 20px"><span>Commentated by: </span><span id="commentators"></span></div>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -24,8 +50,6 @@
 		document.getElementById('lscore').innerText = data.lscore || 0;
 		document.getElementById('rscore').innerText = data.rscore || 0;
 		document.getElementById('commentators').innerText = data.commentators || '';
-		document.getElementById('lplayer').appendChild(leftCharIcon);
-        document.getElementById('rplayer').appendChild(rightCharIcon);
 
 		if(data.lCharacter) {
           document.getElementById('leftCharacter').className = data.lCharacter;
