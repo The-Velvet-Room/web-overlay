@@ -43,6 +43,16 @@
 				<button type="button" onclick="plusOneRight()">+1</button>
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<label>Left Character:</label>
+				<p id="charListLeftPlaceholder"></p>
+			</td>
+			<td>
+				<label>Right Character:</label>
+				<p id="charListRightPlaceholder"></p>
+			</td>
+		</tr>
 	</table>
 	<p>
 	<button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
@@ -121,6 +131,8 @@
 	socket.on('connect', function() {
 		socket.emit('request overlay');
 		//socket.emit('join', { room: 'overlay' });
+		createCharacterList('Left');
+		createCharacterList('Right');
 	});
 
 	socket.on('update overlay', function(data) {
@@ -130,6 +142,8 @@
 		document.getElementById('commentators').value = data.commentators || "";
 		document.getElementById('lscore').value = data.lscore || 0;
 		document.getElementById('rscore').value = data.rscore || 0;
+		window.characterLeft = data.lCharacter || null;
+		window.characterRight = data.rCharacter || null;
 	});
 
 	var twitchSocket = io('/twitch');
@@ -206,7 +220,9 @@
 			'title': document.getElementById('title').value,
 			'lscore': document.getElementById('lscore').value,
 			'rscore': document.getElementById('rscore').value,
-			'commentators': document.getElementById('commentators').value
+			'commentators': document.getElementById('commentators').value,
+			'lCharacter': window.characterLeft || null,
+			'rCharacter': window.characterRight || null
 		};
 		socket.emit('update overlay', data);
 		toastNotify();
@@ -228,6 +244,40 @@
 		};
 		challongeSocket.emit('update challonge', data);
 		toastNotify();
+	}
+
+	//array of character names
+	var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
+	'diddy-kong','donkey-kong','dr-mario','duck-hunt-dog','falco','fox','ganondorf',
+	'mr-game-and-watch','greninja','ice-climbers','ike','ivysaur','jigglypuff','kirby','link',
+	'little-mac','lucario', 'lucas','lucina','luigi','mario','marth','megaman','metaknight',
+	'mewtwo','mii','ness','olimar','pacman','palutena','peach','pichu','pikachu','pit','rob',
+	'robin','rosalina','roy','samus','sheik','shulk', 'snake','squirtle','sonic','toon-link',
+	'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus']
+
+	//Pass in either 'Left' or 'Right'
+	function createCharacterList(direction) {
+		var selectList = document.createElement('select');
+		selectList.id = 'charList'+direction;
+		document.getElementById('charList'+direction+'Placeholder').appendChild(selectList);
+
+		var defaultOption = document.createElement('option');
+		defaultOption.text = 'None';
+		defaultOption.value = null;
+		selectList.appendChild(defaultOption);
+
+		characters.forEach(function(character){
+			var option = document.createElement('option');
+			option.text = character;
+			option.value = character;
+			selectList.appendChild(option);
+		});
+
+		$('#charList'+direction).change(function(){
+			var selectedOption = $('#charList'+direction+' option:selected');
+			window['character'+direction] = selectedOption.val();
+			sendUpdate();
+		});
 	}
 
 	function createMatchList(data) {
