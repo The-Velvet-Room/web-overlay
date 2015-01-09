@@ -11,13 +11,13 @@
   	</div>
     <script>
 		var socket = io();
-		
+
 		socket.on('connect', function() {
 			socket.emit('request overlay');
 		});
-		
+
 		socket.on('update overlay', function(data) {
-			document.getElementById('commentators').innerText = data.commentators || "";
+			document.getElementById('commentators').innerText = data.commentators || '';
 		});
     </script>
   </body>

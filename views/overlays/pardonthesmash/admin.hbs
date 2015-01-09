@@ -86,12 +86,7 @@
 		}
 	}
 
-	function startTimer() {
-		var minutes = document.getElementById('minutes').valueAsNumber || 0;
-		var seconds = document.getElementById('seconds').valueAsNumber || 0;
-		
-		sendTimerUpdate(minutes, seconds);
-	}
+
 
 	function sendTimerUpdate(minutes, seconds) {
 		var date = new Date();
@@ -103,13 +98,20 @@
 		date.setSeconds(date.getSeconds() + seconds + 1);
 
 		var data = {
-			'endTime': date.toISOString(),
+			'endTime': date.toISOString()
 		};
 		socket.emit('start timer', data);
 		// TODO: figure out how to make this an acknowledgment callback
 		var info = $('#timer-info');
 		info.css({ 'opacity': 1 });
 		info.animate({ 'opacity': 0 }, 1200);
+	}
+
+	function startTimer() {
+		var minutes = document.getElementById('minutes').valueAsNumber || 0;
+		var seconds = document.getElementById('seconds').valueAsNumber || 0;
+
+		sendTimerUpdate(minutes, seconds);
 	}
 
 	function resetTimer() {
@@ -144,8 +146,8 @@
 		var child = tbody.children[0];
 		var newRow = child.cloneNode(true);
 		for (var i = 0; i < newRow.children.length; i++) {
-			if (newRow.children[i].nodeName === "INPUT") {
-				newRow.children[i].value = "";
+			if (newRow.children[i].nodeName === 'INPUT') {
+				newRow.children[i].value = '';
 			}
 		}
 		tbody.appendChild(newRow);
@@ -154,7 +156,7 @@
 	function addExistingTopicRows(data) {
 		var tbody = document.getElementById('topic-table-body');
 		var child = tbody.children[0];
-		tbody.innerHTML = "";
+		tbody.innerHTML = '';
 
 		for (var i = 0; i < data.length; i++) {
 			var newRow = child.cloneNode(true);

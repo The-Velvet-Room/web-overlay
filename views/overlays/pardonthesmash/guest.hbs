@@ -38,7 +38,7 @@
     var endTime;
     var timerTimeout;
     var topics;
-    
+
     socket.on('start timer', function(data) {
       endTime = data.endTime;
       clearTimer();
@@ -68,14 +68,14 @@
       topics = data;
       var container = document.getElementById('topic-list');
 
-      var mainbarText; 
+      var mainbarText;
       var $mainbar = $('#mainbar-text');
 
       var template = container.children[0];
       template.classList.remove('active');
       template.classList.remove('old');
 
-      container.innerHTML = "";
+      container.innerHTML = '';
       for (var i = 0; i < topics.length; i++) {
         var newTopic = template.cloneNode(true);
         var topicData = topics[i];
