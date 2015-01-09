@@ -25,6 +25,28 @@
         document.getElementById('rplayer').innerText = data.rplayer || "";
         document.getElementById('lscore').innerText = data.lscore || "";
         document.getElementById('rscore').innerText = data.rscore || "";
+
+        if(data.lCharacter) {
+          var leftIcon = document.createElement('img');
+          leftIcon.id = 'leftCharacter';
+          leftIcon.className = data.lCharacter;
+          leftIcon.style.zoom = '200%';
+          //src is required to remove the dumb border
+          leftIcon.src = 'http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif';
+          document.getElementById('lplayer').appendChild(leftIcon);
+        }
+
+        if(data.rCharacter) {
+          var rightIcon = document.createElement('img');
+          rightIcon.id = 'rightCharacter';
+          rightIcon.className = data.rCharacter;
+          rightIcon.style.zoom = '200%';
+          //src is required to remove the dumb border
+          rightIcon.src = 'http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif';
+          document.getElementById('rplayer').appendChild(rightIcon);
+        }
+
+        console.log(data);
       });
 
     });
