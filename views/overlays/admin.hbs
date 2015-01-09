@@ -186,8 +186,8 @@
 		document.getElementById('commentators').value = data.commentators || "";
 		document.getElementById('lscore').value = data.lscore || 0;
 		document.getElementById('rscore').value = data.rscore || 0;
-		window.characterLeft = data.lCharacter || null;
-		window.characterRight = data.rCharacter || null;
+		characterLeft = data.lCharacter || null;
+		characterRight = data.rCharacter || null;
 	});
 
 	var twitchSocket = io('/twitch');
