@@ -127,12 +127,56 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+	var characterLeft = null;
+	var characterRight = null;
+
+	//array of character names
+	var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
+	'diddy-kong','donkey-kong','dr-mario','duck-hunt-dog','falco','fox','ganondorf',
+	'mr-game-and-watch','greninja','ice-climbers','ike','ivysaur','jigglypuff','kirby','link',
+	'little-mac','lucario', 'lucas','lucina','luigi','mario','marth','megaman','metaknight',
+	'mewtwo','mii','ness','olimar','pacman','palutena','peach','pichu','pikachu','pit','rob',
+	'robin','rosalina','roy','samus','sheik','shulk', 'snake','squirtle','sonic','toon-link',
+	'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus']
+
+	//Pass in either 'Left' or 'Right'
+	function createCharacterList(direction) {
+		var selectList = document.createElement('select');
+		selectList.id = 'charList'+direction;
+		document.getElementById('charList'+direction+'Placeholder').appendChild(selectList);
+
+		var defaultOption = document.createElement('option');
+		defaultOption.text = 'None';
+		defaultOption.value = null;
+		selectList.appendChild(defaultOption);
+
+		characters.forEach(function(character){
+			var option = document.createElement('option');
+			option.text = character;
+			option.value = character;
+			selectList.appendChild(option);
+		});
+
+		$('#charList'+direction).change(function(){
+			var selectedOption = $('#charList'+direction+' option:selected');
+			
+			if(direction == 'Left') {
+				characterLeft = selectedOption.val();
+			}
+			else {
+				characterRight = selectedOption.val();
+			}
+			sendUpdate();
+		});
+	}
+
+	createCharacterList('Left');
+	createCharacterList('Right');
+
 	var socket = io('/overlay');
 	socket.on('connect', function() {
 		socket.emit('request overlay');
 		//socket.emit('join', { room: 'overlay' });
-		createCharacterList('Left');
-		createCharacterList('Right');
 	});
 
 	socket.on('update overlay', function(data) {
@@ -244,40 +288,6 @@
 		};
 		challongeSocket.emit('update challonge', data);
 		toastNotify();
-	}
-
-	//array of character names
-	var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
-	'diddy-kong','donkey-kong','dr-mario','duck-hunt-dog','falco','fox','ganondorf',
-	'mr-game-and-watch','greninja','ice-climbers','ike','ivysaur','jigglypuff','kirby','link',
-	'little-mac','lucario', 'lucas','lucina','luigi','mario','marth','megaman','metaknight',
-	'mewtwo','mii','ness','olimar','pacman','palutena','peach','pichu','pikachu','pit','rob',
-	'robin','rosalina','roy','samus','sheik','shulk', 'snake','squirtle','sonic','toon-link',
-	'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus']
-
-	//Pass in either 'Left' or 'Right'
-	function createCharacterList(direction) {
-		var selectList = document.createElement('select');
-		selectList.id = 'charList'+direction;
-		document.getElementById('charList'+direction+'Placeholder').appendChild(selectList);
-
-		var defaultOption = document.createElement('option');
-		defaultOption.text = 'None';
-		defaultOption.value = null;
-		selectList.appendChild(defaultOption);
-
-		characters.forEach(function(character){
-			var option = document.createElement('option');
-			option.text = character;
-			option.value = character;
-			selectList.appendChild(option);
-		});
-
-		$('#charList'+direction).change(function(){
-			var selectedOption = $('#charList'+direction+' option:selected');
-			window['character'+direction] = selectedOption.val();
-			sendUpdate();
-		});
 	}
 
 	function createMatchList(data) {
