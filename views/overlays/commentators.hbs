@@ -10,11 +10,7 @@
   		<div id="commentators" class="playertext"></div>
   	</div>
     <script>
-		var socket = io();
-
-		socket.on('connect', function() {
-			socket.emit('request overlay');
-		});
+		var socket = io('/overlay');
 
 		socket.on('update overlay', function(data) {
 			document.getElementById('commentators').innerText = data.commentators || '';
