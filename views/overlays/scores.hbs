@@ -1,19 +1,44 @@
-<div id="title"></div>
-<span id="lplayer"></span>
+<head>
+	<link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
+</head>
+
+<h3 id="title"></h3>
+<span id="lplayer"><img id="leftCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif"> </span>
 <span>[<span id="lscore"></span>]</span>
  vs 
-<span id="rplayer"></span>
+<span id="rplayer"><img id="rightCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif"></span>
 <span>[<span id="rscore"></span>]</span>
+<div style="margin-top: 20px"><span>Commentated by: </span><span id="commentators"></span></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 	var socket = io('/overlay');
 
 	socket.on('update overlay', function(data) {
+		var leftCharIcon = document.getElementById('leftCharacter');
+        var rightCharIcon = document.getElementById('rightCharacter');
+        
 		document.getElementById('lplayer').innerText = data.lplayer || '';
 		document.getElementById('rplayer').innerText = data.rplayer || '';
 		document.getElementById('title').innerText = data.title || '';
 		document.getElementById('lscore').innerText = data.lscore || 0;
 		document.getElementById('rscore').innerText = data.rscore || 0;
+		document.getElementById('commentators').innerText = data.commentators || '';
+		document.getElementById('lplayer').appendChild(leftCharIcon);
+        document.getElementById('rplayer').appendChild(rightCharIcon);
+
+		if(data.lCharacter) {
+          document.getElementById('leftCharacter').className = data.lCharacter;
+        }
+        else {
+          document.getElementById('leftCharacter').className = null;
+        }
+
+        if(data.rCharacter) {
+          document.getElementById('rightCharacter').className = data.rCharacter;
+        }
+        else {
+          document.getElementById('rightCharacter').className = null;
+        }
 	});
 </script>

@@ -2,40 +2,58 @@
 <div id="info" style="display:none;">Overlay Updated!</div>
 <form action="javascript:sendUpdate()">
 	<p>
-		<label for="lplayer">
-			Left player:
-			<input id="lplayer"></input>
-		</label>
-		<label for="lscore">
-			Left score:
-			<input type="number" id="lscore"></input>
-		</label>
-		<button type="button" onclick="plusOneLeft()">+1</button>
-	</p>
-	<p>
-		<label for="rplayer">
-			Right player:
-			<input id="rplayer"></input>
-		</label>
-		<label for="rscore">
-			Right score:
-			<input type="number" id="rscore"></input>
-		</label>
-		<button type="button" onclick="plusOneRight()">+1</button>
-	</p>
-	<p>
 		<label for="title">
 			Title
 			<input id="title"></input>
 		</label>
-	</p>
-	<p>
+
 		<label for="commentators">
 			Commentators
 			<input id="commentators"></input>
 		</label>
 	</p>
-	
+	<table border="2">
+		<tr>
+			<td>
+			<label for="lplayer">
+				Left player:
+				<input id="lplayer"></input>
+			</label>
+			</td>
+			<td>
+				<label for="rplayer">
+					Right player:
+					<input id="rplayer"></input>
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="lscore">
+					Left score:
+					<input type="number" id="lscore"></input>
+				</label>
+				<button type="button" onclick="plusOneLeft()">+1</button>
+			</td>
+			<td>
+				<label for="rscore">
+					Right score:
+					<input type="number" id="rscore"></input>
+				</label>
+				<button type="button" onclick="plusOneRight()">+1</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>Left Character:</label>
+				<p id="charListLeftPlaceholder"></p>
+			</td>
+			<td>
+				<label>Right Character:</label>
+				<p id="charListRightPlaceholder"></p>
+			</td>
+		</tr>
+	</table>
 	<p>
 	<button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
 	<button type="button" onclick="swapNames()">Swap Names</button>
@@ -109,6 +127,52 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+	var characterLeft = null;
+	var characterRight = null;
+
+	//array of character names
+	var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
+	'diddy-kong','donkey-kong','dr-mario','duck-hunt-dog','falco','fox','ganondorf',
+	'mr-game-and-watch','greninja','ice-climbers','ike','ivysaur','jigglypuff','kirby','link',
+	'little-mac','lucario', 'lucas','lucina','luigi','mario','marth','megaman','metaknight',
+	'mewtwo','mii','ness','olimar','pacman','palutena','peach','pichu','pikachu','pit','rob',
+	'robin','rosalina','roy','samus','sheik','shulk', 'snake','squirtle','sonic','toon-link',
+	'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus']
+
+	//Pass in either 'Left' or 'Right'
+	function createCharacterList(direction) {
+		var selectList = document.createElement('select');
+		selectList.id = 'charList'+direction;
+		document.getElementById('charList'+direction+'Placeholder').appendChild(selectList);
+
+		var defaultOption = document.createElement('option');
+		defaultOption.text = 'None';
+		defaultOption.value = null;
+		selectList.appendChild(defaultOption);
+
+		characters.forEach(function(character){
+			var option = document.createElement('option');
+			option.text = character;
+			option.value = character;
+			selectList.appendChild(option);
+		});
+
+		$('#charList'+direction).change(function(){
+			var selectedOption = $('#charList'+direction+' option:selected');
+			
+			if(direction == 'Left') {
+				characterLeft = selectedOption.val();
+			}
+			else {
+				characterRight = selectedOption.val();
+			}
+			sendUpdate();
+		});
+	}
+
+	createCharacterList('Left');
+	createCharacterList('Right');
+
 	var socket = io('/overlay');
 	socket.on('connect', function() {
 		socket.emit('request overlay');
@@ -122,6 +186,8 @@
 		document.getElementById('commentators').value = data.commentators || '';
 		document.getElementById('lscore').value = data.lscore || 0;
 		document.getElementById('rscore').value = data.rscore || 0;
+		characterLeft = data.lCharacter || null;
+		characterRight = data.rCharacter || null;
 	});
 
 	var twitchSocket = io('/twitch');
@@ -198,7 +264,9 @@
 			'title': document.getElementById('title').value,
 			'lscore': document.getElementById('lscore').value,
 			'rscore': document.getElementById('rscore').value,
-			'commentators': document.getElementById('commentators').value
+			'commentators': document.getElementById('commentators').value,
+			'lCharacter': window.characterLeft || null,
+			'rCharacter': window.characterRight || null
 		};
 		socket.emit('update overlay', data);
 		toastNotify();
