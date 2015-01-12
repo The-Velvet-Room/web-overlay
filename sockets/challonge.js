@@ -26,7 +26,8 @@ module.exports = function(io) {
         socket.on('disconnect', function() {
             console.log('Challonge disconnected');
             connectedSockets--;
-            if (connectedSockets === 0) {
+            if (connectedSockets <= 0) {
+                connectedSockets = 0;
                 clearTimeout(timeout);
             }
         });
