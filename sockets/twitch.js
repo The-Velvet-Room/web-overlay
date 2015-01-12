@@ -13,7 +13,7 @@ module.exports = function(io) {
 
     twitchIO.on('connection', function(socket) {
         console.log('Twitch connected');
-        socket.emit('update twitch', twitchData);
+        socket.emit('send twitch data', twitchData);
         connectedSockets++;
 
         socket.on('disconnect', function() {
@@ -31,87 +31,107 @@ module.exports = function(io) {
                 }
 
                 twitchPollCache = twitchData;
-                getTwitchPollableData(twitchData);
-                setTimeout(pollTwitch, twitchPollFrequency);
+                getTwitchPollableData();
             }
-
-            twitchIO.emit('update twitch', twitchData);
-            console.log('update twitch: ' + JSON.stringify(twitchData));
         });
 
         function pollTwitch() {
-            getTwitchPollableData(twitchPollCache);
+            getTwitchPollableData();
             if (connectedSockets > 0 && twitchData.twitchUsername)
               setTimeout(pollTwitch, twitchPollFrequency);
         }
 
-        function getTwitchPollableData(data) {
+        function getTwitchPollableData() {
             console.log('Polling Twitch for updates...');
-            twitchData = getTwitchFollowerData(data);
-            twitchData = getTwitchViewerData(data);
-            console.log('New Twitch Pollable Data: ' + JSON.stringify(twitchData));
-            socket.emit('update twitch readonly data', twitchData);
+            getTwitchFollowerData();
+            getTwitchViewerData();
         }
 
-        function getTwitchFollowerData(data) {
+        function cacheAndSendFollowers(followers, lastFollower) {
+            twitchData.twitchFollowers = followers;
+            twitchData.twitchLastFollower = lastFollower;
+            twitchIO.emit('update twitch followers', {
+                'followers': followers,
+                'lastFollower': lastFollower
+            });
+        }
+
+        function getTwitchFollowerData() {
             var headers = {
                 'Accept': 'application/vnd.twitchtv.v2+json',
                 'Client-Id': config.twitchClientId
             };
             var options = {
-                url: config.twitchApiRoot + '/channels/' + data.twitchUsername + '/follows/',
+                url: config.twitchApiRoot + '/channels/' + twitchData.twitchUsername + '/follows/',
                 method: 'GET',
                 headers: headers
             };
 
-            console.log('Requesting follower data for ' + data.twitchUsername);
+            console.log('Requesting follower data for ' + twitchData.twitchUsername);
 
             request(options, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     var twitchResponse = JSON.parse(body);
-                    data.twitchFollowers = twitchResponse._total;
-                    data.twitchLastFollower = twitchResponse.follows[0].user.name;
+                    var followers = twitchResponse._total;
+                    var lastFollower = twitchResponse.follows[0].user.name;
+                    cacheAndSendFollowers(followers, lastFollower);
                 }
             });
-
-            return data;
         }
 
-        function getTwitchViewerData(data) {
+        function cacheAndSendViewers(viewers) {
+            twitchData.twitchViewers = viewers;
+
+            if (viewers) {
+                if (!twitchData.twitchPeakViewers || twitchData.twitchViewers > twitchData.twitchPeakViewers) {
+                    twitchData.twitchPeakViewers = twitchData.twitchViewers;
+                }
+            }
+
+            twitchIO.emit('update twitch viewers', {
+                'viewers': viewers,
+                'peakViewers': twitchData.twitchPeakViewers
+            });
+        }
+
+        function getTwitchViewerData() {
             var headers = {
                 'Accept': 'application/vnd.twitchtv.v2+json',
                 'Client-Id': config.twitchClientId
             };
             var options = {
-                url: config.twitchApiRoot + '/streams/' + data.twitchUsername,
+                url: config.twitchApiRoot + '/streams/' + twitchData.twitchUsername,
                 method: 'GET',
                 headers: headers
             };
 
-            console.log('Requesting viewer data for ' + data.twitchUsername);
+            console.log('Requesting viewer data for ' + twitchData.twitchUsername);
 
             request(options, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     var twitchResponse = JSON.parse(body);
                     var stream = twitchResponse.stream;
-                    data.twitchViewers = stream ? stream.viewers : null;
-                    if (data.twitchViewers) {
-                        if (!data.twitchPeakViewers || data.twitchViewers > data.twitchPeakViewers) {
-                            data.twitchPeakViewers = data.twitchViewers;
-                        }
-                    }
+                    var viewers = stream ? stream.viewers : null;
+                    cacheAndSendViewers(viewers);
                 }
             });
-
-            return data;
         }
 
         function updateTwitchData(data) {
-            var game = setTwitchGame(data.twitchUsername, data.twitchGame).game;
-            var status = setTwitchStatus(data.twitchUsername, data.twitchStatus).status;
+            var game = setTwitchGame(data.twitchUsername, data.twitchGame);
+            var status = setTwitchStatus(data.twitchUsername, data.twitchStatus);
             data.twitchGame = game;
             data.twitchStatus = status;
             return data;
+        }
+
+        function cacheAndSendChannelInfo(game, status) {
+            twitchData.twitchGame = game;
+            twitchData.twitchStatus = status;
+            twitchIO.emit('update twitch channel info', {
+                'game': game,
+                'status': status
+            });
         }
 
         function initializeTwitchData(data) {
@@ -131,8 +151,9 @@ module.exports = function(io) {
             request(options, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     var twitchResponse = JSON.parse(body);
-                    data.twitchGame = twitchResponse.game;
-                    data.twitchStatus = twitchResponse.status;
+                    var game = twitchResponse.game;
+                    var status = twitchResponse.status;
+                    cacheAndSendChannelInfo(game, status);
                 }
             });
 
@@ -163,9 +184,9 @@ module.exports = function(io) {
             };
 
 
-            request(options, function (error, response, body) {
+            request(options, function (error, response) {
                 if (!error && response.statusCode === 200) {
-                    console.log(body);
+                    console.log('Game updated');
                 }
             });
         }
@@ -194,9 +215,9 @@ module.exports = function(io) {
                 body: stringQuery
             };
 
-            request(options, function (error, response, body) {
+            request(options, function (error, response) {
                 if (!error && response.statusCode === 200) {
-                    console.log(body);
+                    console.log('Status updated');
                 }
             });
         }

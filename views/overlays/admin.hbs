@@ -159,7 +159,7 @@
 
 		$('#charList'+direction).change(function(){
 			var selectedOption = $('#charList'+direction+' option:selected');
-			
+
 			if(direction == 'Left') {
 				characterLeft = selectedOption.val();
 			}
@@ -169,6 +169,9 @@
 			sendUpdate();
 		});
 	}
+
+	// hide twitch data inputs on load
+	animateTwitchData(false);
 
 	createCharacterList('Left');
 	createCharacterList('Right');
@@ -192,29 +195,44 @@
 
 	var twitchSocket = io('/twitch');
 
-	twitchSocket.on('update twitch', function(data){
+	twitchSocket.on('send twitch data', function(data) {
 		document.getElementById('twitchUsername').value = data.twitchUsername || '';
 		document.getElementById('twitchStatus').value = data.twitchStatus || '';
 		document.getElementById('twitchGame').value = data.twitchGame || '';
-
-		animateTwitchData(data);
-	});
-
-	twitchSocket.on('update twitch readonly data', function(data) {
 		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
 		document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
 		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
 		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
-
-		animateTwitchData(data);
+		if (data.twitchUsername) {
+			animateTwitchData(true);
+		}
 	});
 
-	function animateTwitchData(data) {
-		if(data.twitchUsername) {
+	twitchSocket.on('update twitch followers', function(data) {
+		document.getElementById('twitchFollowers').value = data.followers || 0;
+		document.getElementById('twitchLastFollower').value = data.lastFollower || '';
+
+		animateTwitchData(true);
+	});
+
+	twitchSocket.on('update twitch viewers', function(data) {
+		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
+		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
+
+		animateTwitchData(true);
+	});
+
+	twitchSocket.on('update twitch channel info', function(data) {
+		document.getElementById('twitchStatus').value = data.status || '';
+		document.getElementById('twitchGame').value = data.game || '';
+
+		animateTwitchData(true);
+	});
+
+	function animateTwitchData(shouldShow) {
+		if (shouldShow) {
 			$('.requires-twitch').show(200);
-		}
-		else
-		{
+		} else {
 			$('.requires-twitch').hide(200);
 		}
 	}
