@@ -297,14 +297,14 @@
 	height: 20px;
 	background: url(http://i.imgur.com/UpasL5q.png) -960px 20px;
 }
-/*Characters not in Smash 4 as of Jan 8th, 
+/*Characters not in Smash 4 as of Jan 8th,
 Project M: Mewtwo, Ice Climbers, Roy, Wolf, Snake, Squirtle, Ivysaur, Lucas
 Melee Only: Pichu, Young Link*/
 
 .mewtwo {
 	width: 20px;
 	height: 20px;
-	background: url(http://i.imgur.com/UpasL5q.png) -800px 80px;
+	background: url(http://i.imgur.com/UpasL5q.png) -800px 40px;
 }
 
 .ice-climbers {
@@ -316,7 +316,7 @@ Melee Only: Pichu, Young Link*/
 .roy {
 	width: 20px;
 	height: 20px;
-	background: url(http://i.imgur.com/UpasL5q.png) -780px 80px;
+	background: url(http://i.imgur.com/UpasL5q.png) -780px 40px;
 }
 
 .wolf {
@@ -328,7 +328,7 @@ Melee Only: Pichu, Young Link*/
 .snake {
 	width: 20px;
 	height: 20px;
-	background: url(http://i.imgur.com/UpasL5q.png) -600px 80px;
+	background: url(http://i.imgur.com/UpasL5q.png) -620px 80px;
 }
 
 .squirtle {
@@ -352,7 +352,7 @@ Melee Only: Pichu, Young Link*/
 .pichu {
 	width: 20px;
 	height: 20px;
-	background: url(http://i.imgur.com/UpasL5q.png) -340px 20px;
+	background: url(http://i.imgur.com/UpasL5q.png) -340px 100px;
 }
 
 .young-link {
