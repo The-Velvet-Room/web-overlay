@@ -1,6 +1,4 @@
 var config = require('../config');
-//npm install xmlhttprequest if this fails
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 var request = require('request');
 module.exports = function(io) {
     var twitchData = {};
