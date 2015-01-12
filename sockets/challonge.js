@@ -62,7 +62,6 @@ module.exports = function(io) {
                 availableMatchesCache = challongeData.upcomingMatches;
                 challongeData.players = getPlayerDictionary();
                 console.log('Sending challonge update');
-                console.log(challongeData);
                 challongeIO.emit('update challonge', challongeData);
             }
         }
