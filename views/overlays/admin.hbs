@@ -71,29 +71,29 @@
 			<input id="twitchUsername"></input>
 		</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 		<label for="twitchStatus">
 			Status:
 			<input id="twitchStatus" style="width: 90%"></input>
 		</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 		<label for="twitchGame">
 			Playing:
 			<input id="twitchGame"></input>
 		</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 	<label for="twitchViewers">
 		Current Viewers:
 		<input id="twitchViewers" class="twitch-pollable"></input>
 	</label>
-	<label for="twitchPeakViewers">
+	<label for="twitchPeakViewers hide-by-default">
 		Peak Viewers:
 		<input id="twitchPeakViewers" class="twitch-pollable"></input>
 	</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 	<label for="twitchFollowers">
 		Followers:
 		<input id="twitchFollowers" class="twitch-pollable"></input>
@@ -169,9 +169,6 @@
 			sendUpdate();
 		});
 	}
-
-	// hide twitch data inputs on load
-	animateTwitchData(false);
 
 	createCharacterList('Left');
 	createCharacterList('Right');

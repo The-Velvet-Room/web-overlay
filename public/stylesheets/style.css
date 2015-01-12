@@ -10,3 +10,7 @@ a {
 td {
 	padding: 10px;
 }
+
+.hide-by-default {
+	display: none;
+}
