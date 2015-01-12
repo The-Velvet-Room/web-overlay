@@ -174,10 +174,6 @@
 	createCharacterList('Right');
 
 	var socket = io('/overlay');
-	socket.on('connect', function() {
-		socket.emit('request overlay');
-		//socket.emit('join', { room: 'overlay' });
-	});
 
 	socket.on('update overlay', function(data) {
 		document.getElementById('lplayer').value = data.lplayer || '';
