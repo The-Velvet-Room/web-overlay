@@ -6,13 +6,13 @@ module.exports = function(io) {
     var twitchData = {};
     //In millis
     var twitchPollFrequency = 30000;
-    var twitchPollCache = {};
     var connectedSockets = 0;
+    var timeout = null;
 
     var twitchIO = io.of('/twitch');
 
     twitchIO.on('connection', function(socket) {
-        console.log('Twitch connected');
+        console.log('Connected to Twitch');
         socket.emit('send twitch data', twitchData);
         connectedSockets++;
 
@@ -30,15 +30,15 @@ module.exports = function(io) {
                     twitchData = updateTwitchData(twitchData);
                 }
 
-                twitchPollCache = twitchData;
-                getTwitchPollableData();
+                clearTimeout(timeout);
+                pollTwitch();
             }
         });
 
         function pollTwitch() {
             getTwitchPollableData();
             if (connectedSockets > 0 && twitchData.twitchUsername)
-              setTimeout(pollTwitch, twitchPollFrequency);
+              timeout = setTimeout(pollTwitch, twitchPollFrequency);
         }
 
         function getTwitchPollableData() {
@@ -197,7 +197,6 @@ module.exports = function(io) {
                     'status': status
                 }
             };
-
             var stringQuery = JSON.stringify(queryData);
             var contentLength = stringQuery.length;
 
