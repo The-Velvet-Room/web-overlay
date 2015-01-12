@@ -246,15 +246,19 @@
 
 	var challongeSocket = io('/challonge');
 	var challongeMatches = [];
+	var challongeUrl;
 
 	challongeSocket.on('update challonge', function(data){
-		document.getElementById('challongeUrl').value = data.challongeUrl || '';
+		if (data.challongeUrl && (data.challongeUrl !== challongeUrl || document.getElementById('challongeBracket') === null)) {
+			document.getElementById('challongeUrl').value = data.challongeUrl || '';
+			challongeUrl = data.challongeUrl;
+			embedChallongeBracket(challongeUrl);
+		}
 
 		if (data.upcomingMatches) {
 			challongeMatches = data.upcomingMatches;
 			createMatchList(data);
 		}
-		embedChallongeBracket(data);
 	});
 
 	function plusOneLeft() {
@@ -313,6 +317,7 @@
 	}
 
 	function sendChallongeUpdate() {
+		var url = document.getElementById('challongeUrl').value;
 		var data = {
 			'challongeUrl': document.getElementById('challongeUrl').value
 		};
@@ -376,18 +381,16 @@
 		info.fadeOut(1200);
 	}
 
-	function embedChallongeBracket(data) {
-		var bracket = document.getElementById('challongeBracket');
-		if (data.challongeUrl && bracket == null) {
-			var embedded = document.createElement('iframe');
-			embedded.id = 'challongeBracket';
-			embedded.src = data.challongeUrl + '/module';
-			embedded.width = '100%';
-			embedded.height = '500';
-			embedded.frameboarder = '0';
-			embedded.scrolling = 'auto';
-			document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
-		}
+	function embedChallongeBracket(url) {
+		$('#challongeEmbedPlaceholder').empty();
+		var embedded = document.createElement('iframe');
+		embedded.id = 'challongeBracket';
+		embedded.src = url + '/module';
+		embedded.width = '100%';
+		embedded.height = '500';
+		embedded.frameboarder = '0';
+		embedded.scrolling = 'auto';
+		document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
 	}
 
 	function toggleNightMode() {
