@@ -11,7 +11,9 @@ module.exports = function(io) {
     var twitchIO = io.of('/twitch');
 
     twitchIO.on('connection', function (socket) {
-        console.log('Connected to Twitch');
+        // Log the new connection
+        console.log('twitch user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
+
         socket.emit('send twitch data', twitchData);
         connectedSockets++;
 
@@ -19,7 +21,7 @@ module.exports = function(io) {
         pollTwitch();
 
         socket.on('disconnect', function () {
-            console.log('Twitch disconnected');
+            console.log('twitch user disconnected: ' + socket.handshake.address);
             connectedSockets--;
             if (connectedSockets <= 0) {
                 connectedSockets = 0;

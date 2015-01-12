@@ -16,7 +16,9 @@ module.exports = function(io) {
     var challongeIO = io.of('/challonge');
 
     challongeIO.on('connection', function(socket) {
-        console.log('Challonge connected');
+        // Log the new connection
+        console.log('challonge user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
+
         socket.emit('update challonge', challongeData);
         connectedSockets++;
 
@@ -24,7 +26,7 @@ module.exports = function(io) {
         pollChallonge();
 
         socket.on('disconnect', function() {
-            console.log('Challonge disconnected');
+            console.log('challonge user disconnected: ' + socket.handshake.address);
             connectedSockets--;
             if (connectedSockets <= 0) {
                 connectedSockets = 0;
