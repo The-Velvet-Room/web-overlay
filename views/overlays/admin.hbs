@@ -71,29 +71,29 @@
 			<input id="twitchUsername"></input>
 		</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 		<label for="twitchStatus">
 			Status:
 			<input id="twitchStatus" style="width: 90%"></input>
 		</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 		<label for="twitchGame">
 			Playing:
 			<input id="twitchGame"></input>
 		</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 	<label for="twitchViewers">
 		Current Viewers:
 		<input id="twitchViewers" class="twitch-pollable"></input>
 	</label>
-	<label for="twitchPeakViewers">
+	<label for="twitchPeakViewers hide-by-default">
 		Peak Viewers:
 		<input id="twitchPeakViewers" class="twitch-pollable"></input>
 	</label>
 	</p>
-	<p class="requires-twitch">
+	<p class="requires-twitch hide-by-default">
 	<label for="twitchFollowers">
 		Followers:
 		<input id="twitchFollowers" class="twitch-pollable"></input>
@@ -159,7 +159,7 @@
 
 		$('#charList'+direction).change(function(){
 			var selectedOption = $('#charList'+direction+' option:selected');
-			
+
 			if(direction == 'Left') {
 				characterLeft = selectedOption.val();
 			}
@@ -174,10 +174,6 @@
 	createCharacterList('Right');
 
 	var socket = io('/overlay');
-	socket.on('connect', function() {
-		socket.emit('request overlay');
-		//socket.emit('join', { room: 'overlay' });
-	});
 
 	socket.on('update overlay', function(data) {
 		document.getElementById('lplayer').value = data.lplayer || '';
@@ -191,45 +187,74 @@
 	});
 
 	var twitchSocket = io('/twitch');
+	var twitchGame = null;
+	var twitchStatus = null;
+	var twitchUsername = null;
 
-	twitchSocket.on('update twitch', function(data){
+	twitchSocket.on('send twitch data', function(data) {
+		twitchUsername = data.twitchUsername;
 		document.getElementById('twitchUsername').value = data.twitchUsername || '';
+		twitchStatus = data.twitchStatus;
 		document.getElementById('twitchStatus').value = data.twitchStatus || '';
+		twitchGame = data.twitchGame;
 		document.getElementById('twitchGame').value = data.twitchGame || '';
-
-		animateTwitchData(data);
-	});
-
-	twitchSocket.on('update twitch readonly data', function(data) {
 		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
 		document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
 		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
 		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
-
-		animateTwitchData(data);
+		if (data.twitchUsername) {
+			animateTwitchData(true);
+		}
 	});
 
-	function animateTwitchData(data) {
-		if(data.twitchUsername) {
+	twitchSocket.on('update twitch followers', function(data) {
+		document.getElementById('twitchFollowers').value = data.followers || 0;
+		document.getElementById('twitchLastFollower').value = data.lastFollower || '';
+
+		animateTwitchData(true);
+	});
+
+	twitchSocket.on('update twitch viewers', function(data) {
+		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
+		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
+
+		animateTwitchData(true);
+	});
+
+	twitchSocket.on('update twitch channel info', function(data) {
+		twitchStatus = data.status;
+		document.getElementById('twitchStatus').value = data.status || '';
+		twitchGame = data.twitchGame;
+		document.getElementById('twitchGame').value = data.game || '';
+		twitchUsername = data.twitchUsername;
+		document.getElementById('twitchUsername').value = data.username || '';
+
+		animateTwitchData(true);
+	});
+
+	function animateTwitchData(shouldShow) {
+		if (shouldShow) {
 			$('.requires-twitch').show(200);
-		}
-		else
-		{
+		} else {
 			$('.requires-twitch').hide(200);
 		}
 	}
 
 	var challongeSocket = io('/challonge');
 	var challongeMatches = [];
+	var challongeUrl;
 
 	challongeSocket.on('update challonge', function(data){
-		document.getElementById('challongeUrl').value = data.challongeUrl || '';
+		if (data.challongeUrl && (data.challongeUrl !== challongeUrl || document.getElementById('challongeBracket') === null)) {
+			document.getElementById('challongeUrl').value = data.challongeUrl || '';
+			challongeUrl = data.challongeUrl;
+			embedChallongeBracket(challongeUrl);
+		}
 
-		if(data.upcomingMatches && data.matchesChanged) {
+		if (data.upcomingMatches) {
 			challongeMatches = data.upcomingMatches;
 			createMatchList(data);
 		}
-		embedChallongeBracket(data);
 	});
 
 	function plusOneLeft() {
@@ -273,16 +298,22 @@
 	}
 
 	function sendTwitchUpdate() {
-		var data = {
-			'twitchUsername': document.getElementById('twitchUsername').value,
-			'twitchStatus': document.getElementById('twitchStatus').value,
-			'twitchGame': document.getElementById('twitchGame').value
-		};
-		twitchSocket.emit('update twitch', data);
+		var user = document.getElementById('twitchUsername').value;
+		if (twitchUsername !== user) {
+			twitchSocket.emit('update twitch user', user);
+		} else {
+			var data = {
+				'status': document.getElementById('twitchStatus').value,
+				'game': document.getElementById('twitchGame').value
+			};
+			twitchSocket.emit('update twitch channel info', data);
+		}
+
 		toastNotify();
 	}
 
 	function sendChallongeUpdate() {
+		var url = document.getElementById('challongeUrl').value;
 		var data = {
 			'challongeUrl': document.getElementById('challongeUrl').value
 		};
@@ -346,18 +377,16 @@
 		info.fadeOut(1200);
 	}
 
-	function embedChallongeBracket(data) {
-		var bracket = document.getElementById('challongeBracket');
-		if (data.challongeUrl && bracket == null) {
-			var embedded = document.createElement('iframe');
-			embedded.id = 'challongeBracket';
-			embedded.src = data.challongeUrl + '/module';
-			embedded.width = '100%';
-			embedded.height = '500';
-			embedded.frameboarder = '0';
-			embedded.scrolling = 'auto';
-			document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
-		}
+	function embedChallongeBracket(url) {
+		$('#challongeEmbedPlaceholder').empty();
+		var embedded = document.createElement('iframe');
+		embedded.id = 'challongeBracket';
+		embedded.src = url + '/module';
+		embedded.width = '100%';
+		embedded.height = '500';
+		embedded.frameboarder = '0';
+		embedded.scrolling = 'auto';
+		document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
 	}
 
 	function toggleNightMode() {
