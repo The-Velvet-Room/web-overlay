@@ -20,9 +20,15 @@ module.exports = function(io) {
         socket.emit('update challonge', challongeData);
         connectedSockets++;
 
+        // if we go from 0 to 1 socket, start polling again
+        pollChallonge();
+
         socket.on('disconnect', function() {
             console.log('Challonge disconnected');
             connectedSockets--;
+            if (connectedSockets === 0) {
+                clearTimeout(timeout);
+            }
         });
 
         socket.on('update challonge', function(msg) {

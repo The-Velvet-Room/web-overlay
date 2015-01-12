@@ -14,9 +14,15 @@ module.exports = function(io) {
         socket.emit('send twitch data', twitchData);
         connectedSockets++;
 
+        // if we go from 0 to 1 socket, start polling again
+        pollTwitch();
+
         socket.on('disconnect', function () {
             console.log('Twitch disconnected');
             connectedSockets--;
+            if (connectedSockets === 0) {
+                clearTimeout(timeout);
+            }
         });
 
         socket.on('update twitch user', function (data) {
