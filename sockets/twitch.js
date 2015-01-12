@@ -11,34 +11,33 @@ module.exports = function(io) {
 
     var twitchIO = io.of('/twitch');
 
-    twitchIO.on('connection', function(socket) {
+    twitchIO.on('connection', function (socket) {
         console.log('Connected to Twitch');
         socket.emit('send twitch data', twitchData);
         connectedSockets++;
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', function () {
             console.log('Twitch disconnected');
             connectedSockets--;
         });
 
-        socket.on('update twitch', function(msg) {
-            twitchData = msg;
-            if (twitchData.twitchUsername) {
-                if (!twitchData.twitchGame && !twitchData.twitchStatus) {
-                    twitchData = initializeTwitchData(twitchData);
-                } else {
-                    twitchData = updateTwitchData(twitchData);
-                }
+        socket.on('update twitch user', function (data) {
+            twitchData = { 'twitchUsername': data };
+            initializeTwitchData();
 
-                clearTimeout(timeout);
-                pollTwitch();
-            }
+            clearTimeout(timeout);
+            pollTwitch();
+        });
+
+        socket.on('update twitch channel info', function (data) {
+            updateTwitchData(data.game, data.status);
         });
 
         function pollTwitch() {
-            getTwitchPollableData();
-            if (connectedSockets > 0 && twitchData.twitchUsername)
-              timeout = setTimeout(pollTwitch, twitchPollFrequency);
+            if (connectedSockets > 0 && twitchData.twitchUsername) {
+                getTwitchPollableData();
+                timeout = setTimeout(pollTwitch, twitchPollFrequency);
+            }
         }
 
         function getTwitchPollableData() {
@@ -117,12 +116,13 @@ module.exports = function(io) {
             });
         }
 
-        function updateTwitchData(data) {
-            var game = setTwitchGame(data.twitchUsername, data.twitchGame);
-            var status = setTwitchStatus(data.twitchUsername, data.twitchStatus);
-            data.twitchGame = game;
-            data.twitchStatus = status;
-            return data;
+        function updateTwitchData(game, status) {
+            if (game && game !== twitchData.twitchGame) {
+                setTwitchGame(game);
+            }
+            if (status && status !== twitchData.twitchStatus) {
+                setTwitchStatus(status);
+            }
         }
 
         function cacheAndSendChannelInfo(game, status) {
@@ -130,23 +130,24 @@ module.exports = function(io) {
             twitchData.twitchStatus = status;
             twitchIO.emit('update twitch channel info', {
                 'game': game,
-                'status': status
+                'status': status,
+                'username': twitchData.twitchUsername
             });
         }
 
-        function initializeTwitchData(data) {
+        function initializeTwitchData() {
             var headers = {
                 'Accept': 'application/vnd.twitchtv.v2+json',
                 'Client-Id': config.twitchClientId,
                 'Authorization': 'OAuth ' + config.twitchAccessToken
             };
             var options = {
-                url: config.twitchApiRoot + '/channels/' + data.twitchUsername,
+                url: config.twitchApiRoot + '/channels/' + twitchData.twitchUsername,
                 method: 'GET',
                 headers: headers
             };
 
-            console.log('Requesting channel data for ' + data.twitchUsername);
+            console.log('Requesting channel data for ' + twitchData.twitchUsername);
 
             request(options, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
@@ -156,11 +157,9 @@ module.exports = function(io) {
                     cacheAndSendChannelInfo(game, status);
                 }
             });
-
-            return data;
         }
 
-        function setTwitchGame(channel, gameName) {
+        function setTwitchGame(gameName) {
             var queryData = {
                 'channel': {
                     'game': gameName
@@ -177,7 +176,7 @@ module.exports = function(io) {
                 'Content-Length': contentLength
             };
             var options = {
-                url: config.twitchApiRoot + '/channels/' + channel + '?channel[game]=' + gameName,
+                url: config.twitchApiRoot + '/channels/' + twitchData.twitchUsername + '?channel[game]=' + gameName,
                 method: 'PUT',
                 headers: headers,
                 body: stringQuery
@@ -191,7 +190,7 @@ module.exports = function(io) {
             });
         }
 
-        function setTwitchStatus(channel, status) {
+        function setTwitchStatus(status) {
             var queryData = {
                 'channel': {
                     'status': status
@@ -208,7 +207,7 @@ module.exports = function(io) {
                 'Content-Length': contentLength
             };
             var options = {
-                url: config.twitchApiRoot + '/channels/' + channel + '?channel[status]=' + status,
+                url: config.twitchApiRoot + '/channels/' + twitchData.twitchUsername + '?channel[status]=' + status,
                 method: 'PUT',
                 headers: headers,
                 body: stringQuery

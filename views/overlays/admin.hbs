@@ -191,10 +191,16 @@
 	});
 
 	var twitchSocket = io('/twitch');
+	var twitchGame = null;
+	var twitchStatus = null;
+	var twitchUsername = null;
 
 	twitchSocket.on('send twitch data', function(data) {
+		twitchUsername = data.twitchUsername;
 		document.getElementById('twitchUsername').value = data.twitchUsername || '';
+		twitchStatus = data.twitchStatus;
 		document.getElementById('twitchStatus').value = data.twitchStatus || '';
+		twitchGame = data.twitchGame;
 		document.getElementById('twitchGame').value = data.twitchGame || '';
 		document.getElementById('twitchFollowers').value = data.twitchFollowers || 0;
 		document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
@@ -220,8 +226,12 @@
 	});
 
 	twitchSocket.on('update twitch channel info', function(data) {
+		twitchStatus = data.status;
 		document.getElementById('twitchStatus').value = data.status || '';
+		twitchGame = data.twitchGame;
 		document.getElementById('twitchGame').value = data.game || '';
+		twitchUsername = data.twitchUsername;
+		document.getElementById('twitchUsername').value = data.username || '';
 
 		animateTwitchData(true);
 	});
@@ -288,12 +298,17 @@
 	}
 
 	function sendTwitchUpdate() {
-		var data = {
-			'twitchUsername': document.getElementById('twitchUsername').value,
-			'twitchStatus': document.getElementById('twitchStatus').value,
-			'twitchGame': document.getElementById('twitchGame').value
-		};
-		twitchSocket.emit('update twitch', data);
+		var user = document.getElementById('twitchUsername').value;
+		if (twitchUsername !== user) {
+			twitchSocket.emit('update twitch user', user);
+		} else {
+			var data = {
+				'status': document.getElementById('twitchStatus').value,
+				'game': document.getElementById('twitchGame').value
+			};
+			twitchSocket.emit('update twitch channel info', data);
+		}
+
 		toastNotify();
 	}
 
