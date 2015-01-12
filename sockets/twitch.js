@@ -1,5 +1,6 @@
 var config = require('../config');
 var request = require('request');
+
 module.exports = function(io) {
     var twitchData = {};
     //In millis
