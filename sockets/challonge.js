@@ -1,5 +1,6 @@
 var config = require('../config');
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+var request = require('request');
 module.exports = function(io) {
     var challongeData = {};
     var challongePollFrequency = 10000;
@@ -10,6 +11,7 @@ module.exports = function(io) {
     var players = [];
     //Used to check for updates
     var availableMatchesCache = [];
+    var timeout = null;
 
     var challongeIO = io.of('/challonge');
 
@@ -28,50 +30,63 @@ module.exports = function(io) {
             challongeData = msg;
             if (challongeData.challongeUrl) {
                 if (!challongeHash || urlChanged) {
+                    availableMatchesCache = [];
                     challongeHash = createChallongeHash(challongeData.challongeUrl);
+                    clearTimeout(timeout);
                     pollChallonge();
                 }
             }
-
-            console.log('update challonge: ' + JSON.stringify(challongeData));
         });
 
         function pollChallonge() {
-            getChallongePollableData(challongeData);
-            if (connectedSockets > 0 && challongeHash)
-              setTimeout(pollChallonge, challongePollFrequency);
+            if (connectedSockets > 0 && challongeHash) {
+                getChallongePollableData(challongeData);
+                timeout = setTimeout(pollChallonge, challongePollFrequency);
+            }
         }
 
         function getChallongePollableData(data) {
             console.log('Polling challonge for updates...');
-            fetchChallongeData(data);
-            data.upcomingMatches = getUpcomingMatches();
-            data = checkForMatchUpdates(data);
-            data.players = getPlayerDictionary();
-
-            challongeData = data;
-            console.log('Challonge update complete');
-            challongeIO.emit('update challonge', challongeData);
+            fetchChallongeData();
         }
 
-        function fetchChallongeData(data) {
-            var requestUrl = challongeApiRoot + '/tournaments/' + challongeHash + '.json?include_matches=1&include_participants=1';
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', requestUrl, false);
-            //Basic Auth must be encoded or request will be denied
-            xmlhttp.setRequestHeader('Authorization', 'Basic ' + new Buffer(config.challongeDevUsername + ':' + config.challongeApiKey).toString('base64'));
-            xmlhttp.send();
-            console.log('Requesting tournament data for ' + data.challongeUrl);
-            console.log(xmlhttp.responseText);
-            var challongeResponse = JSON.parse(xmlhttp.responseText);
-            matches = challongeResponse.tournament.matches;
-            players = challongeResponse.tournament.participants;
+        function sendChallongeUpdate() {
+            challongeData.upcomingMatches = getUpcomingMatches();
+            if (checkForMatchUpdates()) {
+                availableMatchesCache = challongeData.upcomingMatches;
+                challongeData.players = getPlayerDictionary();
+                console.log('Sending challonge update');
+                console.log(challongeData);
+                challongeIO.emit('update challonge', challongeData);
+            }
+        }
+
+        function fetchChallongeData() {
+            var headers = {
+                //Basic Auth must be encoded or request will be denied
+                'Authorization': 'Basic ' + new Buffer(config.challongeDevUsername + ':' + config.challongeApiKey).toString('base64')
+            };
+            var options = {
+                url: challongeApiRoot + '/tournaments/' + challongeHash + '.json?include_matches=1&include_participants=1',
+                method: 'GET',
+                headers: headers
+            };
+
+            console.log('Requesting tournament data for ' + challongeData.challongeUrl);
+
+            request(options, function (error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    var challongeResponse = JSON.parse(body);
+                    matches = challongeResponse.tournament.matches;
+                    players = challongeResponse.tournament.participants;
+                    sendChallongeUpdate();
+                }
+            });
         }
 
         function getUpcomingMatches() {
             var upcomingMatches = [];
             matches.forEach(function(match){
-                //Their JSON sucks
                 if (match.match.state === 'open') {
                     upcomingMatches.push(match);
                 }
@@ -106,54 +121,16 @@ module.exports = function(io) {
             return challongeHash;
         }
 
-        function checkForMatchUpdates(data) {
-            if (Object.equals(data.upcomingMatches, availableMatchesCache)) {
-                data.matchesChanged = false;
+        function checkForMatchUpdates() {
+            if (challongeData.upcomingMatches.length !== availableMatchesCache.length) {
+                return true;
             }
-            else {
-                data.matchesChanged = true;
-                availableMatchesCache = data.upcomingMatches;
-                console.log('Matches changed. Will alert clients.');
+            for (var i = 0; i < availableMatchesCache.length; i++) {
+                if (availableMatchesCache[i].id !== challongeData.upcomingMatches[i].id) {
+                    return true;
+                }
             }
-
-            return data;
+            return false;
         }
-
-        //Used to detect match changes with high accuracy
-        //https://stackoverflow.com/questions/1068834/object-comparison-in-javascript
-        Object.equals = function( x, y ) {
-          if ( x === y ) return true;
-            // if both x and y are null or undefined and exactly the same
-
-          if ( !( x instanceof Object ) || !( y instanceof Object ) ) return false;
-            // if they are not strictly equal, they both need to be Objects
-
-          if ( x.constructor !== y.constructor ) return false;
-            // they must have the exact same prototype chain, the closest we can do is
-            // test there constructor.
-
-          for ( var p in x ) {
-            if ( !x.hasOwnProperty( p ) ) continue;
-              // other properties were tested using x.constructor === y.constructor
-
-            if ( !y.hasOwnProperty( p ) ) return false;
-              // allows to compare x[ p ] and y[ p ] when set to undefined
-
-            if ( x[ p ] === y[ p ] ) continue;
-              // if they have the same strict value or identity then they are equal
-
-            if ( typeof ( x[ p ] ) !== 'object' ) return false;
-              // Numbers, Strings, Functions, Booleans must be strictly equal
-
-            if ( !Object.equals( x[ p ],  y[ p ] ) ) return false;
-              // Objects and Arrays must be tested recursively
-          }
-
-          for ( p in y ) {
-            if ( y.hasOwnProperty( p ) && !x.hasOwnProperty( p ) ) return false;
-              // allows x[ p ] to be set to undefined
-          }
-          return true;
-        };
     });
 };

@@ -250,7 +250,7 @@
 	challongeSocket.on('update challonge', function(data){
 		document.getElementById('challongeUrl').value = data.challongeUrl || '';
 
-		if(data.upcomingMatches && data.matchesChanged) {
+		if (data.upcomingMatches) {
 			challongeMatches = data.upcomingMatches;
 			createMatchList(data);
 		}
