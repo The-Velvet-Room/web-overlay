@@ -130,11 +130,13 @@ module.exports = function(io) {
         }
 
         function checkForMatchUpdates() {
+            console.log(challongeData.upcomingMatches);
+            console.log(availableMatchesCache);
             if (challongeData.upcomingMatches.length !== availableMatchesCache.length) {
                 return true;
             }
             for (var i = 0; i < availableMatchesCache.length; i++) {
-                if (availableMatchesCache[i].id !== challongeData.upcomingMatches[i].id) {
+                if (availableMatchesCache[i].match.id !== challongeData.upcomingMatches[i].match.id) {
                     return true;
                 }
             }
