@@ -253,7 +253,7 @@
 
 		if (data.upcomingMatches) {
 			challongeMatches = data.upcomingMatches;
-			createMatchList(data);
+			createMatchList(data.players);
 		}
 	});
 
@@ -321,9 +321,11 @@
 		toastNotify();
 	}
 
-	function createMatchList(data) {
+	function createMatchList(players) {
+		var oldVal = null;
 		var matchList = $('#challongeMatchList');
 		if (matchList) {
+			oldVal = matchList.val();
 			matchList.remove();
 		}
 
@@ -336,12 +338,15 @@
 		defaultOption.value = null;
 		selectList.appendChild(defaultOption);
 
-		data.upcomingMatches.forEach(function(match){
+		challongeMatches.forEach(function(match){
 			var option = document.createElement('option');
-			var playerOne = data.players[match.match.player1_id];
-			var playerTwo = data.players[match.match.player2_id];
+			var playerOne = players[match.match.player1_id];
+			var playerTwo = players[match.match.player2_id];
 			option.text = match.match.identifier + ': ' + playerOne + ' vs. ' + playerTwo;
 			option.value = match.match.identifier;
+			if (oldVal && option.value === oldVal) {
+				option.selected = true;
+			}
 			selectList.appendChild(option);
 		});
 
@@ -351,8 +356,8 @@
 			if (selectedOption.val()) {
 				console.log('Updating match...');
 				var match = getMatchForIdentifier(identifier);
-				var playerOne = data.players[match.match.player1_id];
-				var playerTwo = data.players[match.match.player2_id];
+				var playerOne = players[match.match.player1_id];
+				var playerTwo = players[match.match.player2_id];
 				document.getElementById('lplayer').value = playerOne;
 				document.getElementById('rplayer').value = playerTwo;
 				sendUpdate();
