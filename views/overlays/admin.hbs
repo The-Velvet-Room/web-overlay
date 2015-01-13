@@ -224,9 +224,9 @@
 	twitchSocket.on('update twitch channel info', function(data) {
 		twitchStatus = data.status;
 		document.getElementById('twitchStatus').value = data.status || '';
-		twitchGame = data.twitchGame;
+		twitchGame = data.game;
 		document.getElementById('twitchGame').value = data.game || '';
-		twitchUsername = data.twitchUsername;
+		twitchUsername = data.username;
 		document.getElementById('twitchUsername').value = data.username || '';
 
 		animateTwitchData(true);
