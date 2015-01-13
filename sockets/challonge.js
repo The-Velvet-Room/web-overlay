@@ -130,8 +130,6 @@ module.exports = function(io) {
         }
 
         function checkForMatchUpdates() {
-            console.log(challongeData.upcomingMatches);
-            console.log(availableMatchesCache);
             if (challongeData.upcomingMatches.length !== availableMatchesCache.length) {
                 return true;
             }
