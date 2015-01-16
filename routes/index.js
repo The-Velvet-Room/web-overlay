@@ -53,6 +53,11 @@ router.get('/overlays/commentators', function(req, res) {
   res.render('overlays/commentators', { title: 'Overlay', layout: false });
 });
 
+/* GET idle page. */
+router.get('/overlays/idle', function(req, res) {
+  res.render('overlays/idle', { title: 'We will be right back!', layout: false });
+});
+
 /* GET pardon the smash. */
 router.get('/overlays/pardonthesmash', function(req, res) {
   res.render('overlays/pardonthesmash/overlay', { title: 'PTS Overlay', layout: false });

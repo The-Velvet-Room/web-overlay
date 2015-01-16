@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/overlays/idle.css' />
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  </head>
+  <body>
+  	<div id="container">
+  		<div id="fact-div"></div>
+  	</div>
+    <script>
+    var facts = [];
+
+		$.ajax({ 
+      url: '/resources/smash-four-facts.json', 
+      type: 'get',  
+      complete: function(data){ 
+        facts = data.responseJSON;
+        cycleFacts();
+      }
+    });
+
+    function cycleFacts() {
+      i = 0;
+      isTag=false;
+      str = '<p>'+facts[Math.floor((Math.random() * facts.length-1) + 1)]+'</p>';
+      type();
+      setTimeout(cycleFacts, 20000);
+    }
+
+    //https://stackoverflow.com/questions/22180457/typewriter-effect-for-html-with-javascript
+    var i = 0;
+    var str;
+    var isTag;
+    var text;
+    function type() {
+        text = str.slice(0, ++i);
+        if (text === str) return;
+        document.getElementById('fact-div').innerHTML = text;
+        var char = text.slice(-1);
+        if( char === '<' ) isTag = true;
+        if( char === '>' ) isTag = false;
+        if (isTag) return type();
+        setTimeout(type, 80);
+    }
+    </script>
+  </body>
+</html>
