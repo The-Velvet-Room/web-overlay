@@ -1,0 +1,35 @@
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(https://i.imgur.com/SkOH3j1.png);
+	position: relative;
+}
+
+.css-typing
+{
+    width: 50em;
+    white-space:nowrap;
+    overflow:hidden;
+    -webkit-animation: type 5s steps(50, end);
+    animation: type 5s steps(50, end);
+}
+
+@keyframes type{
+    from { width: 0; }
+}
+
+@-webkit-keyframes type{
+    from { width: 0; }
+}
+
+#fact-div {
+	color: white;
+	font-size: 48px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 750px;
+	left: 200px;
+	width: 1400px;
+	height: 400px;
+}
