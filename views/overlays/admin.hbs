@@ -6,10 +6,17 @@
 			Title
 			<input id="title"></input>
 		</label>
+	</p>
 
+	<p>
 		<label for="commentators">
 			Commentators
 			<input id="commentators"></input>
+		</label>
+		
+		<label for="twitter">
+			Twitter Handles
+			<input id="twitter"></input>
 		</label>
 	</p>
 	<table border="2">
@@ -180,6 +187,7 @@
 		document.getElementById('rplayer').value = data.rplayer || '';
 		document.getElementById('title').value = data.title || '';
 		document.getElementById('commentators').value = data.commentators || '';
+		document.getElementById('twitter').value = data.twitter || '';
 		document.getElementById('lscore').value = data.lscore || 0;
 		document.getElementById('rscore').value = data.rscore || 0;
 		characterLeft = data.lCharacter || null;
@@ -290,6 +298,7 @@
 			'lscore': document.getElementById('lscore').value,
 			'rscore': document.getElementById('rscore').value,
 			'commentators': document.getElementById('commentators').value,
+			'twitter': document.getElementById('twitter').value,
 			'lCharacter': window.characterLeft || null,
 			'rCharacter': window.characterRight || null
 		};
