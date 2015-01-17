@@ -58,6 +58,11 @@ router.get('/overlays/idle', function(req, res) {
   res.render('overlays/idle', { title: 'We will be right back!', layout: false });
 });
 
+/* GET bracket page. */
+router.get('/overlays/bracket', function(req, res) {
+  res.render('overlays/bracket', { title: 'Bracket - Powered by Challonge', layout: false });
+});
+
 /* GET pardon the smash. */
 router.get('/overlays/pardonthesmash', function(req, res) {
   res.render('overlays/pardonthesmash/overlay', { title: 'PTS Overlay', layout: false });
