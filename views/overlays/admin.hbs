@@ -223,8 +223,8 @@
 	});
 
 	twitchSocket.on('update twitch viewers', function(data) {
-		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
-		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
+		document.getElementById('twitchViewers').value = data.viewers || 'offline';
+		document.getElementById('twitchPeakViewers').value = data.peakViewers || 'offline';
 
 		animateTwitchData(true);
 	});
