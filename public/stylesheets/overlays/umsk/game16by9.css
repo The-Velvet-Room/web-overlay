@@ -9,21 +9,21 @@ a {
 #container {
 	width: 1920px;
 	height: 1080px;
-	background: url(http://i.imgur.com/GvwrrXE.png);
+	background: url(http://i.imgur.com/aYc9Em1.png);
 	position: relative;
 }
 
 .playertext {
 	position: absolute;
 	color: white;
-	font-size: 42px;
+	font-size: 24px;
 	font-family: Arial, sans-serif;
 	overflow: hidden;
 	overflow-wrap: break-word;
 }
 
 #lplayer {
-	top: 1031px;
+	top: 1049px;
 	left: 133px;
 	height: 49px;
 	width: 650px;
@@ -31,7 +31,7 @@ a {
 }
 
 #lscore {
-	top: 1031px;
+	top: 1049px;
 	height: 49px;
 	left: 83px;
 	width: 50px;
@@ -39,7 +39,7 @@ a {
 }
 
 #rplayer {
-	top: 1031px;
+	top: 1049px;
 	height: 49px;
 	left: 1130px;
 	width: 650px;
@@ -47,7 +47,7 @@ a {
 }
 
 #rscore {
-	top: 1031px;
+	top: 1049px;
 	height: 49px;
 	left: 1782px;
 	width: 50px;
