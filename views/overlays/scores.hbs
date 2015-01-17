@@ -41,7 +41,7 @@
 		Current Viewers:
 		<input id="twitchViewers" class="twitch-pollable"></input>
 	</label>
-	<label for="twitchPeakViewers hide-by-default">
+	<label for="twitchPeakViewers">
 		Peak Viewers:
 		<input id="twitchPeakViewers" class="twitch-pollable"></input>
 	</label>
@@ -51,6 +51,7 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+	var currentTwitchUsername = null;
 	var socket = io('/overlay');
 
 	socket.on('update overlay', function(data) {
@@ -81,18 +82,33 @@
 
 	var twitchSocket = io('/twitch');
 
+	twitchSocket.on('send twitch data', function(data) {
+		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
+		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
+	});
+
 	twitchSocket.on('send twitch data', function(data){
-		if(data.twitchUsername) {
-        var ifrm = document.createElement('iframe'); 
-        ifrm.setAttribute('src', 'http://www.twitch.tv/'+data.twitchUsername+'/chat?popout='); 
-        ifrm.style.width = '320px'; 
-        ifrm.style.height = '800px'; 
-        document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
+		console.log(data);
+		if(currentTwitchUsername && data.twitchUsername != currentTwitchUsername) {
+			var chatFrame = document.getElementById('chat-frame');
+			document.getElementById('twitch-chat-placeholder').removeChild(chatFrame);
+			currentTwitchUsername = null;
+			console.log('Username changed');
+		}
+
+		if(data.twitchUsername && !currentTwitchUsername) {
+			currentTwitchUsername = data.twitchUsername;
+	        var ifrm = document.createElement('iframe');
+	        ifrm.id = 'chat-frame';
+	        ifrm.setAttribute('src', 'http://www.twitch.tv/'+data.twitchUsername+'/chat?popout='); 
+	        ifrm.style.width = '320px'; 
+	        ifrm.style.height = '800px'; 
+	        document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
       }
 	});
 
 	twitchSocket.on('update twitch viewers', function(data){
-		document.getElementById('twitchViewers').innerText = data.viewers || 0;
-		document.getElementById('twitchPeakViewers').innerText = data.peakViewers || 0;
+		document.getElementById('twitchViewers').value = data.viewers || 0;
+		document.getElementById('twitchPeakViewers').value = data.peakViewers || 0;
 	});
 </script>
