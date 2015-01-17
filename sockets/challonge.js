@@ -83,6 +83,7 @@ module.exports = function(io) {
             console.log('Requesting tournament data for ' + challongeData.challongeUrl);
 
             request(options, function (error, response, body) {
+                console.log('Challonge Response: '+response.statusCode);
                 if (!error && response.statusCode === 200) {
                     var challongeResponse = JSON.parse(body);
                     matches = challongeResponse.tournament.matches;
