@@ -1,0 +1,42 @@
+body {
+	margin: 0px;
+}
+
+
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(http://i.imgur.com/SPiC2Jk.png);
+	position: relative;
+}
+
+.playertext {
+	position: absolute;
+	color: white;
+	font-size: 24px;
+	font-family: Arial, sans-serif;
+	overflow: hidden;
+	overflow-wrap: break-word;
+	bottom: 24px;
+	width: 300px;
+	text-align: center;
+}
+
+#playerOne {
+	left: 510px;
+}
+
+#playerTwo {
+	left: 865px;
+	text-align: center;
+}
+
+#playerThree {
+	left: 1220px;
+	text-align: center;
+}
+
+#playerFour {
+	left: 1575px;
+	text-align: center;
+}

@@ -1,218 +1,62 @@
 <h1>{{title}}</h1>
-	<h3>Timer</h3>
-	<p>
-		<label for="minutes">
-			Minutes
-			<input type="number" id="minutes"></input>
-		</label>
-		<label for="seconds">
-			Seconds
-			<input type="number" id="seconds"></input>
-		</label>
-	</p>
-	<div id="timer"></div>
-	<p>
-	<button onclick="startTimer()">Start Timer</button>
-	<button onclick="resetTimer()">Reset Timer</button>
-	<div id="timer-info" style="opacity: 0">Timer Updated!</div>
-	</p>
-<form action="javascript:saveTopics()">
-	<h3>Topics</h3>
-	<table>
-		<thead>
-	        <tr>
-		        <td>Side bar</td>
-		        <td>Main bar</td>
-		        <td>Active</td>
-	        </tr>
-		</thead>
-		<tbody id="topic-table-body">
-			<tr>
-				<td><input class="sidebar" maxlength="15" /></td>
-				<td><input class="mainbar" maxlength="38" /></td>
-				<td><input type="radio" class="active" name="active" checked /></td>
-			</tr>
-		</tbody>
-	</table>
-	<button id="updateTopics">Update Topics</button>
-	<button id="addRow" type="button" onclick="addTopicRow()">Add a Row</button>
-	<label for="locked">Locked<input type="checkbox" id="locked" onchange="toggleLock()"/></label>
-</form>
-<p>
-<button onclick="previousTopic()">Previous Topic</button>
-<button onclick="nextTopic()">Next Topic</button>
-<label for="restart">Restart timer on topic change
-	<input type="checkbox" id="restart" />
-</label>
-<div id="topic-info" style="opacity: 0">Topics Updated!</div>
-</p>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="/javascripts/overlays/pardonthesmash/timer.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+
+<form action="javascript:sendUpdate()">
+	<p>
+		<label for="playerOne">
+			Player One:
+			<input id="playerOne"></input>
+		</label>
+	</p>
+	<p>
+		<label for="playerTwo">
+			Player Two:
+			<input id="playerTwo"></input>
+		</label>
+	</p>
+	<p>
+		<label for="playerThree">
+			Player Three:
+			<input id="playerThree"></input>
+		</label>
+	</p>
+	<p>
+		<label for="playerFour">
+			Player Four:
+			<input id="playerFour"></input>
+		</label>
+	</p>
+	<input type="submit"/>
+	</p>
+	<div id="info" style="display:none;">Overlay Updated!</div>
+</form>
+
 <script>
-	var socket = io('/pardonthesmash');
-	var endTime;
-	var timerTimeout;
+var socket = io('/arcade');
 
-	socket.on('connect', function() {
-		socket.emit('request timer');
-		socket.emit('request topics');
-		//socket.emit('join', { room: 'overlay' });
-	});
-
-	socket.on('update topics', function(data) {
-		if (data.length !== 0) {
-			addExistingTopicRows(data);
-		}
-	});
-
-	socket.on('start timer', function(data) {
-		if (data.endTime) {
-			endTime = data.endTime;
-			clearTimer();
-			updateTimer();
-		}
-	});
-
-	function clearTimer() {
-		clearTimeout(timerTimeout);
-	}
-
-	function updateTimer() {
-		var time = timeLeft(endTime);
-		document.getElementById('timer').innerText = formatTime(time);
-		if (time.minutes !== 0 || time.seconds !== 0) {
-			timerTimeout = setTimeout(updateTimer, 1000);
-		}
-	}
-
-
-
-	function sendTimerUpdate(minutes, seconds) {
-		var date = new Date();
-		// TODO: Figure out what calculation causes seconds to need a plus one.
-		// Without the plus one, entering in 3 minutes will start the timer
-		// showing 2:59, and it'll sit there for a bit longer than a second before
-		// it starts ticking.
-		date.setMinutes(date.getMinutes() + minutes);
-		date.setSeconds(date.getSeconds() + seconds + 1);
-
+	function sendUpdate() {
 		var data = {
-			'endTime': date.toISOString()
+			'playerOne': document.getElementById('playerOne').value,
+			'playerTwo': document.getElementById('playerTwo').value,
+			'playerThree': document.getElementById('playerThree').value,
+			'playerFour': document.getElementById('playerFour').value,
 		};
-		socket.emit('start timer', data);
+		socket.emit('update arcade', data);
+		toastNotify();
+	}
+
+	socket.on('update arcade', function(data) {
+		document.getElementById('playerOne').value = data.playerOne || '';
+		document.getElementById('playerTwo').value = data.playerTwo || '';
+		document.getElementById('playerThree').value = data.playerThree || '';
+		document.getElementById('playerFour').value = data.playerFour || '';
+	});
+
+	function toastNotify() {
 		// TODO: figure out how to make this an acknowledgment callback
-		var info = $('#timer-info');
-		info.css({ 'opacity': 1 });
-		info.animate({ 'opacity': 0 }, 1200);
-	}
-
-	function startTimer() {
-		var minutes = document.getElementById('minutes').valueAsNumber || 0;
-		var seconds = document.getElementById('seconds').valueAsNumber || 0;
-
-		sendTimerUpdate(minutes, seconds);
-	}
-
-	function resetTimer() {
-		sendTimerUpdate(0, 0);
-	}
-
-	function saveTopics() {
-		var tbody = document.getElementById('topic-table-body');
-		var topics = [];
-		for (var i = 0; i < tbody.children.length; i++) {
-			var child = tbody.children[i];
-			var mainbar = child.getElementsByClassName('mainbar')[0];
-			var sidebar = child.getElementsByClassName('sidebar')[0];
-			var active = child.getElementsByClassName('active')[0];
-			if (mainbar.value || sidebar.value) {
-				topics.push({
-					'mainbar': mainbar.value,
-					'sidebar': sidebar.value,
-					'active': active.checked,
-				});
-			}
-		}
-		socket.emit('update topics', topics);
-		// TODO: figure out how to make this an acknowledgment callback
-		var info = $('#topic-info');
-		info.css({ 'opacity': 1 });
-		info.animate({ 'opacity': 0 }, 1200);
-	}
-
-	function addTopicRow() {
-		var tbody = document.getElementById('topic-table-body');
-		var child = tbody.children[0];
-		var newRow = child.cloneNode(true);
-		for (var i = 0; i < newRow.children.length; i++) {
-			if (newRow.children[i].nodeName === 'INPUT') {
-				newRow.children[i].value = '';
-			}
-		}
-		tbody.appendChild(newRow);
-	}
-
-	function addExistingTopicRows(data) {
-		var tbody = document.getElementById('topic-table-body');
-		var child = tbody.children[0];
-		tbody.innerHTML = '';
-
-		for (var i = 0; i < data.length; i++) {
-			var newRow = child.cloneNode(true);
-			var mainbar = newRow.getElementsByClassName('mainbar')[0];
-			var sidebar = newRow.getElementsByClassName('sidebar')[0];
-			var active = newRow.getElementsByClassName('active')[0];
-			mainbar.value = data[i].mainbar;
-			sidebar.value = data[i].sidebar;
-			active.checked = data[i].active;
-			tbody.appendChild(newRow);
-		}
-	}
-
-	function previousTopic() {
-		var tbody = document.getElementById('topic-table-body');
-		// don't check the last child. we don't want to loop, so
-		// it's not important if it's active
-		for (var i = 1; i < tbody.children.length; i++) {
-			var tr = tbody.children[i];
-			var active = tr.getElementsByClassName('active')[0];
-			if (active.checked) {
-				var nextTr = tbody.children[i - 1];
-				nextTr.getElementsByClassName('active')[0].checked = true;
-				break;
-			}
-		}
-		saveTopics();
-		if ($('#restart').prop('checked')) {
-			startTimer();
-		}
-	}
-
-	function nextTopic() {
-		var tbody = document.getElementById('topic-table-body');
-		// don't check the last child. we don't want to loop, so
-		// it's not important if it's active
-		for (var i = 0; i < tbody.children.length - 1; i++) {
-			var tr = tbody.children[i];
-			var active = tr.getElementsByClassName('active')[0];
-			if (active.checked) {
-				var nextTr = tbody.children[i + 1];
-				nextTr.getElementsByClassName('active')[0].checked = true;
-				break;
-			}
-		}
-		saveTopics();
-		if ($('#restart').prop('checked')) {
-			startTimer();
-		}
-	}
-
-	function toggleLock() {
-		if ($('#locked').prop('checked')) {
-			$('#updateTopics, #addRow, .active, .mainbar, .sidebar').prop('disabled', true);
-		} else {
-			$('#updateTopics, #addRow, .active, .mainbar, .sidebar').prop('disabled', false);
-		}
+		var info = $('#info');
+		info.show();
+		info.fadeOut(1200);
 	}
 </script>
