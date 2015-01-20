@@ -12,10 +12,10 @@
   		<div id="title" class="playertext"></div>
   		<div id="lscore" class="playertext"></div>
   		<div id="lplayer" class="playertext">
-        <img id="leftCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">  
+        <img id="leftCharacter" style="zoom: 120%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">  
       </div>
       <div id="rplayer" class="playertext">
-        <img id="rightCharacter" style="zoom: 200%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">    
+        <img id="rightCharacter" style="zoom: 120%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">    
       </div>
   		<div id="rscore" class="playertext"></div>
   	</div>
@@ -36,6 +36,9 @@
         document.getElementById('lplayer').appendChild(leftCharIcon);
         document.getElementById('rplayer').appendChild(rightCharIcon);
 
+        scaleFont(document.getElementById('lplayer'));
+        scaleFont(document.getElementById('rplayer'));
+
         if(data.lCharacter) {
           document.getElementById('leftCharacter').className = data.lCharacter;
         }
@@ -50,6 +53,27 @@
           document.getElementById('rightCharacter').className = null;
         }
       });
+
+      function scaleFont(element) {
+        var length = element.innerText.length;
+
+        if (length <= 7) {
+          element.style.fontSize = '42px';
+          element.style.top = '1031px';
+        }
+        else if (length <= 15){
+          element.style.fontSize = '28px';
+          element.style.top = '1039px';
+        }
+        else if(length <= 24) {
+          element.style.fontSize = '20px';
+          element.style.top = '1044px';
+        }
+        else {
+          element.style.fontSize = '14px';
+          element.style.top = '1048px';
+        }
+      }
 
     });
     </script>
