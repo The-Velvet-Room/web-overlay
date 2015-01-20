@@ -1,0 +1,62 @@
+<h1>{{title}}</h1>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<form action="javascript:sendUpdate()">
+	<p>
+		<label for="playerOne">
+			Player One:
+			<input id="playerOne"></input>
+		</label>
+	</p>
+	<p>
+		<label for="playerTwo">
+			Player Two:
+			<input id="playerTwo"></input>
+		</label>
+	</p>
+	<p>
+		<label for="playerThree">
+			Player Three:
+			<input id="playerThree"></input>
+		</label>
+	</p>
+	<p>
+		<label for="playerFour">
+			Player Four:
+			<input id="playerFour"></input>
+		</label>
+	</p>
+	<input type="submit"/>
+	</p>
+	<div id="info" style="display:none;">Overlay Updated!</div>
+</form>
+
+<script>
+var socket = io('/arcade');
+
+	function sendUpdate() {
+		var data = {
+			'playerOne': document.getElementById('playerOne').value,
+			'playerTwo': document.getElementById('playerTwo').value,
+			'playerThree': document.getElementById('playerThree').value,
+			'playerFour': document.getElementById('playerFour').value,
+		};
+		socket.emit('update arcade', data);
+		toastNotify();
+	}
+
+	socket.on('update arcade', function(data) {
+		document.getElementById('playerOne').value = data.playerOne || '';
+		document.getElementById('playerTwo').value = data.playerTwo || '';
+		document.getElementById('playerThree').value = data.playerThree || '';
+		document.getElementById('playerFour').value = data.playerFour || '';
+	});
+
+	function toastNotify() {
+		// TODO: figure out how to make this an acknowledgment callback
+		var info = $('#info');
+		info.show();
+		info.fadeOut(1200);
+	}
+</script>

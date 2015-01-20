@@ -78,4 +78,14 @@ router.get('/overlays/pardonthesmash/guest', function(req, res) {
   res.render('overlays/pardonthesmash/guest', { title: 'PTS Guest' });
 });
 
+/* GET velvet arcade */
+router.get('/overlays/arcade', function(req, res) {
+  res.render('overlays/arcade/overlay', { title: 'The Velvet Arcade', layout: false });
+});
+
+/* GET velvet arcade admin */
+router.get('/overlays/arcade/admin', function(req, res) {
+  res.render('overlays/arcade/admin', { title: 'Velvet Arcade Admin' });
+});
+
 module.exports = router;

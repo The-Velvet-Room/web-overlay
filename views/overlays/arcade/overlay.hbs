@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/overlays/arcade/overlay.css' />
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="playerOne" class="playertext"></div>
+      <div id="playerTwo" class="playertext"></div>
+      <div id="playerThree" class="playertext"></div>
+      <div id="playerFour" class="playertext"></div>
+    </div>
+    <script>
+    var socket = io('/arcade');
+
+    socket.on('update arcade', function(data) {
+      document.getElementById('playerOne').innerText = data.playerOne || '';
+      document.getElementById('playerTwo').innerText = data.playerTwo || '';
+      document.getElementById('playerThree').innerText = data.playerThree || '';
+      document.getElementById('playerFour').innerText = data.playerFour || '';
+    });
+    </script>
+  </body>
+</html>

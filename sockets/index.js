@@ -4,4 +4,5 @@ module.exports = function (io) {
   require('./pardonthesmash')(io);
   require('./twitch')(io);
   require('./challonge')(io);
+  require('./arcade')(io);
 };
