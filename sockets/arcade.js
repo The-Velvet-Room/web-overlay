@@ -1,5 +1,5 @@
 module.exports = function (io) {
-  var data = [];
+  var data = {};
 
   var arcade = io.of('/arcade');
 
