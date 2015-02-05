@@ -13,10 +13,11 @@
     var facts = [];
 
 		$.ajax({ 
-      url: '/resources/smash-four-facts.json', 
+      url: '/resources/tvr.json', 
       type: 'get',  
       complete: function(data){ 
         facts = data.responseJSON;
+        console.log(facts);
         cycleFacts();
       }
     });
