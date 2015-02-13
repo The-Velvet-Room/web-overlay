@@ -8,7 +8,11 @@ router.get('/', function(req, res) {
 
 /* GET home page. */
 router.get('/overlays/smashchateau/game4by3', function(req, res) {
-  res.render('overlays/smashchateau/game', { title: 'Overlay', layout: false });
+  res.render('overlays/smashchateau/game', { title: 'Smash Chateau Overlay', layout: false });
+});
+
+router.get('/overlays/smashchateau/all4by3', function(req, res) {
+  res.render('overlays/smashchateau/all4by3', { title: 'Smash Chateau Overlay', layout: false });
 });
 
 /* GET home page. */
