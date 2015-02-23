@@ -41,6 +41,7 @@ module.exports = function(io) {
                 if (!challongeHash || urlChanged) {
                     availableMatchesCache = [];
                     challongeHash = createChallongeHash(challongeData.challongeUrl);
+                    challongeData.challongeApiHash = challongeHash;
                     clearTimeout(timeout);
                     pollChallonge();
                 }
