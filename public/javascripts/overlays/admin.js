@@ -119,6 +119,7 @@ var challongeUrl;
 challongeSocket.on('update challonge', function(data){
 	if (data.challongeUrl && (data.challongeUrl !== challongeUrl || document.getElementById('challongeBracket') === null)) {
 		document.getElementById('challongeUrl').value = data.challongeUrl || '';
+		document.getElementById('challongeApiHash').value = data.challongeApiHash || '';
 		challongeUrl = data.challongeUrl;
 		embedChallongeBracket(challongeUrl);
 	}
@@ -188,7 +189,8 @@ function sendTwitchUpdate() {
 function sendChallongeUpdate() {
 	var url = document.getElementById('challongeUrl').value;
 	var data = {
-		'challongeUrl': document.getElementById('challongeUrl').value
+		'challongeUrl': document.getElementById('challongeUrl').value,
+		'challongeApiHash': document.getElementById('challongeApiHash').value
 	};
 	challongeSocket.emit('update challonge', data);
 	toastNotify();
