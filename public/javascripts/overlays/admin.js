@@ -10,6 +10,14 @@ var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','k
 'robin','rosalina','roy','samus','sheik','shulk', 'snake','squirtle','sonic','toon-link',
 'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus']
 
+var usStates = ['ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO','CONNECTICUT',
+    'DELAWARE','DISTRICT OF COLUMBIA','FLORIDA','GEORGIA','HAWAII','IDAHO','ILLINOIS','INDIANA',
+    'IOWA','KANSAS','KENTUCKY','LOUISIANA','MAINE','MARYLAND','MASSACHUSETTS','MICHIGAN',
+    'MINNESOTA','MISSISSIPPI','MISSOURI','MONTANA','NEBRASKA','NEVADA','NEW HAMPSHIRE',
+    'NEW JERSEY','NEW MEXICO','NEW YORK','NORTH CAROLINA','NORTH DAKOTA','OHIO','OKLAHOMA',
+    'OREGON','PENNSYLVANIA','RHODE ISLAND','SOUTH CAROLINA','SOUTH DAKOTA','TENNESSEE',
+    'TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA','WISCONSIN','WYOMING'];
+
 //Pass in either 'Left' or 'Right'
 function createCharacterList(direction) {
 	var selectList = document.createElement('select');
