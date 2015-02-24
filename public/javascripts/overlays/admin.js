@@ -11,12 +11,16 @@ var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','k
 'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus']
 
 var usStates = ['ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO','CONNECTICUT',
-    'DELAWARE','DISTRICT OF COLUMBIA','FLORIDA','GEORGIA','HAWAII','IDAHO','ILLINOIS','INDIANA',
+    'DELAWARE','FLORIDA','GEORGIA','HAWAII','IDAHO','ILLINOIS','INDIANA',
     'IOWA','KANSAS','KENTUCKY','LOUISIANA','MAINE','MARYLAND','MASSACHUSETTS','MICHIGAN',
     'MINNESOTA','MISSISSIPPI','MISSOURI','MONTANA','NEBRASKA','NEVADA','NEW HAMPSHIRE',
     'NEW JERSEY','NEW MEXICO','NEW YORK','NORTH CAROLINA','NORTH DAKOTA','OHIO','OKLAHOMA',
     'OREGON','PENNSYLVANIA','RHODE ISLAND','SOUTH CAROLINA','SOUTH DAKOTA','TENNESSEE',
-    'TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA','WISCONSIN','WYOMING'];
+    'TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA','WISCONSIN','WYOMING', 'DC'];
+
+var usStatesKeys = ['B','A','D','C','E','F','G','H','I','J','K','M','N','O','L','P','Q','R','U','T',
+	'S','V','W','Y','X','Z','c','g','d','e','f','h','a','b','i','j','k','l','m','n','o','p','q','r',
+	't','s','u','w','v','x','y'];
 
 //Pass in either 'Left' or 'Right'
 function createCharacterList(direction) {
