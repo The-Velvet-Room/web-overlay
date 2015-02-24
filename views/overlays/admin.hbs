@@ -6,6 +6,11 @@
 			Title
 			<input id="title"></input>
 		</label>
+
+		<input id="ready-radio-false" type="radio" name="readyStatus" value="false" onchange="sendUpdate()" checked>
+      Not Ready
+      <input id="ready-radio-true" type="radio" name="readyStatus" value="true" onchange="sendUpdate()">
+      Ready
 	</p>
 
 	<p>

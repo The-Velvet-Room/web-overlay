@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+  </head>
+  <body style="text-align: center;">
+  	<h1 id="readyStatus"></h1>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var readyString = 'The stream is ready! You may play your set.';
+      var notReadyString = 'Please wait. The stream team is updating information.';
+      var socket = io('/overlay');
+
+      socket.on('update overlay', function(data) {
+        document.getElementById('readyStatus').innerText = data.readyStatus ? readyString : notReadyString;
+        document.body.style.background = data.readyStatus ? 'green' : 'red';
+        document.body.style.color = data.readyStatus ? 'white' : 'black';
+      });
+    </script>
+  </body>
+</html>

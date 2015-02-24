@@ -56,6 +56,15 @@ socket.on('update overlay', function(data) {
 	document.getElementById('rscore').value = data.rscore || 0;
 	characterLeft = data.lCharacter || null;
 	characterRight = data.rCharacter || null;
+
+	if(data.readyStatus) {
+		document.getElementById('ready-radio-false').checked = false;
+		document.getElementById('ready-radio-true').checked = true;
+	}
+	else {
+		document.getElementById('ready-radio-false').checked = true;
+		document.getElementById('ready-radio-true').checked = false;
+	}
 });
 
 var twitchSocket = io('/twitch');
@@ -152,6 +161,11 @@ function swapNames() {
 function zeroScores() {
 	document.getElementById('lscore').value = 0;
 	document.getElementById('rscore').value = 0;
+
+	//There's high probability that we are still typing information
+	//when scores are zeroed
+	document.getElementById('ready-radio-false').checked = true;
+	document.getElementById('ready-radio-true').checked = false;
 	sendUpdate();
 }
 
@@ -165,7 +179,8 @@ function sendUpdate() {
 		'commentators': document.getElementById('commentators').value,
 		'twitter': document.getElementById('twitter').value,
 		'lCharacter': window.characterLeft || null,
-		'rCharacter': window.characterRight || null
+		'rCharacter': window.characterRight || null,
+		'readyStatus': document.getElementById('ready-radio-true').checked
 	};
 	socket.emit('update overlay', data);
 	toastNotify();
