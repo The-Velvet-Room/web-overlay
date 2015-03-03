@@ -84,13 +84,14 @@ twitchSocket.on('send twitch data', function(data) {
     document.getElementById('twitchLastFollower').value = data.twitchLastFollower || '';
     document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
     document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
-    
+
     if(currentTwitchUsername && data.twitchUsername != currentTwitchUsername) {
             var chatFrame = document.getElementById('chat-frame');
             document.getElementById('twitch-chat-placeholder').removeChild(chatFrame);
             currentTwitchUsername = null;
             console.log('Username changed');
         }
+
         if(data.twitchUsername && !currentTwitchUsername) {
             currentTwitchUsername = data.twitchUsername;
             var ifrm = document.createElement('iframe');
@@ -215,6 +216,23 @@ function sendTwitchUpdate() {
         };
         twitchSocket.emit('update twitch channel info', data);
     }
+
+    if(currentTwitchUsername && user != currentTwitchUsername) {
+        var chatFrame = document.getElementById('chat-frame');
+        document.getElementById('twitch-chat-placeholder').removeChild(chatFrame);
+        currentTwitchUsername = null;
+        console.log('Username changed');
+    }
+
+    if(user && !currentTwitchUsername) {
+        currentTwitchUsername = user;
+        var ifrm = document.createElement('iframe');
+        ifrm.id = 'chat-frame';
+        ifrm.setAttribute('src', 'http://www.twitch.tv/'+user+'/chat?popout='); 
+        ifrm.style.width = '800px'; 
+        ifrm.style.height = '400px'; 
+        document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
+      }
 
     toastNotify();
 }
