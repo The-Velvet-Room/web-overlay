@@ -96,7 +96,7 @@ twitchSocket.on('send twitch data', function(data) {
             var ifrm = document.createElement('iframe');
             ifrm.id = 'chat-frame';
             ifrm.setAttribute('src', 'http://www.twitch.tv/'+data.twitchUsername+'/chat?popout='); 
-            ifrm.style.width = '320px'; 
+            ifrm.style.width = '800px'; 
             ifrm.style.height = '400px'; 
             document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
       }
