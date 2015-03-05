@@ -1,0 +1,14 @@
+body {
+	margin: 0px;
+}
+
+a {
+	color: #00B7FF;
+}
+
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(https://i.imgur.com/FzXooyB.png);
+	position: relative;
+}
