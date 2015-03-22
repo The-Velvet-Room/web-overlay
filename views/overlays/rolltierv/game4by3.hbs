@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/overlays/rolltierv/game4by3.css' />
+    <link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+  	<div id="container">
+  		<div id="title" class="playertext"></div>
+  		<div id="lscore" class="playertext"></div>
+  		<div id="lplayer" class="playertext">
+        <img id="leftCharacter" style="zoom: 120%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+      </div>
+      <div id="rplayer" class="playertext">
+        <img id="rightCharacter" style="zoom: 120%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+      </div>
+  		<div id="rscore" class="playertext"></div>
+  	</div>
+    <script>
+    $(function () {
+
+      var socket = io('/overlay');
+
+      socket.on('update overlay', function(data) {
+        var leftCharIcon = document.getElementById('leftCharacter');
+        var rightCharIcon = document.getElementById('rightCharacter');
+
+        document.getElementById('title').innerText = data.title || '';
+        document.getElementById('lplayer').innerText = data.lplayer || '';
+        document.getElementById('rplayer').innerText = data.rplayer || '';
+        document.getElementById('lscore').innerText = data.lscore || '';
+        document.getElementById('rscore').innerText = data.rscore || '';
+        document.getElementById('lplayer').appendChild(leftCharIcon);
+        document.getElementById('rplayer').appendChild(rightCharIcon);
+
+        scaleFont(document.getElementById('lplayer'));
+        scaleFont(document.getElementById('rplayer'));
+
+        if(data.lCharacter) {
+          document.getElementById('leftCharacter').className = data.lCharacter;
+        }
+        else {
+          document.getElementById('leftCharacter').className = null;
+        }
+
+        if(data.rCharacter) {
+          document.getElementById('rightCharacter').className = data.rCharacter;
+        }
+        else {
+          document.getElementById('rightCharacter').className = null;
+        }
+      });
+
+      function scaleFont(element) {
+        var length = element.innerText.length;
+
+        if (length <= 7) {
+          element.style.fontSize = '42px';
+          element.style.top = '1031px';
+        }
+        else if (length <= 15){
+          element.style.fontSize = '28px';
+          element.style.top = '1039px';
+        }
+        else if(length <= 24) {
+          element.style.fontSize = '20px';
+          element.style.top = '1044px';
+        }
+        else {
+          element.style.fontSize = '14px';
+          element.style.top = '1048px';
+        }
+      }
+
+    });
+    </script>
+  </body>
+</html>
