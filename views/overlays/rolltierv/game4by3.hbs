@@ -12,12 +12,16 @@
   	<div id="container">
   		<div id="title" class="playertext"></div>
   		<div id="lscore" class="playertext"></div>
-  		<div id="lplayer" class="playertext">
+  		<div id="lplayer" class="playertext"></div>
+
+      <div id="licons">
         <img id="leftCharacter" style="zoom: 120%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
       </div>
-      <div id="rplayer" class="playertext">
+      <div id="ricons">
         <img id="rightCharacter" style="zoom: 120%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
       </div>
+
+      <div id="rplayer" class="playertext"></div>
   		<div id="rscore" class="playertext"></div>
   	</div>
     <script>
@@ -34,8 +38,6 @@
         document.getElementById('rplayer').innerText = data.rplayer || '';
         document.getElementById('lscore').innerText = data.lscore || '';
         document.getElementById('rscore').innerText = data.rscore || '';
-        document.getElementById('lplayer').appendChild(leftCharIcon);
-        document.getElementById('rplayer').appendChild(rightCharIcon);
 
         scaleFont(document.getElementById('lplayer'));
         scaleFont(document.getElementById('rplayer'));
