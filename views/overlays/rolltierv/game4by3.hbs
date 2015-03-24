@@ -11,6 +11,8 @@
   <body>
   	<div id="container">
   		<div id="title" class="playertext"></div>
+      <div id="leftPort"></div>
+      <div id="rightPort"></div>
   		<div id="lscore" class="playertext"></div>
   		<div id="lplayer" class="playertext">
         <img id="leftCharacter" style="zoom: 120%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
@@ -53,6 +55,9 @@
         else {
           document.getElementById('rightCharacter').className = null;
         }
+
+        document.getElementById('leftPort').style.backgroundColor = data.portLeft || 'transparent';
+        document.getElementById('rightPort').style.backgroundColor = data.portRight || 'transparent';
       });
 
       function scaleFont(element) {
