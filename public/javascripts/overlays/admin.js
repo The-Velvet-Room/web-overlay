@@ -1,5 +1,7 @@
 var characterLeft = null;
 var characterRight = null;
+var portLeft = null;
+var portRight = null;
 
 //array of character names
 var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
@@ -8,7 +10,9 @@ var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','k
 'little-mac','lucario', 'lucas','lucina','luigi','mario','marth','megaman','metaknight',
 'mewtwo','mii','ness','olimar','pacman','palutena','peach','pichu','pikachu','pit','rob',
 'robin','rosalina','roy','samus','sheik','shulk', 'snake','squirtle','sonic','toon-link',
-'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus']
+'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus'];
+
+var portColors = ['red','blue','yellow','green'];
 
 //Pass in either 'Left' or 'Right'
 function createCharacterList(direction) {
@@ -44,6 +48,40 @@ function createCharacterList(direction) {
 createCharacterList('Left');
 createCharacterList('Right');
 
+//Pass in either 'Left' or 'Right'
+function createPortList(direction) {
+    var selectList = document.createElement('select');
+    selectList.id = 'port'+direction;
+    document.getElementById('port'+direction+'Placeholder').appendChild(selectList);
+
+    var defaultOption = document.createElement('option');
+    defaultOption.text = 'None';
+    defaultOption.value = null;
+    selectList.appendChild(defaultOption);
+
+    for (var i=0; i < portColors.length; i++) {
+        var option = document.createElement('option');
+        option.text = i+1;
+        option.value = portColors[i];
+        selectList.appendChild(option);
+    };
+
+    $('#port'+direction).change(function(){
+        var selectedOption = $('#port'+direction+' option:selected');
+
+        if(direction == 'Left') {
+            portLeft = selectedOption.val();
+        }
+        else {
+            portRight = selectedOption.val();
+        }
+        sendUpdate();
+    });
+}
+
+createPortList('Left');
+createPortList('Right');
+
 var socket = io('/overlay');
 
 socket.on('update overlay', function(data) {
@@ -56,6 +94,8 @@ socket.on('update overlay', function(data) {
     document.getElementById('rscore').value = data.rscore || 0;
     characterLeft = data.lCharacter || null;
     characterRight = data.rCharacter || null;
+    portLeft = data.portLeft || null;
+    portRight = data.portRight || null;
 
     if(data.readyStatus) {
         document.getElementById('ready-radio-false').checked = false;
@@ -199,7 +239,9 @@ function sendUpdate() {
         'twitter': document.getElementById('twitter').value,
         'lCharacter': window.characterLeft || null,
         'rCharacter': window.characterRight || null,
-        'readyStatus': document.getElementById('ready-radio-true').checked
+        'readyStatus': document.getElementById('ready-radio-true').checked,
+        'portLeft': window.portLeft,
+        'portRight': window.portRight
     };
     socket.emit('update overlay', data);
     toastNotify();

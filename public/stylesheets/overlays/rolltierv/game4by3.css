@@ -84,3 +84,21 @@ a {
 	height: 49px;
 	text-align: center;
 }
+
+#leftPort {
+	position: absolute;
+	opacity: 0.3;
+	width: 482px;
+	height: 50px;
+	bottom: 0px;
+	left: 80px;
+}
+
+#rightPort {
+	position: absolute;
+	opacity: 0.3;
+	width: 482px;
+	height: 50px;
+	bottom: 0px;
+	left: 875px;
+}
