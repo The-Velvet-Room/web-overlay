@@ -1,0 +1,92 @@
+@import url("http://fonts.googleapis.com/css?family=Lato");
+body {
+  padding: 20px;
+  text-align: left;
+  font-family: Lato;
+  color: #fff;
+  background: #9b59b6;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: 40px;
+  font-weight: normal;
+  text-transform: uppercase;
+  float: left;
+}
+h1 span {
+  font-size: 13px;
+  display: block;
+  padding-left: 4px;
+}
+
+.tabs {
+  width: 650px;
+  float: none;
+  list-style: none;
+  position: relative;
+  margin: 80px 0 0 10px;
+  text-align: left;
+}
+.tabs li {
+  float: left;
+  display: block;
+}
+.tabs input[type="radio"] {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+.tabs label {
+  display: block;
+  padding: 14px 21px;
+  border-radius: 2px 2px 0 0;
+  font-size: 20px;
+  font-weight: normal;
+  text-transform: uppercase;
+  background: #8e44ad;
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+}
+.tabs label:hover {
+  background: #703688;
+}
+.tabs .tab-content {
+  z-index: 2;
+  display: none;
+  overflow: hidden;
+  width: 100%;
+  font-size: 17px;
+  line-height: 25px;
+  padding: 25px;
+  position: absolute;
+  top: 53px;
+  left: 0;
+  background: #612e76;
+}
+.tabs [id^="tab"]:checked + label {
+  top: 0;
+  padding-top: 17px;
+  background: #612e76;
+}
+.tabs [id^="tab"]:checked ~ [id^="tab-content"] {
+  display: block;
+}
+
+p.link {
+  clear: both;
+  margin: 380px 0 0 15px;
+}
+p.link a {
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  color: #fff;
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: #612e76;
+}
+p.link a:hover {
+  background-color: #522764;
+}
