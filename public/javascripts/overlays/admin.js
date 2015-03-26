@@ -2,6 +2,8 @@ var characterLeft = null;
 var characterRight = null;
 var portLeft = null;
 var portRight = null;
+var stateLeft = null;
+var stateRight = null;
 
 //array of character names
 var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
@@ -94,6 +96,40 @@ function createPortList(direction) {
 createPortList('Left');
 createPortList('Right');
 
+//Pass in either 'Left' or 'Right'
+function createStateList(direction) {
+    var selectList = document.createElement('select');
+    selectList.id = 'state'+direction;
+    document.getElementById('state'+direction+'Placeholder').appendChild(selectList);
+
+    var defaultOption = document.createElement('option');
+    defaultOption.text = 'None';
+    defaultOption.value = null;
+    selectList.appendChild(defaultOption);
+
+    for (var i=0; i < usStates.length; i++) {
+        var option = document.createElement('option');
+        option.text = usStates[i];
+        option.value = usStatesKeys[i];
+        selectList.appendChild(option);
+    };
+
+    $('#state'+direction).change(function(){
+        var selectedOption = $('#state'+direction+' option:selected');
+
+        if(direction == 'Left') {
+            stateLeft = selectedOption.val();
+        }
+        else {
+            stateRight = selectedOption.val();
+        }
+        sendUpdate();
+    });
+}
+
+createStateList('Left');
+createStateList('Right');
+
 var socket = io('/overlay');
 
 socket.on('update overlay', function(data) {
@@ -108,6 +144,8 @@ socket.on('update overlay', function(data) {
     characterRight = data.rCharacter || null;
     portLeft = data.portLeft || null;
     portRight = data.portRight || null;
+    stateLeft = data.stateLeft || null;
+    stateRight = data.stateRight || null;
 
     if(data.readyStatus) {
         document.getElementById('ready-radio-false').checked = false;
@@ -253,7 +291,9 @@ function sendUpdate() {
         'rCharacter': window.characterRight || null,
         'readyStatus': document.getElementById('ready-radio-true').checked,
         'portLeft': window.portLeft,
-        'portRight': window.portRight
+        'portRight': window.portRight,
+        'stateLeft': window.stateLeft,
+        'stateRight': window.stateRight
     };
     socket.emit('update overlay', data);
     toastNotify();
