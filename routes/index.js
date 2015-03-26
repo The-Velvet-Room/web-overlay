@@ -31,6 +31,11 @@ router.get('/overlays/grimetime/game4by3', function(req, res) {
 });
 
 /* GET home page. */
+router.get('/overlays/grimetime/all4by3', function(req, res) {
+  res.render('overlays/grimetime/all4by3', { title: 'Overlay', layout: false });
+});
+
+/* GET home page. */
 router.get('/overlays/grimetime/game16by9', function(req, res) {
   res.render('overlays/grimetime/game16by9', { title: 'Overlay', layout: false });
 });
@@ -50,6 +55,15 @@ router.get('/overlays/umsk/all16by9', function(req, res) {
 
 router.get('/overlays/umsk/all4by3', function(req, res) {
   res.render('overlays/umsk/all4by3', { title: 'UMSK Overlay', layout: false });
+});
+
+/*Roll Tier V*/
+router.get('/overlays/rolltierv/game4by3', function(req, res) {
+  res.render('overlays/rolltierv/game4by3', { title: 'Roll Tier V Overlay', layout: false });
+});
+
+router.get('/overlays/rolltierv/all4by3', function(req, res) {
+  res.render('overlays/rolltierv/all4by3', { title: 'Roll Tier V Overlay', layout: false });
 });
 
 /* GET commentators. */

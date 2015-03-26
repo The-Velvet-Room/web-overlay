@@ -57,6 +57,16 @@
 		</tr>
 		<tr>
 			<td>
+				<label>Left Port:</label>
+				<p id="portLeftPlaceholder"></p>
+			</td>
+			<td>
+				<label>Right Port:</label>
+				<p id="portRightPlaceholder"></p>
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<label>Left Character:</label>
 				<p id="charListLeftPlaceholder"></p>
 			</td>
@@ -77,6 +87,7 @@
 <!--Twitch Form-->
 <form action="javascript:sendTwitchUpdate()">
 	<h2>Twitch</h2>
+	<div id='twitch-chat-placeholder' class="requires-twitch hide-by-default"></div>
 	<p>
 		<label for="twitchUsername">
 			Twitch username:
