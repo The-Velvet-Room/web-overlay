@@ -102,3 +102,26 @@ a {
 	bottom: 0px;
 	left: 875px;
 }
+
+@font-face {
+	font-family: 'state-font';
+	src: url(/fonts/StateFace-Regular.otf) format('opentype');
+}
+
+#leftState {
+	font-family: 'state-font';
+	color: white;
+	position: absolute;
+	bottom: 5px;
+	left: -25px;
+	font-size: 22px;
+}
+
+#rightState {
+	font-family: 'state-font';
+	color: white;
+	position: absolute;
+	bottom: 5px;
+	left: 30px;
+	font-size: 22px;
+}
