@@ -187,7 +187,7 @@ twitchSocket.on('send twitch data', function(data) {
             var ifrm = document.createElement('iframe');
             ifrm.id = 'chat-frame';
             ifrm.setAttribute('src', 'http://www.twitch.tv/'+data.twitchUsername+'/chat?popout='); 
-            ifrm.style.width = '800px'; 
+            ifrm.style.width = '600px'; 
             ifrm.style.height = '400px'; 
             document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
       }
@@ -425,3 +425,18 @@ function toggleNightMode() {
     body.style.color = 'white';
     body.style.background = 'black';
 }
+
+jQuery(document).ready(function() {
+    jQuery('.tabs .tab-links a').on('click', function(e)  {
+        var currentAttrValue = jQuery(this).attr('href');
+ 
+        // Show/Hide Tabs
+        jQuery('.tabs ' + currentAttrValue).siblings().slideUp(200);
+        jQuery('.tabs ' + currentAttrValue).delay(200).slideDown(200);
+ 
+        // Change/remove current tab to active
+        jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+ 
+        e.preventDefault();
+    });
+});

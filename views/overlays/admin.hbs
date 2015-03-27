@@ -1,167 +1,185 @@
 <h1>{{title}}</h1>
 <div id="info" style="display:none;">Overlay Updated!</div>
-<form action="javascript:sendUpdate()">
-	<p>
-		<label for="title">
-			Title
-			<input id="title"></input>
-		</label>
 
-		<input id="ready-radio-false" type="radio" name="readyStatus" value="false" onchange="sendUpdate()" checked>
-      Not Ready
-      <input id="ready-radio-true" type="radio" name="readyStatus" value="true" onchange="sendUpdate()">
-      Ready
-	</p>
+<div class="tabs">
+    <ul class="tab-links">
+        <li class="active"><a href="#tab1">Main</a></li>
+        <li><a href="#tab2">Twitch</a></li>
+        <li><a href="#tab3">Challonge</a></li>
+    </ul>
+ 
+    <div class="tab-content">
+        <div id="tab1" class="tab active">
+            <form action="javascript:sendUpdate()">
+                <p>
+                    <label for="title">
+                        Title
+                        <input id="title"></input>
+                    </label>
 
-	<p>
-		<label for="commentators">
-			Commentators
-			<input id="commentators"></input>
-		</label>
-		
-		<label for="twitter">
-			Twitter Handles
-			<input id="twitter"></input>
-		</label>
-	</p>
-	<table border="2">
-		<tr>
-			<td>
-			<label for="lplayer">
-				Left player:
-				<input id="lplayer"></input>
-			</label>
-			</td>
-			<td>
-				<label for="rplayer">
-					Right player:
-					<input id="rplayer"></input>
-				</label>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label for="lscore">
-					Left score:
-					<input type="number" id="lscore"></input>
-				</label>
-				<button type="button" onclick="plusOneLeft()">+1</button>
-			</td>
-			<td>
-				<label for="rscore">
-					Right score:
-					<input type="number" id="rscore"></input>
-				</label>
-				<button type="button" onclick="plusOneRight()">+1</button>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>Left Port:</label>
-				<p id="portLeftPlaceholder"></p>
-			</td>
-			<td>
-				<label>Right Port:</label>
-				<p id="portRightPlaceholder"></p>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<label>Left Character:</label>
-				<p id="charListLeftPlaceholder"></p>
-			</td>
-			<td>
-				<label>Right Character:</label>
-				<p id="charListRightPlaceholder"></p>
-			</td>
-		</tr>
-		<tr>
- 			<td>
-				<label>Left Home State:</label>
-				<p id="stateLeftPlaceholder"></p>
-			</td>
-			<td>
-				<label>Right Home State:</label>
-				<p id="stateRightPlaceholder"></p>
-			</td>
-		</tr>
-	</table>
-	<p>
-	<button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
-	<button type="button" onclick="swapNames()">Swap Names</button>
-	<button type="button" onclick="zeroScores()">Zero Scores</button>
-	<input type="submit"/>
-	</p>
-</form>
+                    <input id="ready-radio-false" type="radio" name="readyStatus" value="false" onchange="sendUpdate()" checked>
+                  Not Ready
+                  <input id="ready-radio-true" type="radio" name="readyStatus" value="true" onchange="sendUpdate()">
+                  Ready
+                </p>
 
-<!--Twitch Form-->
-<form action="javascript:sendTwitchUpdate()">
-	<h2>Twitch</h2>
-	<div id='twitch-chat-placeholder' class="requires-twitch hide-by-default"></div>
-	<p>
-		<label for="twitchUsername">
-			Twitch username:
-			<input id="twitchUsername"></input>
-		</label>
-	</p>
-	<p class="requires-twitch hide-by-default">
-		<label for="twitchStatus">
-			Status:
-			<input id="twitchStatus" style="width: 90%"></input>
-		</label>
-	</p>
-	<p class="requires-twitch hide-by-default">
-		<label for="twitchGame">
-			Playing:
-			<input id="twitchGame"></input>
-		</label>
-	</p>
-	<p class="requires-twitch hide-by-default">
-	<label for="twitchViewers">
-		Current Viewers:
-		<input id="twitchViewers" class="twitch-pollable"></input>
-	</label>
-	<label for="twitchPeakViewers hide-by-default">
-		Peak Viewers:
-		<input id="twitchPeakViewers" class="twitch-pollable"></input>
-	</label>
-	</p>
-	<p class="requires-twitch hide-by-default">
-	<label for="twitchFollowers">
-		Followers:
-		<input id="twitchFollowers" class="twitch-pollable"></input>
-	</label>
-	<label for="twitchLastFollower">
-		Most Recent:
-		<input id="twitchLastFollower" class="twitch-pollable"></input>
-	</label>
-	</p>
-	<p>
-	<input type="submit"/>
-	</p>
-</form>
+                <p>
+                    <label for="commentators">
+                        Commentators
+                        <input id="commentators"></input>
+                    </label>
+                    
+                    <label for="twitter">
+                        Twitter Handles
+                        <input id="twitter"></input>
+                    </label>
+                </p>
+                <table border="2">
+                    <tr>
+                        <td>
+                        <label for="lplayer">
+                            Left player:
+                            <input id="lplayer"></input>
+                        </label>
+                        </td>
+                        <td>
+                            <label for="rplayer">
+                                Right player:
+                                <input id="rplayer"></input>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="lscore">
+                                Left score:
+                                <input type="number" id="lscore"></input>
+                            </label>
+                            <button type="button" onclick="plusOneLeft()">+1</button>
+                        </td>
+                        <td>
+                            <label for="rscore">
+                                Right score:
+                                <input type="number" id="rscore"></input>
+                            </label>
+                            <button type="button" onclick="plusOneRight()">+1</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Left Port:</label>
+                            <p id="portLeftPlaceholder"></p>
+                        </td>
+                        <td>
+                            <label>Right Port:</label>
+                            <p id="portRightPlaceholder"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Left Character:</label>
+                            <p id="charListLeftPlaceholder"></p>
+                        </td>
+                        <td>
+                            <label>Right Character:</label>
+                            <p id="charListRightPlaceholder"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Left Home State:</label>
+                            <p id="stateLeftPlaceholder"></p>
+                        </td>
+                        <td>
+                            <label>Right Home State:</label>
+                            <p id="stateRightPlaceholder"></p>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                <button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
+                <button type="button" onclick="swapNames()">Swap Names</button>
+                <button type="button" onclick="zeroScores()">Zero Scores</button>
+                <input type="submit"/>
+                </p>
+            </form>
+        </div>
+ 
+        <div id="tab2" class="tab">
+            <!--Twitch Form-->
+            <form action="javascript:sendTwitchUpdate()">
+                <h2>Twitch</h2>
+                <div id='twitch-chat-placeholder' class="requires-twitch hide-by-default"></div>
+                <p>
+                    <label for="twitchUsername">
+                        Twitch username:
+                        <input id="twitchUsername"></input>
+                    </label>
+                </p>
+                <p class="requires-twitch hide-by-default">
+                    <label for="twitchStatus">
+                        Status:
+                        <input id="twitchStatus" style="width: 90%"></input>
+                    </label>
+                </p>
+                <p class="requires-twitch hide-by-default">
+                    <label for="twitchGame">
+                        Playing:
+                        <input id="twitchGame"></input>
+                    </label>
+                </p>
+                <p class="requires-twitch hide-by-default">
+                <label for="twitchViewers">
+                    Current Viewers:
+                    <input id="twitchViewers" class="twitch-pollable"></input>
+                </label>
+                <label for="twitchPeakViewers hide-by-default">
+                    Peak Viewers:
+                    <input id="twitchPeakViewers" class="twitch-pollable"></input>
+                </label>
+                </p>
+                <p class="requires-twitch hide-by-default">
+                <label for="twitchFollowers">
+                    Followers:
+                    <input id="twitchFollowers" class="twitch-pollable"></input>
+                </label>
+                <label for="twitchLastFollower">
+                    Most Recent:
+                    <input id="twitchLastFollower" class="twitch-pollable"></input>
+                </label>
+                </p>
+                <p>
+                <input type="submit"/>
+                </p>
+            </form>
+        </div>
+ 
+        <div id="tab3" class="tab">
+            <!--Challonge Form-->
+            <form action="javascript:sendChallongeUpdate()">
+                <h2>Challonge</h2>
+                <p>
+                    <label for="challongeUrl">
+                        Challonge URL:
+                        <input id="challongeUrl"></input>
+                    </label>
 
-<!--Challonge Form-->
-<form action="javascript:sendChallongeUpdate()">
-	<h2>Challonge</h2>
-	<p>
-		<label for="challongeUrl">
-			Challonge URL:
-			<input id="challongeUrl"></input>
-		</label>
+                    <label for="challongeApiHash">
+                        Challonge Api Hash:
+                        <input id="challongeApiHash"></input>
+                    </label>
+                </p>
+                <p id="challongeMatchListPlaceholder"></p>
+                <p id="challongeEmbedPlaceholder"></p>
+                <p>
+                <input type="submit"/>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
 
-		<label for="challongeApiHash">
-			Challonge Api Hash:
-			<input id="challongeApiHash"></input>
-		</label>
-	</p>
-	<p id="challongeMatchListPlaceholder"></p>
-	<p id="challongeEmbedPlaceholder"></p>
-	<p>
-	<input type="submit"/>
-	</p>
-</form>
-
+<link rel='stylesheet' href='/stylesheets/overlays/admin.css' />
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/overlays/admin.js"></script>
