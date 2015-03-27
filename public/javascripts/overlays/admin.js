@@ -186,10 +186,10 @@ twitchSocket.on('send twitch data', function(data) {
             currentTwitchUsername = data.twitchUsername;
             var ifrm = document.createElement('iframe');
             ifrm.id = 'chat-frame';
-            ifrm.setAttribute('src', 'http://www.twitch.tv/'+data.twitchUsername+'/chat?popout='); 
-            ifrm.style.width = '600px'; 
-            ifrm.style.height = '400px'; 
-            document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
+            ifrm.setAttribute('src', 'http://www.twitch.tv/'+data.twitchUsername+'/chat?popout=');
+            ifrm.style.width = '600px';
+            ifrm.style.height = '400px';
+            document.getElementById('twitch-chat-placeholder').appendChild(ifrm);
       }
 
     if (data.twitchUsername) {
@@ -245,6 +245,14 @@ challongeSocket.on('update challonge', function(data){
     if (data.upcomingMatches) {
         challongeMatches = data.upcomingMatches;
         createMatchList(data.players);
+    }
+
+    if (!data.challongeUrl) {
+        document.getElementById('challongeUrl').value = data.challongeUrl || '';
+        document.getElementById('challongeApiHash').value = data.challongeApiHash || '';
+        challongeUrl = '';
+        $('#challongeEmbedPlaceholder').empty();
+        $('#challongeMatchListPlaceholder').empty();
     }
 });
 
@@ -322,10 +330,10 @@ function sendTwitchUpdate() {
         currentTwitchUsername = user;
         var ifrm = document.createElement('iframe');
         ifrm.id = 'chat-frame';
-        ifrm.setAttribute('src', 'http://www.twitch.tv/'+user+'/chat?popout='); 
-        ifrm.style.width = '800px'; 
-        ifrm.style.height = '400px'; 
-        document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
+        ifrm.setAttribute('src', 'http://www.twitch.tv/'+user+'/chat?popout=');
+        ifrm.style.width = '800px';
+        ifrm.style.height = '400px';
+        document.getElementById('twitch-chat-placeholder').appendChild(ifrm);
       }
 
     toastNotify();
@@ -426,17 +434,26 @@ function toggleNightMode() {
     body.style.background = 'black';
 }
 
-jQuery(document).ready(function() {
-    jQuery('.tabs .tab-links a').on('click', function(e)  {
-        var currentAttrValue = jQuery(this).attr('href');
- 
+$(function() {
+    $('.tabs .tab-links a').on('click', function(e)  {
+        var currentAttrValue = $(this).attr('href');
+
         // Show/Hide Tabs
-        jQuery('.tabs ' + currentAttrValue).siblings().slideUp(200);
-        jQuery('.tabs ' + currentAttrValue).delay(200).slideDown(200);
- 
+        $('.tabs ' + currentAttrValue).siblings().slideUp(200);
+        $('.tabs ' + currentAttrValue).delay(200).slideDown(200);
+
         // Change/remove current tab to active
-        jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
- 
+        $(this).parent('li').addClass('active').siblings().removeClass('active');
+
         e.preventDefault();
+    });
+    $('#twitch-reset').click(function() {
+        twitchSocket.emit('reset peak viewers');
+    });
+    $('#twitch-log-out').click(function() {
+        twitchSocket.emit('log out');
+    });
+    $('#challonge-clear-bracket').click(function() {
+        challongeSocket.emit('clear bracket');
     });
 });

@@ -56,11 +56,15 @@ module.exports = function(io) {
                     availableMatchesCache = [];
                     challongeHash = createChallongeHash(challongeData.challongeUrl);
                     challongeData.challongeApiHash = challongeHash;
-                    client.set(redisKey, JSON.stringify(challongeData));
                     clearTimeout(timeout);
                     pollChallonge();
+                    client.set(redisKey, JSON.stringify(challongeData));
                 }
             }
+        });
+
+        socket.on('clear bracket', function() {
+            clearBracket();
         });
 
         function pollChallonge() {
@@ -153,6 +157,18 @@ module.exports = function(io) {
                 }
             }
             return false;
+        }
+
+        function clearBracket() {
+            console.log('Clearing challonge data');
+            challongeHash = null;
+            challongeData = {};
+            matches = [];
+            players = [];
+            availableMatchesCache = [];
+            clearTimeout(timeout);
+            socket.emit('update challonge', challongeData);
+            client.set(redisKey, JSON.stringify(challongeData));
         }
     });
 };

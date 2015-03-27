@@ -7,7 +7,7 @@
         <li><a href="#tab2">Twitch</a></li>
         <li><a href="#tab3">Challonge</a></li>
     </ul>
- 
+
     <div class="tab-content">
         <div id="tab1" class="tab active">
             <form action="javascript:sendUpdate()">
@@ -28,7 +28,7 @@
                         Commentators
                         <input id="commentators"></input>
                     </label>
-                    
+
                     <label for="twitter">
                         Twitter Handles
                         <input id="twitter"></input>
@@ -104,7 +104,7 @@
                 </p>
             </form>
         </div>
- 
+
         <div id="tab2" class="tab">
             <!--Twitch Form-->
             <form action="javascript:sendTwitchUpdate()">
@@ -152,8 +152,10 @@
                 <input type="submit"/>
                 </p>
             </form>
+            <button id="twitch-log-out">Log Out</button>
+            <button id="twitch-reset">Reset Peak Viewers</button>
         </div>
- 
+
         <div id="tab3" class="tab">
             <!--Challonge Form-->
             <form action="javascript:sendChallongeUpdate()">
@@ -175,6 +177,7 @@
                 <input type="submit"/>
                 </p>
             </form>
+            <button id="challonge-clear-bracket">Clear Bracket</button>
         </div>
     </div>
 </div>

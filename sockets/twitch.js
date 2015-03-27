@@ -54,6 +54,14 @@ module.exports = function(io) {
             updateTwitchData(data.game, data.status);
         });
 
+        socket.on('reset peak viewers', function () {
+            resetPeakViewers();
+        });
+
+        socket.on('log out', function () {
+            logOut();
+        });
+
         function pollTwitch() {
             if (connectedSockets > 0 && twitchData.twitchUsername) {
                 getTwitchPollableData();
@@ -242,6 +250,23 @@ module.exports = function(io) {
                     console.log('Status updated');
                 }
             });
+        }
+
+        function resetPeakViewers() {
+            twitchData.twitchPeakViewers = twitchData.twitchViewers;
+            twitchIO.emit('update twitch viewers', {
+                'viewers': twitchData.twitchViewers,
+                'peakViewers': twitchData.twitchPeakViewers
+            });
+            client.set(redisKey, JSON.stringify(twitchData));
+        }
+
+        function logOut() {
+            console.log('Clearing twitch data');
+            twitchData = {};
+            clearTimeout(timeout);
+            socket.emit('send twitch data', twitchData);
+            client.set(redisKey, JSON.stringify(twitchData));
         }
 
     });
