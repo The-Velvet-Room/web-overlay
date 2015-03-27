@@ -1,92 +1,60 @@
-@import url("http://fonts.googleapis.com/css?family=Lato");
 body {
-  padding: 20px;
-  text-align: left;
-  font-family: Lato;
-  color: #fff;
-  background: #9b59b6;
+    background: #DCDCDC;
 }
 
-h1 {
-  font-weight: normal;
-  font-size: 40px;
-  font-weight: normal;
-  text-transform: uppercase;
-  float: left;
-}
-h1 span {
-  font-size: 13px;
-  display: block;
-  padding-left: 4px;
-}
-
+/*----- Tabs -----*/
 .tabs {
-  width: 650px;
-  float: none;
-  list-style: none;
-  position: relative;
-  margin: 80px 0 0 10px;
-  text-align: left;
+    width:100%;
+    display:inline-block;
 }
-.tabs li {
-  float: left;
-  display: block;
-}
-.tabs input[type="radio"] {
-  position: absolute;
-  top: -9999px;
-  left: -9999px;
-}
-.tabs label {
-  display: block;
-  padding: 14px 21px;
-  border-radius: 2px 2px 0 0;
-  font-size: 20px;
-  font-weight: normal;
-  text-transform: uppercase;
-  background: #8e44ad;
-  cursor: pointer;
-  position: relative;
-  top: 4px;
-}
-.tabs label:hover {
-  background: #703688;
-}
-.tabs .tab-content {
-  z-index: 2;
-  display: none;
-  overflow: hidden;
-  width: 100%;
-  font-size: 17px;
-  line-height: 25px;
-  padding: 25px;
-  position: absolute;
-  top: 53px;
-  left: 0;
-  background: #612e76;
-}
-.tabs [id^="tab"]:checked + label {
-  top: 0;
-  padding-top: 17px;
-  background: #612e76;
-}
-.tabs [id^="tab"]:checked ~ [id^="tab-content"] {
-  display: block;
-}
-
-p.link {
-  clear: both;
-  margin: 380px 0 0 15px;
-}
-p.link a {
-  text-transform: uppercase;
-  text-decoration: none;
-  display: inline-block;
-  color: #fff;
-  padding: 5px 10px;
-  margin: 0 5px;
-  background-color: #612e76;
-}
-p.link a:hover {
-  background-color: #522764;
-}
+ 
+    /*----- Tab Links -----*/
+    /* Clearfix */
+    .tab-links:after {
+        display:block;
+        clear:both;
+        content:'';
+    }
+ 
+    .tab-links li {
+        margin:0px 5px;
+        float:left;
+        list-style:none;
+    }
+ 
+        .tab-links a {
+            padding:9px 15px;
+            display:inline-block;
+            border-radius:3px 3px 0px 0px;
+            background:#7FB5DA;
+            font-size:16px;
+            font-weight:600;
+            color:#4c4c4c;
+            transition:all linear 0.15s;
+        }
+ 
+        .tab-links a:hover {
+            background:#a7cce5;
+            text-decoration:none;
+        }
+ 
+    li.active a, li.active a:hover {
+        background:#fff;
+        color:#4c4c4c;
+    }
+ 
+    /*----- Content of Tabs -----*/
+    .tab-content {
+        padding:15px;
+        border-radius:3px;
+        box-shadow:-1px 1px 1px rgba(0,0,0,0.15);
+        background:#fff;
+    }
+ 
+        .tab {
+            display:none;
+        }
+ 
+        .tab.active {
+            display:block;
+        }
