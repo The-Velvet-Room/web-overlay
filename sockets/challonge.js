@@ -1,5 +1,9 @@
 var config = require('../config');
 var request = require('request');
+var redis = require('redis');
+
+var client = redis.createClient();
+var redisKey = 'web-overlay-challonge';
 
 module.exports = function(io) {
     var challongeData = {};
@@ -12,6 +16,16 @@ module.exports = function(io) {
     //Used to check for updates
     var availableMatchesCache = [];
     var timeout = null;
+
+    // Load existing challonge data
+    client.get(redisKey, function (err, reply) {
+        if (err) {
+            console.log(err);
+        } else if (reply) {
+            challongeData = JSON.parse(reply);
+            challongeHash = challongeData.challongeApiHash;
+        }
+    });
 
     var challongeIO = io.of('/challonge');
 
@@ -42,6 +56,7 @@ module.exports = function(io) {
                     availableMatchesCache = [];
                     challongeHash = createChallongeHash(challongeData.challongeUrl);
                     challongeData.challongeApiHash = challongeHash;
+                    client.set(redisKey, JSON.stringify(challongeData));
                     clearTimeout(timeout);
                     pollChallonge();
                 }
@@ -50,14 +65,10 @@ module.exports = function(io) {
 
         function pollChallonge() {
             if (connectedSockets > 0 && challongeHash) {
-                getChallongePollableData(challongeData);
+                console.log('Polling challonge for updates...');
+                fetchChallongeData();
                 timeout = setTimeout(pollChallonge, challongePollFrequency);
             }
-        }
-
-        function getChallongePollableData(data) {
-            console.log('Polling challonge for updates...');
-            fetchChallongeData();
         }
 
         function sendChallongeUpdate() {
@@ -68,6 +79,7 @@ module.exports = function(io) {
                 console.log('Sending challonge update');
                 challongeIO.emit('update challonge', challongeData);
             }
+            client.set(redisKey, JSON.stringify(challongeData));
         }
 
         function fetchChallongeData() {
@@ -84,7 +96,7 @@ module.exports = function(io) {
             console.log('Requesting tournament data for ' + challongeData.challongeUrl);
 
             request(options, function (error, response, body) {
-                console.log('Challonge Response: '+response.statusCode);
+                console.log('Challonge Response: ' + response.statusCode);
                 if (!error && response.statusCode === 200) {
                     var challongeResponse = JSON.parse(body);
                     matches = challongeResponse.tournament.matches;
