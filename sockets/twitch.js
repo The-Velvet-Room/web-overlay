@@ -1,5 +1,9 @@
 var config = require('../config');
 var request = require('request');
+var redis = require('redis');
+
+var client = redis.createClient();
+var redisKey = 'web-overlay-twitch';
 
 module.exports = function(io) {
     var twitchData = {};
@@ -9,6 +13,15 @@ module.exports = function(io) {
     var timeout = null;
 
     var twitchIO = io.of('/twitch');
+
+    // Load existing twitch data
+    client.get(redisKey, function (err, reply) {
+        if (err) {
+            console.log(err);
+        } else if (reply) {
+            twitchData = JSON.parse(reply);
+        }
+    });
 
     twitchIO.on('connection', function (socket) {
         // Log the new connection
@@ -41,6 +54,14 @@ module.exports = function(io) {
             updateTwitchData(data.game, data.status);
         });
 
+        socket.on('reset peak viewers', function () {
+            resetPeakViewers();
+        });
+
+        socket.on('log out', function () {
+            logOut();
+        });
+
         function pollTwitch() {
             if (connectedSockets > 0 && twitchData.twitchUsername) {
                 getTwitchPollableData();
@@ -61,6 +82,7 @@ module.exports = function(io) {
                 'followers': followers,
                 'lastFollower': lastFollower
             });
+            client.set(redisKey, JSON.stringify(twitchData));
         }
 
         function getTwitchFollowerData() {
@@ -99,6 +121,7 @@ module.exports = function(io) {
                 'viewers': viewers,
                 'peakViewers': twitchData.twitchPeakViewers
             });
+            client.set(redisKey, JSON.stringify(twitchData));
         }
 
         function getTwitchViewerData() {
@@ -141,6 +164,7 @@ module.exports = function(io) {
                 'status': status,
                 'username': twitchData.twitchUsername
             });
+            client.set(redisKey, JSON.stringify(twitchData));
         }
 
         function initializeTwitchData() {
@@ -226,6 +250,23 @@ module.exports = function(io) {
                     console.log('Status updated');
                 }
             });
+        }
+
+        function resetPeakViewers() {
+            twitchData.twitchPeakViewers = twitchData.twitchViewers;
+            twitchIO.emit('update twitch viewers', {
+                'viewers': twitchData.twitchViewers,
+                'peakViewers': twitchData.twitchPeakViewers
+            });
+            client.set(redisKey, JSON.stringify(twitchData));
+        }
+
+        function logOut() {
+            console.log('Clearing twitch data');
+            twitchData = {};
+            clearTimeout(timeout);
+            socket.emit('send twitch data', twitchData);
+            client.set(redisKey, JSON.stringify(twitchData));
         }
 
     });

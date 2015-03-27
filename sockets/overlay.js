@@ -1,6 +1,9 @@
-module.exports = function (io) {
+var redis = require('redis');
 
-  var data = {};
+var client = redis.createClient();
+var redisKey = 'web-overlay-overlay';
+
+module.exports = function (io) {
 
   var overlay = io.of('/overlay');
 
@@ -9,16 +12,22 @@ module.exports = function (io) {
     console.log('overlay user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
     // Send out existing data to the new connection
-    socket.emit('update overlay', data);
+    client.get(redisKey, function (err, reply) {
+      if (err) {
+        console.log(err);
+      } else if (reply) {
+        socket.emit('update overlay', JSON.parse(reply));
+      }
+    });
 
     socket.on('disconnect', function() {
       console.log('overlay user disconnected: ' + socket.handshake.address);
     });
 
     socket.on('update overlay', function(msg) {
-      data = msg;
-      overlay.emit('update overlay', data);
-      console.log('update overlay: ' + JSON.stringify(data));
+      client.set(redisKey, JSON.stringify(msg));
+      overlay.emit('update overlay', msg);
+      console.log('update overlay: ' + JSON.stringify(msg));
     });
   });
 
