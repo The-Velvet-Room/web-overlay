@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/overlays/twitter.css' />
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+  	<div id="container">
+  		<div id="twitter" class="playertext"></div>
+  	</div>
+    <script>
+		var socket = io('/overlay');
+
+		socket.on('update overlay', function(data) {
+      console.log(data);
+			document.getElementById('twitter').innerText = data.twitter || '';
+		});
+    </script>
+  </body>
+</html>
