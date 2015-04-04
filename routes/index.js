@@ -66,6 +66,15 @@ router.get('/overlays/rolltierv/all4by3', function(req, res) {
   res.render('overlays/rolltierv/all4by3', { title: 'Roll Tier V Overlay', layout: false });
 });
 
+/*Spring Showdown*/
+router.get('/overlays/springshowdown/game4by3', function(req, res) {
+  res.render('overlays/springshowdown/game4by3', { title: 'Spring Showdown Overlay', layout: false });
+});
+
+router.get('/overlays/springshowdown/all4by3', function(req, res) {
+  res.render('overlays/springshowdown/all4by3', { title: 'Spring Showdown Overlay', layout: false });
+});
+
 /* GET commentators. */
 router.get('/overlays/commentators', function(req, res) {
   res.render('overlays/commentators', { title: 'Overlay', layout: false });
