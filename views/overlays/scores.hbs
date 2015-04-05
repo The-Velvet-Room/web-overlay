@@ -2,8 +2,6 @@
 	<link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
 </head>
 
-<div id='twitch-chat-placeholder' style="float: right;"></div>
-
 <h1 id="title"></h1>
 
 <table border="2" style="text-align: center;">
@@ -25,13 +23,13 @@
 
 	<tr>
 		<td>
-			<h3><span id="lscore"></span></h3>
+			<h1><span id="lscore"></span></h1>
 		</td>
 		<th>
 			-
 		</th>
 		<td>
-			<h3><span id="rscore"></span></h3>
+			<h1><span id="rscore"></span></h1>
 		</td>
 	</tr>
 </table>
@@ -85,26 +83,6 @@
 	twitchSocket.on('send twitch data', function(data) {
 		document.getElementById('twitchViewers').value = data.twitchViewers || 'offline';
 		document.getElementById('twitchPeakViewers').value = data.twitchPeakViewers || 'offline';
-	});
-
-	twitchSocket.on('send twitch data', function(data){
-		console.log(data);
-		if(currentTwitchUsername && data.twitchUsername != currentTwitchUsername) {
-			var chatFrame = document.getElementById('chat-frame');
-			document.getElementById('twitch-chat-placeholder').removeChild(chatFrame);
-			currentTwitchUsername = null;
-			console.log('Username changed');
-		}
-
-		if(data.twitchUsername && !currentTwitchUsername) {
-			currentTwitchUsername = data.twitchUsername;
-	        var ifrm = document.createElement('iframe');
-	        ifrm.id = 'chat-frame';
-	        ifrm.setAttribute('src', 'http://www.twitch.tv/'+data.twitchUsername+'/chat?popout='); 
-	        ifrm.style.width = '320px'; 
-	        ifrm.style.height = '800px'; 
-        	document.getElementById('twitch-chat-placeholder').appendChild(ifrm); 
-      }
 	});
 
 	twitchSocket.on('update twitch viewers', function(data){
