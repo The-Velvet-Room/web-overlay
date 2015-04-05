@@ -2,6 +2,9 @@
 <html>
   <head>
     <title>{{title}}</title>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
     <link rel='stylesheet' href='/stylesheets/overlays/commentators.css' />
     <script src="/socket.io/socket.io.js"></script>
   </head>
@@ -10,11 +13,54 @@
   		<div id="commentators" class="playertext"></div>
   	</div>
     <script>
+    var processedFollowers = [];
 		var socket = io('/overlay');
 
 		socket.on('update overlay', function(data) {
 			document.getElementById('commentators').innerText = data.commentators || '';
 		});
+
+    var twitchSocket = io('/twitch');
+
+    twitchSocket.on('send twitch data', function(data){
+      console.log(data);
+        if(!data.newFollowers) {
+          console.log('No new followers found.');
+          return;
+        }
+
+        if(!toastr) {
+          console.log('Toastr not loaded');
+          return;
+        }
+
+        toastr.options = {
+              "closeButton": false,
+              "debug": true,
+              "newestOnTop": true,
+              "progressBar": true,
+              "positionClass": "toast-top-right",
+              "preventDuplicates": false,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "60000",
+              "extendedTimeOut": "60000",
+              "showEasing": "swing",
+              "hideEasing": "swing",
+              "showMethod": "slideDown",
+              "hideMethod": "fadeOut"
+            }
+
+        for(var i=0; i<data.newFollowers.length; i++) {
+          if(processedFollowers.indexOf(data.newFollowers[i]) == -1) {
+
+            console.log('Beginning to process followers:');
+            toastr['info'](data.newFollowers[i], "New follower!");
+            processedFollowers.push(data.newFollowers[i]);
+            console.log('Processed '+data.newFollowers[i]);
+          }
+        }
+    });
     </script>
   </body>
 </html>

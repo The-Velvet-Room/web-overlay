@@ -469,6 +469,12 @@ $(function() {
     $('#twitch-log-out').click(function() {
         twitchSocket.emit('log out');
     });
+
+    $('#twitch-process-followers').click(function() {
+        console.log('Follower processing requested...');
+        twitchSocket.emit('process followers');
+    });
+
     $('#challonge-clear-bracket').click(function() {
         challongeSocket.emit('clear bracket');
     });
