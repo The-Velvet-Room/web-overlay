@@ -61,6 +61,7 @@
                                 <input type="number" id="lscore"></input>
                             </label>
                             <button type="button" onclick="plusOneLeft()">+1</button>
+                            <button type="button" onclick="minusOneLeft()">-1</button>
                         </td>
                         <td>
                             <label for="rscore">
@@ -68,6 +69,7 @@
                                 <input type="number" id="rscore"></input>
                             </label>
                             <button type="button" onclick="plusOneRight()">+1</button>
+                            <button type="button" onclick="minusOneRight()">-1</button>
                         </td>
                     </tr>
                     <tr>
@@ -188,6 +190,8 @@
 </div>
 
 <link rel='stylesheet' href='/stylesheets/overlays/admin.css' />
+<link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' />
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="/javascripts/overlays/admin.js"></script>
