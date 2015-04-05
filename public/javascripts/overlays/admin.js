@@ -136,6 +136,7 @@ socket.on('update overlay', function(data) {
     document.getElementById('lplayer').value = data.lplayer || '';
     document.getElementById('rplayer').value = data.rplayer || '';
     document.getElementById('title').value = data.title || '';
+    document.getElementById('tourneyInfo').value = data.tourneyInfo || '';
     document.getElementById('commentators').value = data.commentators || '';
     document.getElementById('twitter').value = data.twitter || '';
     document.getElementById('lscore').value = data.lscore || 0;
@@ -291,6 +292,7 @@ function sendUpdate() {
         'lplayer': document.getElementById('lplayer').value,
         'rplayer': document.getElementById('rplayer').value,
         'title': document.getElementById('title').value,
+        'tourneyInfo': document.getElementById('tourneyInfo').value,
         'lscore': document.getElementById('lscore').value,
         'rscore': document.getElementById('rscore').value,
         'commentators': document.getElementById('commentators').value,
