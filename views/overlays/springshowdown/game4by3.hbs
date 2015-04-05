@@ -82,7 +82,8 @@
         document.getElementById('rightState').innerText = data.stateRight || '';
       });
 
-      function scaleFont(element, newLength) {
+      function scaleFont(jQueryElement, newLength) {
+        var element = jQueryElement.get()[0];
         var length = newLength;
         console.log(length);
 
@@ -104,21 +105,19 @@
         }
       }
 
-      $('#lplayer').bind('newName', function(e, newText){
-        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
-            $(this).text(newText);
-          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+      function createNameChangeEventListener(jQuerySelector) {
+        var element = $(jQuerySelector);
+        element.bind('newName', function(e, newText){
+            $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+                $(this).text(newText);
+              }).animate({'opacity': '1', 'margin-left': '0'}, 350);
 
-         scaleFont(document.getElementById('lplayer'), newText.length);
-      });
+             scaleFont(element, newText.length);
+          });
+      }
 
-      $('#rplayer').bind('newName', function(e, newText){
-        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
-            $(this).text(newText);
-          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
-
-         scaleFont(document.getElementById('rplayer'), newText.length);
-      });
+      createNameChangeEventListener('#lplayer');
+      createNameChangeEventListener('#rplayer');
 
       $('.playertext').bind('textChanged', function(e, newText){
         $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
