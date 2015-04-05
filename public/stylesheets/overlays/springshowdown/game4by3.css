@@ -30,7 +30,7 @@ a {
 #lplayer {
 	top: 1030px;
 	left: 10px;
-	height: 40px;
+	height: 60px;
 	width: 429px;
 	text-align: center;
 }
@@ -54,7 +54,7 @@ a {
 
 #rplayer {
 	top: 1031px;
-	height: 49px;
+	height: 60px;
 	left: 1000px;
 	width: 429px;
 	text-align: center;

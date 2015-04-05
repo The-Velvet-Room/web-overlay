@@ -263,9 +263,21 @@ function plusOneLeft() {
     sendUpdate();
 }
 
+function minusOneLeft() {
+    var numVal = parseInt(document.getElementById('lscore').value);
+    document.getElementById('lscore').value = numVal - 1;
+    sendUpdate();
+}
+
 function plusOneRight() {
     var numVal = parseInt(document.getElementById('rscore').value);
     document.getElementById('rscore').value = numVal + 1;
+    sendUpdate();
+}
+
+function minusOneRight() {
+    var numVal = parseInt(document.getElementById('rscore').value);
+    document.getElementById('rscore').value = numVal - 1;
     sendUpdate();
 }
 
@@ -407,9 +419,11 @@ function getMatchForIdentifier(identifier) {
 
 function toastNotify() {
     // TODO: figure out how to make this an acknowledgment callback
-    var info = $('#info');
-    info.show();
-    info.fadeOut(1200);
+    //var info = $('#info');
+    //info.show();
+    //info.fadeOut(1200);
+
+    toastr.success('Overlay updated!');
 }
 
 function embedChallongeBracket(url) {
