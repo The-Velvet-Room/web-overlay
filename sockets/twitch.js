@@ -290,6 +290,10 @@ module.exports = function(io) {
             }
 
             twitchData.newFollowers = newFollowers;
+            if(numNewFollowers != twitchData.twitchFollowers) {
+                numFollowersAtLaunch = twitchData.twitchFollowers;
+            }
+            
             twitchIO.emit('send twitch data', twitchData);
         }
 
