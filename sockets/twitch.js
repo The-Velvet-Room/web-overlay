@@ -11,6 +11,11 @@ module.exports = function(io) {
     var twitchPollFrequency = 30000;
     var connectedSockets = 0;
     var timeout = null;
+    var followersAtLaunch = [];
+    var newFollowers = [];
+    var currentFollowers = [];
+    //Twitch returns paginated followers, making this var necessary
+    var numFollowersAtLaunch = 0;
 
     var twitchIO = io.of('/twitch');
 
@@ -62,6 +67,10 @@ module.exports = function(io) {
             logOut();
         });
 
+        socket.on('process followers', function(){
+            processFollowers();
+        });
+
         function pollTwitch() {
             if (connectedSockets > 0 && twitchData.twitchUsername) {
                 getTwitchPollableData();
@@ -104,6 +113,13 @@ module.exports = function(io) {
                     var followers = twitchResponse._total;
                     var lastFollower = twitchResponse.follows[0].user.name;
                     cacheAndSendFollowers(followers, lastFollower);
+
+                    if(!followersAtLaunch.length) {
+                        followersAtLaunch = twitchResponse.follows;
+                        numFollowersAtLaunch = followers;
+                    }
+
+                    currentFollowers = twitchResponse.follows;
                 }
             });
         }
@@ -250,6 +266,31 @@ module.exports = function(io) {
                     console.log('Status updated');
                 }
             });
+        }
+
+        function processFollowers() {
+            console.log('Processing new followers...');
+            /*var dummyFollower = {
+                user:{
+                    name:'Dummy Follower'
+                }
+            }
+
+            currentFollowers.unshift(dummyFollower);
+            console.log(currentFollowers);*/
+            var numNewFollowers = twitchData.twitchFollowers - numFollowersAtLaunch;
+            if (numNewFollowers > 25) {
+                numNewFollowers = 25;
+            }
+            console.log(numNewFollowers);
+            newFollowers = [];
+            for(var i=0; i<numNewFollowers; i++) {
+                newFollowers.push(currentFollowers[i].user.name);
+                console.log('Adding new follower '+currentFollowers[i].user.name);
+            }
+
+            twitchData.newFollowers = newFollowers;
+            twitchIO.emit('send twitch data', twitchData);
         }
 
         function resetPeakViewers() {
