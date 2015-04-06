@@ -17,8 +17,16 @@
 		var socket = io('/overlay');
 
 		socket.on('update overlay', function(data) {
-			document.getElementById('commentators').innerText = data.commentators || '';
+      if(data.commentators != document.getElementById('commentators').innerText) {
+          $('#commentators').trigger('textChanged', data.commentators || '');
+        }
 		});
+
+    $('.playertext').bind('textChanged', function(e, newText){
+        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+            $(this).text(newText);
+          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+      })
 
     var twitchSocket = io('/twitch');
 
