@@ -29,6 +29,10 @@ module.exports = function (io) {
       overlay.emit('update overlay', msg);
       console.log('update overlay: ' + JSON.stringify(msg));
     });
+
+    socket.on('flash screen', function() {
+      overlay.emit('flash screen');
+    })
   });
 
 };

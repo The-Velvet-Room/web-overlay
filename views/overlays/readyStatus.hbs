@@ -2,20 +2,52 @@
 <html>
   <head>
     <title>{{title}}</title>
+    <style>
+      .fitToWindow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      .alignVertical {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        height: 200px;
+        width: 800px;
+        margin: -100px 0px 0px -400px;
+      }
+    </style>
   </head>
-  <body style="text-align: center;">
-  	<h1 id="readyStatus" style="font-size: 72px;"></h1>
+  <body>
+    <div id="background" class="fitToWindow"></div>
+    <div>
+      <h1 id="readyStatus" class="alignVertical" style="font-size: 72px; text-align: center;" ></h1>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script>
       var readyString = 'The stream is ready! You may play your set.';
       var notReadyString = 'Please wait. The stream team is updating information.';
       var socket = io('/overlay');
 
       socket.on('update overlay', function(data) {
-        document.getElementById('readyStatus').innerText = data.readyStatus ? readyString : notReadyString;
-        document.body.style.background = data.readyStatus ? 'green' : 'red';
-        document.body.style.color = data.readyStatus ? 'white' : 'black';
+        $("#readyStatus").text(data.readyStatus ? readyString : notReadyString);
+        $("#background").css("background-color", data.readyStatus ? 'green' : 'red');
+        $("#readyStatus").css("color", data.readyStatus ? 'white' : 'black');
+      });
+
+      socket.on('flash screen', function() {
+        var bg = $("#background");
+        bg.animate({opacity: 0}, 50, function() {
+          bg.animate({opacity: 1}, 50);
+        });
       });
     </script>
   </body>
 </html>
+
+
