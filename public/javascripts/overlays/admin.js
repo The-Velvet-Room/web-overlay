@@ -478,4 +478,8 @@ $(function() {
     $('#challonge-clear-bracket').click(function() {
         challongeSocket.emit('clear bracket');
     });
+
+    $("#flash-ready-button").click(function() {
+        socket.emit('flash screen');
+    });
 });
