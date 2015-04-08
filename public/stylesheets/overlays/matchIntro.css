@@ -1,0 +1,67 @@
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(http://i.imgur.com/tlhS4vA.png);
+	position: relative;
+}
+
+body {
+	margin: 0px;
+	position: absolute;
+	color: white;
+	font-size: 42px;
+	font-family: 'Oswald', cursive;
+	text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+	/* Oswald sits a little low, so raise the baseline */
+	margin-top: -5px;
+
+	overflow: hidden;
+	overflow-wrap: break-word;
+}
+
+.text {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+#title {
+	position: absolute;
+	top: 10px;
+	width: 1280px;
+	left: 320px;
+}
+
+#lplayer {
+	position: absolute;
+	bottom: 40px;
+	left: 320px;
+	width: 640px;
+}
+
+#rplayer {
+	position: absolute;
+	bottom: 40px;
+	right: 320px;
+	width: 640px;
+}
+
+#vs {
+	position: absolute;
+	bottom: 40px;
+	left: 640px;
+	width: 640px;
+}
+
+#leftCharacter {
+	position: absolute;
+	bottom: 140px;
+	left: 320px;
+}
+
+#rightCharacter {
+	position: absolute;
+	bottom: 140px;
+	right: 320px;
+}

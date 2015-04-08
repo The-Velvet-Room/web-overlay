@@ -100,6 +100,12 @@ router.get('/overlays/bracket', function(req, res) {
   res.render('overlays/bracket', { title: 'Bracket - Powered by Challonge', layout: false });
 });
 
+/* GET matchIntro page. */
+router.get('/overlays/matchIntro', function(req, res) {
+  res.render('overlays/MatchIntro', { title: 'Match Introduction Screen', layout: false });
+});
+
+
 /* GET pardon the smash. */
 router.get('/overlays/pardonthesmash', function(req, res) {
   res.render('overlays/pardonthesmash/overlay', { title: 'PTS Overlay', layout: false });
