@@ -5,12 +5,21 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/stylesheets/overlays/matchIntro.css' />
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
   	<div id="container">
+  	<h1 id="title" class="text"></h1>
+  	<h3 id="lplayer" class="text"></h1>
+  	<h3 id="vs" class="text">vs</h3>
+  	<h3 id="rplayer" class="text"></h1>
+
+  	<img id="leftCharacter" height="640" width="640" src="" />
+  	<img id="rightCharacter" height="640" width="640" src="" />
   	</div>
 
   	<script type="text/javascript">
+  	 
   	var charImageDict = {
   		'bowser':'http://i.imgur.com/33mnA2Z.png',
 	  	'bowser-jr':'http://i.imgur.com/utEfXhv.png',
@@ -71,6 +80,37 @@
 		'zelda':'http://i.imgur.com/sdCoRJx.png',
 		'zero-suit-samus':'http://i.imgur.com/X7UHAGe.png'
 	}
+
+  	 $(function () {
+
+      var socket = io('/overlay');
+
+      socket.on('update overlay', function(data) {
+        var leftCharIcon = document.getElementById('leftCharacter');
+        var rightCharIcon = document.getElementById('rightCharacter');
+
+        if(data.title != document.getElementById('title').innerText) {
+          $('#title').trigger('textChanged', data.title || '');
+        }
+
+        if(data.lplayer != document.getElementById('lplayer').innerText) {
+          $('#lplayer').trigger('textChanged', data.lplayer || '');
+        }
+
+        if(data.rplayer != document.getElementById('rplayer').innerText) {
+          $('#rplayer').trigger('textChanged', data.rplayer || '');
+        }
+
+        document.getElementById("leftCharacter").src = charImageDict[data.lCharacter];
+        document.getElementById("rightCharacter").src = charImageDict[data.rCharacter];
+      });
+
+		$('.text').bind('textChanged', function(e, newText){
+	        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+	            $(this).text(newText);
+	          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+	      });
+	    });
 
   	</script>
   </body>
