@@ -5,3 +5,16 @@
 	position: relative;
 }
 
+body {
+	position: absolute;
+	color: white;
+	font-size: 42px;
+	font-family: 'Oswald', cursive;
+	text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+	/* Oswald sits a little low, so raise the baseline */
+	margin-top: -5px;
+
+	overflow: hidden;
+	overflow-wrap: break-word;
+}
