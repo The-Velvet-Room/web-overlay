@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+var pmx = require('pmx').init();
 var debug = require('debug')('web-overlay');
 var app = require('../app');
 
