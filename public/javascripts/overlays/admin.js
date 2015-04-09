@@ -321,8 +321,10 @@ function sendUpdate() {
     toastNotify();
 }
 
-function playMatchIntro() {
+function playMatchIntro(reset, update) {
     var data = {
+        'reset': reset,
+        'update': update,
         'lplayer': document.getElementById('lplayer').value,
         'rplayer': document.getElementById('rplayer').value,
         'title': document.getElementById('title').value,

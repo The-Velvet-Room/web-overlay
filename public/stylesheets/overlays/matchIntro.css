@@ -36,32 +36,36 @@ body {
 #lplayer {
 	position: absolute;
 	bottom: 40px;
-	left: 320px;
+	left: 280px;
 	width: 640px;
 }
 
 #rplayer {
 	position: absolute;
 	bottom: 40px;
-	right: 320px;
+	right: 280px;
 	width: 640px;
 }
 
 #vs {
 	position: absolute;
-	bottom: 40px;
+	bottom: 30px;
 	left: 640px;
 	width: 640px;
+	font-size: 100em;
+	color: red;
+	z-index: 10;
+	overflow-wrap: normal;
 }
 
 #lCharacter {
 	position: absolute;
 	bottom: 140px;
-	left: 320px;
+	left: 280px;
 }
 
 #rCharacter {
 	position: absolute;
 	bottom: 140px;
-	right: 320px;
+	right: 280px;
 }
