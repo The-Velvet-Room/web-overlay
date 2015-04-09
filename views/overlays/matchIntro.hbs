@@ -9,145 +9,145 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-  	<div id="container">
-  		<audio 	id="audio-chime" 
-  					src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
-  					autoplay="false">
-  		</audio>
-	  	<h1 id="title" class="text"></h1>
-	  	<div id="lContainer">
-		  	<img id="lCharacter" class="fadeIn" height="640" width="640" src="" />
-		  	<h3 id="lplayer" class="text"></h1>
-		  </div>
-	  	<h3 id="vs" class="text">VS</h3>
-	  	<div id="rContainer">
-	  		<img id="rCharacter" class="fadeIn" height="640" width="640" src="" />
-	  		<h3 id="rplayer" class="text"></h1>
-	  	</div>  	
-  	</div>
+    <div id="container">
+      <audio  id="audio-chime" 
+            src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
+            autoplay="false">
+      </audio>
+      <h1 id="title" class="text"></h1>
+      <div id="lContainer">
+        <img id="lCharacter" class="fadeIn" height="640" width="640" src="" />
+        <h3 id="lplayer" class="text"></h1>
+      </div>
+      <h3 id="vs" class="text">VS</h3>
+      <div id="rContainer">
+        <img id="rCharacter" class="fadeIn" height="640" width="640" src="" />
+        <h3 id="rplayer" class="text"></h1>
+      </div>    
+    </div>
 
-  	<script type="text/javascript">
-  	 
-  	var charImageDict = {
-  		'bowser':'http://i.imgur.com/33mnA2Z.png',
-	  	'bowser-jr':'http://i.imgur.com/utEfXhv.png',
-	  	'captain-falcon':'http://i.imgur.com/VnFfZpr.png',
-	  	'charizard':'http://i.imgur.com/8kwiHWb.png',
-	  	'dark-pit':'http://i.imgur.com/3ysRfec.png',
-	  	'king-dedede':'http://i.imgur.com/uBTmrmm.png',
-			'diddy-kong':'http://i.imgur.com/LFFmRbh.png',
-			'donkey-kong':'http://i.imgur.com/v9lQZp3.png',
-			'dr-mario':'http://i.imgur.com/cA0i15d.png',
-			'duck-hunt-dog':'http://i.imgur.com/KyA0bd9.png',
-			'falco':'http://i.imgur.com/mrm67Km.png',
-			'fox':'http://i.imgur.com/QLAlYLe.png',
-			'ganondorf':'http://i.imgur.com/ikXkjzG.png',
-			'mr-game-and-watch':'http://i.imgur.com/9HkP2As.png',
-			'greninja':'http://i.imgur.com/67HjDjf.png',
-			'ice-climbers':'http://i.imgur.com/twwSNBt.png',
-			'ike':'http://i.imgur.com/C5Iy1FA.png',
-			'ivysaur':'http://i.imgur.com/5rOZ4bQ.png',
-			'jigglypuff':'http://i.imgur.com/07bIHUQ.png',
-			'kirby':'http://i.imgur.com/uTbJKiX.png',
-			'link':'http://i.imgur.com/aBLV6AT.png',
-			'little-mac':'http://i.imgur.com/4CCrBIW.png',
-			'lucario':'http://i.imgur.com/vjf39o3.png', 
-			'lucas':'http://i.imgur.com/OjCaKKo.png',
-			'lucina':'http://i.imgur.com/77uMLO3.png',
-			'luigi':'http://i.imgur.com/zWPNj42.png',
-			'mario':'http://i.imgur.com/G3D9Vor.png',
-			'marth':'http://i.imgur.com/IKq3QVI.png',
-			'megaman':'http://i.imgur.com/YT9FqNW.png',
-			'metaknight':'http://i.imgur.com/sVKxeAN.png',
-			'mewtwo':'http://i.imgur.com/6hDgNxL.png',
-			'ness':'http://i.imgur.com/Au1yPpr.png',
-			'olimar':'http://i.imgur.com/BHVKXSI.png',
-			'pacman':'http://i.imgur.com/0Uee64Y.png',
-			'palutena':'http://i.imgur.com/p0MmRME.png',
-			'peach':'http://i.imgur.com/QR9zMJH.png',
-			'pichu':'http://i.imgur.com/UwABGrm.png',
-			'pikachu':'http://i.imgur.com/s9jVBIj.png',
-			'pit':'http://i.imgur.com/nIFWN3e.png',
-			'rob':'http://i.imgur.com/RUke4jQ.png',
-			'robin':'http://i.imgur.com/1wJQWnn.png',
-			'rosalina':'http://i.imgur.com/2M8vNOj.png',
-			'roy':'http://i.imgur.com/Ly1AefK.png',
-			'samus':'http://i.imgur.com/MvdeKZO.png',
-			'sheik':'http://i.imgur.com/TQa1vyE.png',
-			'shulk':'http://i.imgur.com/yvC9dUw.png',
-			'snake':'http://i.imgur.com/v9bLHnh.png',
-			'squirtle':'http://i.imgur.com/53GnJO9.png',
-			'sonic':'http://i.imgur.com/dd7uiqO.png',
-			'toon-link':'http://i.imgur.com/OatfTG3.png',
-			'villager':'http://i.imgur.com/ttw0VUb.png',
-			'wario':'http://i.imgur.com/qqT1qXA.png',
-			'wii-fit-trainer':'http://i.imgur.com/gzNFSPv.png',
-			'wolf':'http://i.imgur.com/VuSCu3h.png',
-			'yoshi':'http://i.imgur.com/OMmtBeC.png',
-			'young-link':'http://i.imgur.com/6qOfR58.png',
-			'zelda':'http://i.imgur.com/sdCoRJx.png',
-			'zero-suit-samus':'http://i.imgur.com/X7UHAGe.png'
-		}
+    <script type="text/javascript">
+     
+    var charImageDict = {
+      'bowser':'http://i.imgur.com/33mnA2Z.png',
+      'bowser-jr':'http://i.imgur.com/utEfXhv.png',
+      'captain-falcon':'http://i.imgur.com/VnFfZpr.png',
+      'charizard':'http://i.imgur.com/8kwiHWb.png',
+      'dark-pit':'http://i.imgur.com/3ysRfec.png',
+      'king-dedede':'http://i.imgur.com/uBTmrmm.png',
+      'diddy-kong':'http://i.imgur.com/LFFmRbh.png',
+      'donkey-kong':'http://i.imgur.com/v9lQZp3.png',
+      'dr-mario':'http://i.imgur.com/cA0i15d.png',
+      'duck-hunt-dog':'http://i.imgur.com/KyA0bd9.png',
+      'falco':'http://i.imgur.com/mrm67Km.png',
+      'fox':'http://i.imgur.com/QLAlYLe.png',
+      'ganondorf':'http://i.imgur.com/ikXkjzG.png',
+      'mr-game-and-watch':'http://i.imgur.com/9HkP2As.png',
+      'greninja':'http://i.imgur.com/67HjDjf.png',
+      'ice-climbers':'http://i.imgur.com/twwSNBt.png',
+      'ike':'http://i.imgur.com/C5Iy1FA.png',
+      'ivysaur':'http://i.imgur.com/5rOZ4bQ.png',
+      'jigglypuff':'http://i.imgur.com/07bIHUQ.png',
+      'kirby':'http://i.imgur.com/uTbJKiX.png',
+      'link':'http://i.imgur.com/aBLV6AT.png',
+      'little-mac':'http://i.imgur.com/4CCrBIW.png',
+      'lucario':'http://i.imgur.com/vjf39o3.png', 
+      'lucas':'http://i.imgur.com/OjCaKKo.png',
+      'lucina':'http://i.imgur.com/77uMLO3.png',
+      'luigi':'http://i.imgur.com/zWPNj42.png',
+      'mario':'http://i.imgur.com/G3D9Vor.png',
+      'marth':'http://i.imgur.com/IKq3QVI.png',
+      'megaman':'http://i.imgur.com/YT9FqNW.png',
+      'metaknight':'http://i.imgur.com/sVKxeAN.png',
+      'mewtwo':'http://i.imgur.com/6hDgNxL.png',
+      'ness':'http://i.imgur.com/Au1yPpr.png',
+      'olimar':'http://i.imgur.com/BHVKXSI.png',
+      'pacman':'http://i.imgur.com/0Uee64Y.png',
+      'palutena':'http://i.imgur.com/p0MmRME.png',
+      'peach':'http://i.imgur.com/QR9zMJH.png',
+      'pichu':'http://i.imgur.com/UwABGrm.png',
+      'pikachu':'http://i.imgur.com/s9jVBIj.png',
+      'pit':'http://i.imgur.com/nIFWN3e.png',
+      'rob':'http://i.imgur.com/RUke4jQ.png',
+      'robin':'http://i.imgur.com/1wJQWnn.png',
+      'rosalina':'http://i.imgur.com/2M8vNOj.png',
+      'roy':'http://i.imgur.com/Ly1AefK.png',
+      'samus':'http://i.imgur.com/MvdeKZO.png',
+      'sheik':'http://i.imgur.com/TQa1vyE.png',
+      'shulk':'http://i.imgur.com/yvC9dUw.png',
+      'snake':'http://i.imgur.com/v9bLHnh.png',
+      'squirtle':'http://i.imgur.com/53GnJO9.png',
+      'sonic':'http://i.imgur.com/dd7uiqO.png',
+      'toon-link':'http://i.imgur.com/OatfTG3.png',
+      'villager':'http://i.imgur.com/ttw0VUb.png',
+      'wario':'http://i.imgur.com/qqT1qXA.png',
+      'wii-fit-trainer':'http://i.imgur.com/gzNFSPv.png',
+      'wolf':'http://i.imgur.com/VuSCu3h.png',
+      'yoshi':'http://i.imgur.com/OMmtBeC.png',
+      'young-link':'http://i.imgur.com/6qOfR58.png',
+      'zelda':'http://i.imgur.com/sdCoRJx.png',
+      'zero-suit-samus':'http://i.imgur.com/X7UHAGe.png'
+    }
 
-  	$(document).ready(function () {
+    $(document).ready(function () {
 
-  		function flashScreen (o, i, delay) {
-  			$('#container').animate({'opacity': '0'}, o, function () {
-  				setTimeout(function () {
-  					$('#container').animate({'opacity': '1'}, i);
-  				}, delay);				
-  			});
-  		}
+      function flashScreen (o, i, delay) {
+        $('#container').animate({'opacity': '0'}, o, function () {
+          setTimeout(function () {
+            $('#container').animate({'opacity': '1'}, i);
+          }, delay);        
+        });
+      }
 
-  		function transitionBackground (arr) {
-  			flashScreen(50, 50, 0);
-  			document.getElementById("audio-chime").play();
-  			setTimeout(function () { 
-  				flashScreen(150, 150, 0);
-  				setTimeout(function () { 
-  					$('#vs').show().animate({"font-size": '9em'}, 300);
-  					setTimeout(function () {
-  						flashScreen(25, 500, 500);
-  						setTimeout(function () {
-  							$('#container').css('background', 'url(http://i.imgur.com/WcNnLNO.gif)');
-			  				arr.forEach(function (elem) {
-			  					elem.show();
-			  				});
-  						}, 25);				
-  					}, 300);
-  				}, 550);
-  			}, 100);			
-  		}
+      function transitionBackground (arr) {
+        flashScreen(50, 50, 0);
+        document.getElementById("audio-chime").play();
+        setTimeout(function () { 
+          flashScreen(150, 150, 0);
+          setTimeout(function () { 
+            $('#vs').show().animate({"font-size": '9em'}, 300);
+            setTimeout(function () {
+              flashScreen(25, 500, 500);
+              setTimeout(function () {
+                $('#container').css('background', 'url(http://i.imgur.com/WcNnLNO.gif)');
+                arr.forEach(function (elem) {
+                  elem.show();
+                });
+              }, 25);       
+            }, 300);
+          }, 550);
+        }, 100);      
+      }
 
-  		// For some reason the autoplay property doesn't work in Chrome
-  		document.getElementById("audio-chime").pause();
+      // For some reason the autoplay property doesn't work in Chrome
+      document.getElementById("audio-chime").pause();
 
-  		var initialBackground = 'url(http://i.imgur.com/tlhS4vA.png)';
-  		var step = 0;
+      var initialBackground = 'url(http://i.imgur.com/tlhS4vA.png)';
+      var step = 0;
       var socket = io('/overlay');
 
       socket.on('play intro', function(data) {
-      	if(data.flag !== step) { 
-      		return true;
-      	}
+        if(data.flag !== step) { 
+          return true;
+        }
 
-      	var showArr = [$('#title'), $('#lplayer'), $('#rplayer')];
+        var showArr = [$('#title'), $('#lplayer'), $('#rplayer')];
 
-      	if (data.flag === 0) {
-        	// Reset the page and fade out background
-        	$('#container').animate({'opacity': '0'}, 500, function () {
-        		  $('#container').css('background', initialBackground);
-        			$('#lCharacter').css({'opacity': '0', 'margin-left': '-1%'});
-		        	$('#rCharacter').css({'opacity': '0', 'margin-left': '-1%'});    	
-		        	$('#vs').css('font-size', '100em').hide();
-		        	showArr.forEach(function(elem) {
-		        		elem.hide();
-		        	});
-        		});
+        if (data.flag === 0) {
+          // Reset the page and fade out background
+          $('#container').animate({'opacity': '0'}, 500, function () {
+              $('#container').css('background', initialBackground);
+              $('#lCharacter').css({'opacity': '0', 'margin-left': '-1%'});
+              $('#rCharacter').css({'opacity': '0', 'margin-left': '-1%'});     
+              $('#vs').css('font-size', '100em').hide();
+              showArr.forEach(function(elem) {
+                elem.hide();
+              });
+            });
 
-        		step = 1;
-      	} else if (data.flag === 1) {
-      		// Update the page with all relevant data/images
+            step = 1;
+        } else if (data.flag === 1) {
+          // Update the page with all relevant data/images
           $('#title').text(data.title || '');
           $('#lplayer').text(data.lplayer || '');
           $('#rplayer').text(data.rplayer || '');
@@ -155,28 +155,28 @@
           $('#rCharacter').attr('src', charImageDict[data.rCharacter] || '');
 
           step = 2;
-				} else {
-      		// Show the background again and begin animation
+        } else {
+          // Show the background again and begin animation
           $('#container').animate({'opacity': '1'}, 500, function () {
-          	setTimeout(function() {
-							$('#lCharacter').trigger('fadeIn');
-							setTimeout(function () {
-								$('#rCharacter').trigger('fadeIn');
-		          	setTimeout(function () {
-		          		transitionBackground(showArr);
-		          	}, 500); 
-	          	}, 500); 
-	      		}, 100);  
+            setTimeout(function() {
+              $('#lCharacter').trigger('fadeIn');
+              setTimeout(function () {
+                $('#rCharacter').trigger('fadeIn');
+                setTimeout(function () {
+                  transitionBackground(showArr);
+                }, 500); 
+              }, 500); 
+            }, 100);  
           }); 
 
-          step = 0;  		       
-      	}     
+          step = 0;            
+        }     
       });
-			
-			$('.fadeIn').bind('fadeIn', function() {
-        	$(this).animate({'opacity': '1', 'margin-left': '0'}, 350);
+      
+      $('.fadeIn').bind('fadeIn', function() {
+          $(this).animate({'opacity': '1', 'margin-left': '0'}, 350);
       });
     });
-  	</script>
+    </script>
   </body>
 </html>
