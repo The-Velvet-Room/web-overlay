@@ -56,6 +56,8 @@ body {
 	color: red;
 	z-index: 10;
 	overflow-wrap: normal;
+	font-family: 'Covered By Your Grace', normal;
+	text-shadow: -10px 2px black, 20px 5px black, 5px 0 black, 0 -5px black
 }
 
 #lCharacter {

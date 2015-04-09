@@ -321,18 +321,55 @@ function sendUpdate() {
     toastNotify();
 }
 
-function playMatchIntro(reset, update) {
+// 0: Reset, 1: Update, 2: Play, -1: Init
+function playMatchIntro(flag) {
     var data = {
-        'reset': reset,
-        'update': update,
+        'flag': flag,
         'lplayer': document.getElementById('lplayer').value,
         'rplayer': document.getElementById('rplayer').value,
         'title': document.getElementById('title').value,
         'lCharacter': window.characterLeft || null,
         'rCharacter': window.characterRight || null
     };
+
     socket.emit('play intro', data);
-    toastNotify('Playing character intro.');
+    
+    // Set the same button to play the next step of the intro.
+    var btn = $('#play-intro-btn');
+    if (flag === 0) {
+        btn.text('Update Intro');
+        btn.css('background-color', 'yellow');
+        toastNotify('Transition area reset.');
+
+        btn.one('click', function() { 
+            playMatchIntro(1);
+        }); 
+    } else if (flag === 1) {
+        btn.attr('disabled', true);
+        setTimeout(function () {
+            btn.attr('disabled', false);
+            btn.text('Play Intro');
+            btn.css('background-color', 'green');
+            toastNotify('Match intro data updated.');
+        }, 1000); 
+
+        btn.one('click', function() { 
+            playMatchIntro(2);       
+        });
+    } else {
+        toastNotify('Playing character intro.');
+        btn.attr('disabled', true);
+        setTimeout(function () {
+            btn.attr('disabled', false);
+            btn.text('Reset Intro');
+            btn.css('background-color', 'red');
+            toastNotify('Character intro complete.');
+        }, 3500);
+
+        btn.one('click', function() {      
+            playMatchIntro(0);
+        });
+    }  
 }
 
 function sendTwitchUpdate() {
@@ -495,5 +532,9 @@ $(function() {
 
     $("#flash-ready-button").click(function() {
         socket.emit('flash screen');
+    });
+
+    $("#play-intro-btn").one("click", function() {  
+        playMatchIntro(0);
     });
 });
