@@ -54,13 +54,13 @@ body {
 	width: 640px;
 }
 
-#leftCharacter {
+#lCharacter {
 	position: absolute;
 	bottom: 140px;
 	left: 320px;
 }
 
-#rightCharacter {
+#rCharacter {
 	position: absolute;
 	bottom: 140px;
 	right: 320px;

@@ -32,7 +32,13 @@ module.exports = function (io) {
 
     socket.on('flash screen', function() {
       overlay.emit('flash screen');
-    })
+    });
+
+    socket.on('play intro', function(msg) {
+      client.set(redisKey, JSON.stringify(msg));
+      overlay.emit('play intro', msg);
+      console.log('play intro: ' + JSON.stringify(msg));
+    });
   });
 
 };

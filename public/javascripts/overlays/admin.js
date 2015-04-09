@@ -321,6 +321,18 @@ function sendUpdate() {
     toastNotify();
 }
 
+function playMatchIntro() {
+    var data = {
+        'lplayer': document.getElementById('lplayer').value,
+        'rplayer': document.getElementById('rplayer').value,
+        'title': document.getElementById('title').value,
+        'lCharacter': window.characterLeft || null,
+        'rCharacter': window.characterRight || null
+    };
+    socket.emit('play intro', data);
+    toastNotify('Playing character intro.');
+}
+
 function sendTwitchUpdate() {
     var user = document.getElementById('twitchUsername').value;
     if (twitchUsername !== user) {
@@ -417,13 +429,13 @@ function getMatchForIdentifier(identifier) {
     return null;
 }
 
-function toastNotify() {
+function toastNotify(toast) {
     // TODO: figure out how to make this an acknowledgment callback
     //var info = $('#info');
     //info.show();
     //info.fadeOut(1200);
 
-    toastr.success('Overlay updated!');
+    toastr.success(toast != null ? toast : 'Overlay updated!');
 }
 
 function embedChallongeBracket(url) {
