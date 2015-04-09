@@ -2,6 +2,11 @@ body {
     background: #DCDCDC;
 }
 
+#play-intro-btn {
+    background-color: red;
+    width: 90px;
+}
+
 /*----- Tabs -----*/
 .tabs {
     width:100%;
