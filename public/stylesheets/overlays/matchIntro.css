@@ -5,6 +5,10 @@
 	position: relative;
 }
 
+audio {
+	display: none;
+}
+
 body {
 	margin: 0px;
 	position: absolute;

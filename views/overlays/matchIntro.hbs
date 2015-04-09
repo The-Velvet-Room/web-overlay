@@ -9,6 +9,10 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
+  	<audio 	id="audio-chime" 
+  					src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
+  					autoplay="false">
+  	</audio>
   	<div id="container">
 	  	<h1 id="title" class="text"></h1>
 	  	<div id="lContainer">
@@ -85,7 +89,7 @@
 			'zero-suit-samus':'http://i.imgur.com/X7UHAGe.png'
 		}
 
-  	$(function () {
+  	$(document).ready(function () {
 
   		function flashScreen(o, i, delay) {
   			$('#container').animate({'opacity': '0'}, o, function () {
@@ -97,6 +101,7 @@
 
   		var transitionBackground = function (arr) {
   			flashScreen(100, 100, 0);
+  			document.getElementById("audio-chime").play();
   			setTimeout(function () { 
   				flashScreen(150, 150, 0);
   				setTimeout(function () { 
@@ -104,7 +109,7 @@
   					setTimeout(function () {
   						flashScreen(25, 500, 500);
   						setTimeout(function () {
-  							$('#container').css('background', 'url(http://i.imgur.com/somwiCH.gif)');
+  							$('#container').css('background', 'url(http://i.imgur.com/WcNnLNO.gif)');
 			  				arr.forEach(function (elem) {
 			  					elem.show();
 			  				});
@@ -114,8 +119,13 @@
   			}, 150);			
   		}
 
-  		var initialBackground = 'url(http://i.imgur.com/tlhS4vA.png)';
+  		// For some reason the autoplay property doesn't work in Chrome
+  		document.getElementById("audio-chime").pause();
+  		// audioPlayer.addEventListener('canplay', function() { 
+  		// 	this.pause(); 
+  		// });
 
+  		var initialBackground = 'url(http://i.imgur.com/tlhS4vA.png)';
       var socket = io('/overlay');
 
       socket.on('play intro', function(data) {
@@ -139,13 +149,16 @@
           $('#rCharacter').attr('src', charImageDict[data.rCharacter] || '');
 				} else {
       		// Show/animate elements
-          $('#lCharacter').trigger('fadeIn');
-          setTimeout(function () {
-						$('#rCharacter').trigger('fadeIn');
-	          setTimeout(function () {
-	          	transitionBackground(showArr);
-	          }, 1000); 
-          }, 1000);       
+      		flashScreen(50, 50, 0);
+      		setTimeout(function() {
+						$('#lCharacter').trigger('fadeIn');
+						setTimeout(function () {
+							$('#rCharacter').trigger('fadeIn');
+	          	setTimeout(function () {
+	          		transitionBackground(showArr);
+	          	}, 1000); 
+          	}, 1000); 
+      		}, 100);         
       	}     
       });
 

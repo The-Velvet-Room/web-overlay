@@ -351,7 +351,7 @@ function playMatchIntro(flag) {
             btn.text('Play Intro');
             btn.css('background-color', 'green');
             toastNotify('Match intro data updated.');
-        }, 1000); 
+        }, 2000); 
 
         btn.one('click', function() { 
             playMatchIntro(2);       
@@ -364,7 +364,7 @@ function playMatchIntro(flag) {
             btn.text('Reset Intro');
             btn.css('background-color', 'red');
             toastNotify('Character intro complete.');
-        }, 3500);
+        }, 4000);
 
         btn.one('click', function() {      
             playMatchIntro(0);
