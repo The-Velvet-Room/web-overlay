@@ -102,7 +102,7 @@ router.get('/overlays/bracket', function(req, res) {
 
 /* GET matchIntro page. */
 router.get('/overlays/matchIntro', function(req, res) {
-  res.render('overlays/MatchIntro', { title: 'Match Introduction Screen', layout: false });
+  res.render('overlays/matchIntro', { title: 'Match Introduction Screen', layout: false });
 });
 
 
