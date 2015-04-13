@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var pmx = require('pmx');
 
 var routes = require('./routes/index');
 
@@ -62,5 +63,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
+// attach more data from express errors:
+app.use(pmx.expressErrorHandler());
 
 module.exports = app;

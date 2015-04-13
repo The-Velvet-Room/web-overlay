@@ -1,6 +1,7 @@
 var config = require('../config');
 var request = require('request');
 var redis = require('redis');
+var pmx = require('pmx');
 
 var client = redis.createClient();
 var redisKey = 'web-overlay-challonge';
@@ -102,10 +103,16 @@ module.exports = function(io) {
             request(options, function (error, response, body) {
                 console.log('Challonge Response: ' + response.statusCode);
                 if (!error && response.statusCode === 200) {
-                    var challongeResponse = JSON.parse(body);
-                    matches = challongeResponse.tournament.matches;
-                    players = challongeResponse.tournament.participants;
-                    sendChallongeUpdate();
+                    try {
+                        var challongeResponse = JSON.parse(body);
+                        matches = challongeResponse.tournament.matches;
+                        players = challongeResponse.tournament.participants;
+                        sendChallongeUpdate();
+                    } catch (e) {
+                        var errorMessage = 'Challonge response could not be parsed: ' + body;
+                        console.log(errorMessage);
+                        pmx.notify(errorMessage);
+                    }
                 }
             });
         }
