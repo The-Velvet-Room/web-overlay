@@ -135,10 +135,11 @@
 
         if (data.flag === 0) {
           // Reset the page and fade out background
+          $('body').css('background-color', 'rgba(0,0,0,0)');
           $('#container').animate({'opacity': '0'}, 500, function () {
               $('#container').css('background', initialBackground);
-              $('#lCharacter').css({'opacity': '0', 'margin-left': '-1%'});
-              $('#rCharacter').css({'opacity': '0', 'margin-left': '-1%'});     
+              $('#lCharacter').css({'opacity': '0', 'margin-left': '-3%'});
+              $('#rCharacter').css({'opacity': '0', 'margin-left': '-3%'});     
               $('#vs').css('font-size', '100em').hide();
               showArr.forEach(function(elem) {
                 elem.hide();
@@ -158,6 +159,7 @@
         } else {
           // Show the background again and begin animation
           $('#container').animate({'opacity': '1'}, 500, function () {
+            $('body').css('background-color', 'rgba(255,255,254,1)');
             setTimeout(function() {
               $('#lCharacter').trigger('fadeIn');
               setTimeout(function () {
