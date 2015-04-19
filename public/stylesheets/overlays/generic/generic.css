@@ -1,0 +1,156 @@
+body {
+	margin: 0px;
+}
+
+a {
+	color: #00B7FF;
+}
+
+
+.game4by3-layout {
+	-webkit-clip-path: polygon(
+		/* Draw the outer border of the overlay */
+		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px,
+
+		/* Draw the inner border of the overlay */
+		20px 20px, 20px 1060px, 1390px 1060px, 1390px 20px, 20px 20px
+	);
+}
+
+.all4by3-layout {
+	-webkit-clip-path: polygon(
+		/* Draw the outer border of the overlay */
+		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px,
+
+		/* Draw the inner border of the overlay */
+		20px 20px, 20px 1060px, 1390px 1060px, 1390px 20px, 20px 20px
+	);
+}
+
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(http://i.imgur.com/C6bhZGb.jpg);
+	position: relative;
+}
+
+.playertext {
+	position: absolute;
+	color: white;
+	font-size: 42px;
+	font-family: 'Oswald', cursive;
+	text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+	/* Oswald sits a little low, so raise the baseline */
+	margin-top: -5px;
+
+	overflow: hidden;
+	overflow-wrap: break-word;
+}
+
+#lplayer {
+	top: 1030px;
+	left: 10px;
+	height: 60px;
+	width: 429px;
+	text-align: center;
+}
+
+#lscore {
+	top: 1030px;
+	height: 60px;
+	left: 480px;
+	width: 50px;
+	text-align: center;
+}
+
+#licons {
+	top: 1040px;
+	height: 49px;
+	left: 5px;
+	width: 32px;
+	text-align: center;
+	position: absolute;
+}
+
+#rplayer {
+	top: 1031px;
+	height: 60px;
+	left: 1000px;
+	width: 429px;
+	text-align: center;
+}
+
+#rscore {
+	top: 1030px;
+	height: 60px;
+	left: 910px;
+	width: 50px;
+	text-align: center;
+}
+
+#ricons {
+	top: 1040px;
+	height: 49px;
+	left: 1400px;
+	width: 32px;
+	text-align: center;
+	position: absolute;
+}
+
+#title {
+	top: 0px;
+	width: 400px;
+	left: 200px;
+	height: 60px;
+	text-align: center;
+}
+
+#tourneyInfo {
+	top: 0px;
+	width: 400px;
+	left: 850px;
+	height: 60px;
+	text-align: center;
+}
+
+#leftPort {
+	position: absolute;
+	opacity: 0.3;
+	width: 420px;
+	height: 50px;
+	bottom: 0px;
+	left: 2px;
+}
+
+#rightPort {
+	position: absolute;
+	opacity: 0.3;
+	width: 420px;
+	height: 50px;
+	bottom: 0px;
+	left: 1020px;
+}
+
+@font-face {
+	font-family: 'state-font';
+	src: url(/fonts/StateFace-Regular.otf) format('opentype');
+}
+
+#leftState {
+	font-family: 'state-font';
+	color: white;
+	position: absolute;
+	bottom: -20px;
+	left: 40px;
+	font-size: 36px;
+}
+
+#rightState {
+	font-family: 'state-font';
+	color: white;
+	position: absolute;
+	bottom: -20px;
+	left: -40px;
+	font-size: 36px;
+}
