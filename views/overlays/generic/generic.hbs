@@ -9,25 +9,28 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-  	<div id="container" class="game4by3-layout">
-  		<div id="title" class="playertext"></div>
-      <div id="tourneyInfo" class="playertext"></div>
-      <div id="leftPort"></div>
-      <div id="rightPort"></div>
-  		<div id="lscore" class="playertext"></div>
-  		<div id="lplayer" class="playertext"></div>
+    <div id="background" class="game4by3-layout-1cam container" 
+      style="background: url(http://i.imgur.com/C6bhZGb.jpg);">
+    </div>
+  	<div id="game4by3-container" class="container">
+  		<div class="title playerText"></div>
+      <div class="tourneyInfo playerText"></div>
+      <div class="lPort"></div>
+      <div class="rPort"></div>
+  		<div class="lScore playerText"></div>
+  		<div class="lPlayer playerText"></div>
 
-      <div id="licons">
-        <img id="leftCharacter" style="zoom: 175%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
-        <p id="leftState"></p>
+      <div class="lIcons">
+        <img class="lCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+        <p class="lState"></p>
       </div>
-      <div id="ricons">
-        <img id="rightCharacter" style="zoom: 175%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
-        <p id="rightState"></p>
+      <div class="rIcons">
+        <img class="rCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+        <p class="rState"></p>
       </div>
 
-      <div id="rplayer" class="playertext"></div>
-  		<div id="rscore" class="playertext"></div>
+      <div class="rPlayer playerText"></div>
+  		<div class="rScore playerText"></div>
   	</div>
     <script>
     $(function () {
@@ -35,51 +38,42 @@
       var socket = io('/overlay');
 
       socket.on('update overlay', function(data) {
-        var leftCharIcon = document.getElementById('leftCharacter');
-        var rightCharIcon = document.getElementById('rightCharacter');
-
-        if(data.title != document.getElementById('title').innerText) {
-          $('#title').trigger('textChanged', data.title || '');
+        if(data.title != document.getElementsByClassName('title')[0].innerText) {
+          $('.title').trigger('textChanged', data.title || '');
         }
 
-        if(data.tourneyInfo != document.getElementById('tourneyInfo').innerText) {
-          $('#tourneyInfo').trigger('textChanged', data.tourneyInfo || '');
+        if(data.tourneyInfo != document.getElementsByClassName('tourneyInfo')[0].innerText) {
+          $('.tourneyInfo').trigger('textChanged', data.tourneyInfo || '');
         }
 
-        if(data.lplayer != document.getElementById('lplayer').innerText) {
-          $('#lplayer').trigger('newName', data.lplayer || '');
+        if(data.lplayer != document.getElementsByClassName('lPlayer')[0].innerText) {
+          $('.lPlayer').trigger('newName', data.lplayer || '');
         }
 
-        if(data.rplayer != document.getElementById('rplayer').innerText) {
-          $('#rplayer').trigger('newName', data.rplayer || '');
+        if(data.rplayer != document.getElementsByClassName('rPlayer')[0].innerText) {
+          $('.rPlayer').trigger('newName', data.rplayer || '');
         }
 
-        if(data.lscore != document.getElementById('lscore').innerText) {
-          $('#lscore').trigger('textChanged', data.lscore || '');
+        if(data.lscore != document.getElementsByClassName('lScore')[0].innerText) {
+          $('.lScore').trigger('textChanged', data.lscore || '');
         }
 
-        if(data.rscore != document.getElementById('rscore').innerText) {
-          $('#rscore').trigger('textChanged', data.rscore || '');
+        if(data.rscore != document.getElementsByClassName('rScore')[0].innerText) {
+          $('.rScore').trigger('textChanged', data.rscore || '');
         }
 
-        if(data.lCharacter) {
-          document.getElementById('leftCharacter').className = data.lCharacter;
-        }
-        else {
-          document.getElementById('leftCharacter').className = null;
-        }
+        $('.lCharacter').attr('class', 'lCharacter');
+        if(data.lCharacter) 
+          $('.lCharacter').addClass(data.lCharacter);
 
-        if(data.rCharacter) {
-          document.getElementById('rightCharacter').className = data.rCharacter;
-        }
-        else {
-          document.getElementById('rightCharacter').className = null;
-        }
+        $('.rCharacter').attr('class', 'rCharacter');
+        if(data.rCharacter)
+          $('.rCharacter').addClass(data.rCharacter);
 
-        document.getElementById('leftPort').style.backgroundColor = data.portLeft || 'transparent';
-        document.getElementById('rightPort').style.backgroundColor = data.portRight || 'transparent';
-        document.getElementById('leftState').innerText = data.stateLeft || '';
-        document.getElementById('rightState').innerText = data.stateRight || '';
+        $('.lPort').css('background-color', data.portLeft || 'transparent');
+        $('.rPort').css('background-color', data.portRight || 'transparent');
+        $('.lState').text(data.stateLeft || '');
+        $('.rState').text(data.stateRight || '');
       });
 
       function scaleFont(jQueryElement, newLength) {
@@ -116,10 +110,10 @@
           });
       }
 
-      createNameChangeEventListener('#lplayer');
-      createNameChangeEventListener('#rplayer');
+      createNameChangeEventListener('.lPlayer');
+      createNameChangeEventListener('.rPlayer');
 
-      $('.playertext').bind('textChanged', function(e, newText){
+      $('.playerText').bind('textChanged', function(e, newText){
         $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
             $(this).text(newText);
           }).animate({'opacity': '1', 'margin-left': '0'}, 350);
