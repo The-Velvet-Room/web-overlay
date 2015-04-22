@@ -318,7 +318,16 @@ function sendUpdate() {
         'stateRight': window.stateRight
     };
     socket.emit('update overlay', data);
-    toastNotify();
+    toastNotify('Overlay data updated.');
+}
+
+function changeLayout() {
+    var data = {
+        'layout': document.getElementsByClassName('selectedLayout')[0].value,
+        'background': document.getElementById('layout-background').value
+    };
+    socket.emit('change layout', data);
+    toastNotify('Layout updated.');
 }
 
 // 0: Reset, 1: Update, 2: Play, -1: Init
@@ -536,5 +545,10 @@ $(function() {
 
     $("#play-intro-btn").one("click", function() {  
         playMatchIntro(0);
+    });
+
+    $(".layoutButton").click(function () {
+        $(".layoutButton").removeClass('selectedLayout');
+        $(this).addClass('selectedLayout');
     });
 });

@@ -39,6 +39,12 @@ module.exports = function (io) {
       overlay.emit('play intro', msg);
       console.log('play intro: ' + JSON.stringify(msg));
     });
+
+    socket.on('change layout', function(msg) {
+      client.set(redisKey, JSON.stringify(msg));
+      overlay.emit('change layout', msg);
+      console.log('change layout: ' + JSON.stringify(msg));
+    });
   });
 
 };

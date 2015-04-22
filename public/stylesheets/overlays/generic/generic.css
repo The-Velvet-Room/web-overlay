@@ -21,7 +21,7 @@ a {
 		/* Right score */ 900px 1030px, 980px 1030px, 960px 1070px, 
 		/* Right name */ 970px 1070px, 990px 1030px, 1410px 1030px, 1430px 1010px,
 		/* Player cam */ 
-		1430px 280px, 1890px 280px, 1910px 260px, 1910px 10px, 
+		1430px 280px, 1910px 280px, 1910px 10px, 
 		1440px 10px, 1440px 280px, 1430px 280px, 1430px 10px, 
 		/* Tourney info */ 1290px 10px, 1270px 60px, 850px 60px, 830px 10px,
 		/* Logo space */ 610px 10px,
@@ -110,6 +110,10 @@ a {
 	position: absolute;
 	left: 0;
 	top: 0;
+}
+
+#background {
+	background-image: url(https://i.imgur.com/SkOH3j1.png);
 }
 
 #main-container {

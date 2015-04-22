@@ -9,16 +9,14 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <div id="background" class="player-layout container" 
-      style="background: url(http://i.imgur.com/C6bhZGb.jpg);">
-    </div>
-  	<div id="main-container" class="player-layout container">
-  		<div class="title playerText"></div>
+    <div id="background" class="container"></div>
+    <div id="main-container" class="container">
+      <div class="title playerText"></div>
       <div class="tourneyInfo playerText"></div>
       <div class="lPort"></div>
       <div class="rPort"></div>
-  		<div class="lScore playerText"></div>
-  		<div class="lPlayer playerText"></div>
+      <div class="lScore playerText"></div>
+      <div class="lPlayer playerText"></div>
 
       <div class="lIcons">
         <img class="lCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
@@ -30,12 +28,28 @@
       </div>
 
       <div class="rPlayer playerText"></div>
-  		<div class="rScore playerText"></div>
-  	</div>
+      <div class="rScore playerText"></div>
+    </div>
     <script>
     $(function () {
 
       var socket = io('/overlay');
+
+      socket.on('change layout', function(data) {
+        var background = $('#background');
+        var container = $('#main-container');
+
+        if (!background.hasClass(data.layout)) {
+          background.attr('class', 'container');
+          container.attr('class', 'container');
+
+          background.addClass(data.layout);
+          container.addClass(data.layout);
+        }
+
+        if (data.background !== '' && background.css('background-image') !== 'url(' + data.background + ')')
+          background.css('background-image', 'url(' + data.background + ')');
+      });
 
       socket.on('update overlay', function(data) {
         if(data.title != document.getElementsByClassName('title')[0].innerText) {
