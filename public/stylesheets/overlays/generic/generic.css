@@ -11,6 +11,35 @@ a {
 	src: url(/fonts/StateFace-Regular.otf) format('opentype');
 }
 
+.empty-layout {}
+
+.player-layout {
+	-webkit-clip-path: polygon(
+		/* Outer border */
+		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 192px 10px, 
+		/* Inner border */ 192px 854px, 1728px 854px, 1728px 10px, 
+		/* Title */ 192px 10px
+	);
+}
+
+.commentator-layout {
+	-webkit-clip-path: polygon(
+		/* Outer border */
+		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 192px 10px, 
+		/* Inner border */ 192px 854px, 1728px 854px, 1728px 10px, 
+		/* Title */ 192px 10px
+	);
+}
+
+.player-commentator-layout {
+	-webkit-clip-path: polygon(
+		/* Outer border */
+		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 10px 150px, 
+		/* Player cam */ 10px 690px, 950px 690px, 950px 150px, 960px 150px,
+		/* Commentator cam */ 960px 690px, 1910px 690px, 1910px 150px, 10px 150px
+	);
+}
+
 .game4by3-layout-1cam {
 	-webkit-clip-path: polygon(
 		/* Outer border */
@@ -27,14 +56,6 @@ a {
 		/* Logo space */ 610px 10px,
 		/* Title */ 590px 60px, 170px 60px, 150px 10px, 10px 10px
 	);
-
-}
-
-.game4by3-layout-2cam {
-
-}
-
-.all4by3-layout-1cam {
 
 }
 
@@ -77,33 +98,6 @@ a {
 	);
 }
 
-.player-layout {
-	-webkit-clip-path: polygon(
-		/* Outer border */
-		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 192px 10px, 
-		/* Inner border */ 192px 854px, 1728px 854px, 1728px 10px, 
-		/* Title */ 192px 10px
-	);
-}
-
-.commentator-layout {
-	-webkit-clip-path: polygon(
-		/* Outer border */
-		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 192px 10px, 
-		/* Inner border */ 192px 854px, 1728px 854px, 1728px 10px, 
-		/* Title */ 192px 10px
-	);
-}
-
-.player-commentator-layout {
-	-webkit-clip-path: polygon(
-		/* Outer border */
-		0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 10px 150px, 
-		/* Player cam */ 10px 720px, 950px 720px, 950px 150px, 960px 150px,
-		/* Commentator cam */ 960px 720px, 1910px 720px, 1910px 150px, 10px 150px
-	);
-}
-
 .container {
 	width: 1920px;
 	height: 1080px;
@@ -113,14 +107,14 @@ a {
 }
 
 #background {
-	background-image: url(https://i.imgur.com/SkOH3j1.png);
+	background-image: url(http://i.imgur.com/rL7QNS0.jpg);	
 }
 
 #main-container {
 	-webkit-clip-path: none;
 }
 
-/* STYLE FOR game4by3 LAYOUT */
+/* game4by3-layout-1cam */
 
 	#main-container.game4by3-layout-1cam .playerText {
 		position: absolute;
@@ -248,7 +242,7 @@ a {
 		position: absolute;
 	}
 
-/* STYLE FOR all4by3 LAYOUT */
+/* all4by3-layout-2cam */
 
 	#main-container.all4by3-layout-2cam .playerText {
 		position: absolute;

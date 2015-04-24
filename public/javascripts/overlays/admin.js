@@ -326,6 +326,7 @@ function changeLayout() {
         'layout': document.getElementsByClassName('selectedLayout')[0].value,
         'background': document.getElementById('layout-background').value
     };
+
     socket.emit('change layout', data);
     toastNotify('Layout updated.');
 }
@@ -550,5 +551,6 @@ $(function() {
     $(".layoutButton").click(function () {
         $(".layoutButton").removeClass('selectedLayout');
         $(this).addClass('selectedLayout');
+        changeLayout();
     });
 });

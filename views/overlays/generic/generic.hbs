@@ -7,6 +7,7 @@
     <link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/remote/obs-remote.min.js"></script>
   </head>
   <body>
     <div id="background" class="container"></div>
@@ -31,8 +32,11 @@
       <div class="rScore playerText"></div>
     </div>
     <script>
-    $(function () {
+    OBSRemote.prototype._authHash = OBSRemote.prototype._webCryptoHash;
+    var obs = new OBSRemote();
+    obs.connect();
 
+    $(function () {
       var socket = io('/overlay');
 
       socket.on('change layout', function(data) {
@@ -45,6 +49,7 @@
 
           background.addClass(data.layout);
           container.addClass(data.layout);
+          obs.setCurrentScene(data.layout);
         }
 
         if (data.background !== '' && background.css('background-image') !== 'url(' + data.background + ')')
