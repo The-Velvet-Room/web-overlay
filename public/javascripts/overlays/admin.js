@@ -25,8 +25,8 @@ var usStates = ['ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO',
     'TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA','WISCONSIN','WYOMING', 'DC'];
 
 var usStatesKeys = ['B','A','D','C','E','F','G','H','I','J','K','M','N','O','L','P','Q','R','U','T',
-	'S','V','W','Y','X','Z','c','g','d','e','f','h','a','b','i','j','k','l','m','n','o','p','q','r',
-	't','s','u','w','v','x','y'];
+    'S','V','W','Y','X','Z','c','g','d','e','f','h','a','b','i','j','k','l','m','n','o','p','q','r',
+    't','s','u','w','v','x','y'];
 
 //Pass in either 'Left' or 'Right'
 function createCharacterList(direction) {

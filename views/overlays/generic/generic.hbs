@@ -54,25 +54,23 @@
       });
 
       socket.on('change layout', function(data) {
-        if (authenticated) {
-          var background = $('#background');
-          var container = $('#main-container');
+        var background = $('#background');
+        var container = $('#main-container');
 
-          if (!background.hasClass(data.layout)) {
-            background.attr('class', 'container');
-            container.attr('class', 'container');
+        if (!background.hasClass(data.layout)) {
+          background.attr('class', 'container');
+          container.attr('class', 'container');
 
-            background.addClass(data.layout);
-            container.addClass(data.layout);
-            $('.lPlayer, .rPlayer').each(function() { 
-              scaleFont($(this)); 
-            });
-            obs.setCurrentScene(data.layout);
-          }
+          background.addClass(data.layout);
+          container.addClass(data.layout);
+          $('.lPlayer, .rPlayer').each(function() { 
+            scaleFont($(this)); 
+          });
+          obs.setCurrentScene(data.layout);
+        }
 
-          if (data.background !== '' && background.css('background-image') !== 'url(' + data.background + ')')
-            background.css('background-image', 'url(' + data.background + ')');
-        }       
+        if (data.background !== '' && background.css('background-image') !== 'url(' + data.background + ')')
+          background.css('background-image', 'url(' + data.background + ')');    
       });
 
       socket.on('update overlay', function(data) {
