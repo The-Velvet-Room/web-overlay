@@ -322,13 +322,23 @@ function sendUpdate() {
 }
 
 function changeLayout() {
+    var layout = document.getElementsByClassName('selectedLayout')[0];
     var data = {
-        'layout': document.getElementsByClassName('selectedLayout')[0].value,
+        'layout': layout ? layout.value : 'empty-layout',
         'background': document.getElementById('layout-background').value
     };
 
     socket.emit('change layout', data);
     toastNotify('Layout updated.');
+}
+
+function obsConnect() {
+    var data = {
+        'address': document.getElementById('obs-address').value,
+        'password': document.getElementById('obs-password').value
+    };
+
+    socket.emit('obs connect', data);
 }
 
 // 0: Reset, 1: Update, 2: Play, -1: Init

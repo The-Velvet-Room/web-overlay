@@ -197,7 +197,7 @@
                 <p>
                     <label for="layout-background">Background URL:</label>
                     <input id="layout-background" style="width:200px;"></input>
-                </p>                   
+                </p>      
                 <h3>General</h3>
                 <p>
                     <button class="layoutButton" type="button"
@@ -227,6 +227,20 @@
                     <input type="submit"/>
                 </p>
             </form>
+            <form action="javascript:obsConnect()">
+                <h2>OBS Remote Login</h2>
+                <p>
+                    <label for="obs-address">Address:</label>
+                    <input id="obs-address" placeholder="localhost:4444"></input>
+                </p>
+                <p>
+                    <label for="obs-password">Password:</label>
+                    <input id="obs-password" type="password"></input>
+                </p>
+                <p>
+                    <input type="submit" value="Connect"></input>
+                </p>
+            </form>                
         </div>
     </div>
 </div>

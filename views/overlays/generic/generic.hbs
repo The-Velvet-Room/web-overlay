@@ -33,29 +33,46 @@
     <script>
     OBSRemote.prototype._authHash = OBSRemote.prototype._webCryptoHash;
     var obs = new OBSRemote();
-    obs.connect();
+    var authenticated = false;
 
+    obs.onAuthenticationSucceeded = function() { authenticated = true; };
+    obs.onConnectionOpened = function() {
+      obs.isAuthRequired(function(required) { 
+        authenticated = !required
+      });
+    };
+    
     $(function () {
       var socket = io('/overlay');
 
+      socket.on('obs connect', function(data) {
+        if (!obs._connected)
+          obs.connect(data.address);
+
+        if (!authenticated)
+          obs.authenticate(data.password);
+      });
+
       socket.on('change layout', function(data) {
-        var background = $('#background');
-        var container = $('#main-container');
+        if (authenticated) {
+          var background = $('#background');
+          var container = $('#main-container');
 
-        if (!background.hasClass(data.layout)) {
-          background.attr('class', 'container');
-          container.attr('class', 'container');
+          if (!background.hasClass(data.layout)) {
+            background.attr('class', 'container');
+            container.attr('class', 'container');
 
-          background.addClass(data.layout);
-          container.addClass(data.layout);
-          $('.lPlayer, .rPlayer').each(function() { 
-            scaleFont($(this)); 
-          });
-          obs.setCurrentScene(data.layout);
-        }
+            background.addClass(data.layout);
+            container.addClass(data.layout);
+            $('.lPlayer, .rPlayer').each(function() { 
+              scaleFont($(this)); 
+            });
+            obs.setCurrentScene(data.layout);
+          }
 
-        if (data.background !== '' && background.css('background-image') !== 'url(' + data.background + ')')
-          background.css('background-image', 'url(' + data.background + ')');
+          if (data.background !== '' && background.css('background-image') !== 'url(' + data.background + ')')
+            background.css('background-image', 'url(' + data.background + ')');
+        }       
       });
 
       socket.on('update overlay', function(data) {
