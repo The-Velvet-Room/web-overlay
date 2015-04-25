@@ -14,11 +14,11 @@
     <div id="main-container" class="container">
       <div class="title playerText"></div>
       <div class="tourneyInfo playerText"></div>
+      <div class="commentators playerText"></div>
       <div class="lPort"></div>
       <div class="rPort"></div>
       <div class="lScore playerText"></div>
       <div class="lPlayer playerText"></div>
-
       <div class="lIcons">
         <img class="lCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
         <p class="lState"></p>
@@ -27,7 +27,6 @@
         <img class="rCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
         <p class="rState"></p>
       </div>
-
       <div class="rPlayer playerText"></div>
       <div class="rScore playerText"></div>
     </div>
@@ -49,6 +48,9 @@
 
           background.addClass(data.layout);
           container.addClass(data.layout);
+          $('.lPlayer, .rPlayer').each(function() { 
+            scaleFont($(this)); 
+          });
           obs.setCurrentScene(data.layout);
         }
 
@@ -63,6 +65,10 @@
 
         if(data.tourneyInfo != document.getElementsByClassName('tourneyInfo')[0].innerText) {
           $('.tourneyInfo').trigger('textChanged', data.tourneyInfo || '');
+        }
+
+        if(data.commentators != document.getElementsByClassName('commentators')[0].innerText) {
+          $('.commentators').trigger('textChanged', data.commentators || '');
         }
 
         if(data.lplayer != document.getElementsByClassName('lPlayer')[0].innerText) {
@@ -97,25 +103,28 @@
 
       function scaleFont(jQueryElement, newLength) {
         var element = jQueryElement.get()[0];
-        var length = newLength;
+        var length = newLength || jQueryElement.text().length;
         console.log(length);
+
+        var top = $('#main-container').attr('class').indexOf('16by9') > -1 ? 814 : 1030; 
 
         if (length <= 7) {
           element.style.fontSize = '42px';
-          element.style.top = '1030px';
         }
         else if (length <= 20){
           element.style.fontSize = '28px';
-          element.style.top = '1039px';
+          top += 9;
         }
         else if(length <= 28) {
           element.style.fontSize = '20px';
-          element.style.top = '1044px';
+          top += 14;
         }
         else {
           element.style.fontSize = '14px';
-          element.style.top = '1048px';
+          top += 18;
         }
+        
+        element.style.top = top.toString() + 'px';
       }
 
       function createNameChangeEventListener(jQuerySelector) {

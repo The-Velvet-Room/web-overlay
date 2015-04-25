@@ -337,7 +337,7 @@ function playMatchIntro(flag) {
         'flag': flag,
         'lplayer': document.getElementById('lplayer').value,
         'rplayer': document.getElementById('rplayer').value,
-        'title': document.getElementById('title').value,
+        'tourneyInfo': document.getElementById('tourneyInfo').value,
         'lCharacter': window.characterLeft || null,
         'rCharacter': window.characterRight || null
     };
