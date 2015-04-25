@@ -39,6 +39,18 @@ module.exports = function (io) {
       overlay.emit('play intro', msg);
       console.log('play intro: ' + JSON.stringify(msg));
     });
+
+    socket.on('change layout', function(msg) {
+      client.set(redisKey, JSON.stringify(msg));
+      overlay.emit('change layout', msg);
+      console.log('change layout: ' + JSON.stringify(msg));
+    });
+
+    socket.on('obs connect', function(msg) {
+      client.set(redisKey, JSON.stringify(msg));
+      overlay.emit('obs connect', msg);
+      console.log('obs connect: ' + JSON.stringify(msg));
+    });
   });
 
 };

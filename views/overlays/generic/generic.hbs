@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/overlays/generic/generic.css' />
+    <link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/remote/obs-remote.min.js"></script>
+  </head>
+  <body>
+    <div id="background" class="container"></div>
+    <div id="main-container" class="container">
+      <div class="title playerText"></div>
+      <div class="tourneyInfo playerText"></div>
+      <div class="commentators playerText"></div>
+      <div class="lPort"></div>
+      <div class="rPort"></div>
+      <div class="lScore playerText"></div>
+      <div class="lPlayer playerText"></div>
+      <div class="lIcons">
+        <img class="lCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+        <p class="lState"></p>
+      </div>
+      <div class="rIcons">
+        <img class="rCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+        <p class="rState"></p>
+      </div>
+      <div class="rPlayer playerText"></div>
+      <div class="rScore playerText"></div>
+    </div>
+    <script>
+    OBSRemote.prototype._authHash = OBSRemote.prototype._webCryptoHash;
+    var obs = new OBSRemote();
+    var authenticated = false;
+
+    obs.onAuthenticationSucceeded = function() { authenticated = true; };
+    obs.onConnectionOpened = function() {
+      obs.isAuthRequired(function(required) { 
+        authenticated = !required
+      });
+    };
+    
+    $(function () {
+      var socket = io('/overlay');
+
+      socket.on('obs connect', function(data) {
+        if (!obs._connected)
+          obs.connect(data.address);
+
+        if (!authenticated)
+          obs.authenticate(data.password);
+      });
+
+      socket.on('change layout', function(data) {
+        if (authenticated) {
+          var background = $('#background');
+          var container = $('#main-container');
+
+          if (!background.hasClass(data.layout)) {
+            background.attr('class', 'container');
+            container.attr('class', 'container');
+
+            background.addClass(data.layout);
+            container.addClass(data.layout);
+            $('.lPlayer, .rPlayer').each(function() { 
+              scaleFont($(this)); 
+            });
+            obs.setCurrentScene(data.layout);
+          }
+
+          if (data.background !== '' && background.css('background-image') !== 'url(' + data.background + ')')
+            background.css('background-image', 'url(' + data.background + ')');
+        }       
+      });
+
+      socket.on('update overlay', function(data) {
+        if(data.title != document.getElementsByClassName('title')[0].innerText) {
+          $('.title').trigger('textChanged', data.title || '');
+        }
+
+        if(data.tourneyInfo != document.getElementsByClassName('tourneyInfo')[0].innerText) {
+          $('.tourneyInfo').trigger('textChanged', data.tourneyInfo || '');
+        }
+
+        if(data.commentators != document.getElementsByClassName('commentators')[0].innerText) {
+          $('.commentators').trigger('textChanged', data.commentators || '');
+        }
+
+        if(data.lplayer != document.getElementsByClassName('lPlayer')[0].innerText) {
+          $('.lPlayer').trigger('newName', data.lplayer || '');
+        }
+
+        if(data.rplayer != document.getElementsByClassName('rPlayer')[0].innerText) {
+          $('.rPlayer').trigger('newName', data.rplayer || '');
+        }
+
+        if(data.lscore != document.getElementsByClassName('lScore')[0].innerText) {
+          $('.lScore').trigger('textChanged', data.lscore || '');
+        }
+
+        if(data.rscore != document.getElementsByClassName('rScore')[0].innerText) {
+          $('.rScore').trigger('textChanged', data.rscore || '');
+        }
+
+        $('.lCharacter').attr('class', 'lCharacter');
+        if(data.lCharacter) 
+          $('.lCharacter').addClass(data.lCharacter);
+
+        $('.rCharacter').attr('class', 'rCharacter');
+        if(data.rCharacter)
+          $('.rCharacter').addClass(data.rCharacter);
+
+        $('.lPort').css('background-color', data.portLeft || 'transparent');
+        $('.rPort').css('background-color', data.portRight || 'transparent');
+        $('.lState').text(data.stateLeft || '');
+        $('.rState').text(data.stateRight || '');
+      });
+
+      function scaleFont(jQueryElement, newLength) {
+        var element = jQueryElement.get()[0];
+        var length = newLength || jQueryElement.text().length;
+        console.log(length);
+
+        var top = $('#main-container').attr('class').indexOf('16by9') > -1 ? 814 : 1030; 
+
+        if (length <= 7) {
+          element.style.fontSize = '42px';
+        }
+        else if (length <= 20){
+          element.style.fontSize = '28px';
+          top += 9;
+        }
+        else if(length <= 28) {
+          element.style.fontSize = '20px';
+          top += 14;
+        }
+        else {
+          element.style.fontSize = '14px';
+          top += 18;
+        }
+        
+        element.style.top = top.toString() + 'px';
+      }
+
+      function createNameChangeEventListener(jQuerySelector) {
+        var element = $(jQuerySelector);
+        element.bind('newName', function(e, newText){
+            $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+                $(this).text(newText);
+              }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+
+             scaleFont(element, newText.length);
+          });
+      }
+
+      createNameChangeEventListener('.lPlayer');
+      createNameChangeEventListener('.rPlayer');
+
+      $('.playerText').bind('textChanged', function(e, newText){
+        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+            $(this).text(newText);
+          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+      });
+
+    });
+    </script>
+  </body>
+</html>

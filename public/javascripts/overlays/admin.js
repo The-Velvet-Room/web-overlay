@@ -318,7 +318,27 @@ function sendUpdate() {
         'stateRight': window.stateRight
     };
     socket.emit('update overlay', data);
-    toastNotify();
+    toastNotify('Overlay data updated.');
+}
+
+function changeLayout() {
+    var layout = document.getElementsByClassName('selectedLayout')[0];
+    var data = {
+        'layout': layout ? layout.value : 'empty-layout',
+        'background': document.getElementById('layout-background').value
+    };
+
+    socket.emit('change layout', data);
+    toastNotify('Layout updated.');
+}
+
+function obsConnect() {
+    var data = {
+        'address': document.getElementById('obs-address').value,
+        'password': document.getElementById('obs-password').value
+    };
+
+    socket.emit('obs connect', data);
 }
 
 // 0: Reset, 1: Update, 2: Play, -1: Init
@@ -327,7 +347,7 @@ function playMatchIntro(flag) {
         'flag': flag,
         'lplayer': document.getElementById('lplayer').value,
         'rplayer': document.getElementById('rplayer').value,
-        'title': document.getElementById('title').value,
+        'tourneyInfo': document.getElementById('tourneyInfo').value,
         'lCharacter': window.characterLeft || null,
         'rCharacter': window.characterRight || null
     };
@@ -536,5 +556,11 @@ $(function() {
 
     $("#play-intro-btn").one("click", function() {  
         playMatchIntro(0);
+    });
+
+    $(".layoutButton").click(function () {
+        $(".layoutButton").removeClass('selectedLayout');
+        $(this).addClass('selectedLayout');
+        changeLayout();
     });
 });

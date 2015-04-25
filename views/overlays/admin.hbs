@@ -6,6 +6,7 @@
         <li class="active"><a href="#tab1">Main</a></li>
         <li><a href="#tab2">Twitch</a></li>
         <li><a href="#tab3">Challonge</a></li>
+        <li><a href="#tab4">Layout</a></li>
     </ul>
 
     <div class="tab-content">
@@ -188,6 +189,58 @@
                 </p>
             </form>
             <button id="challonge-clear-bracket">Clear Bracket</button>
+        </div>
+        <div id="tab4" class="tab">
+            <!--Layout Form-->
+            <form action="javascript:changeLayout()">
+                <h2>Layout</h2>
+                <p>
+                    <label for="layout-background">Background URL:</label>
+                    <input id="layout-background" style="width:200px;"></input>
+                </p>      
+                <h3>General</h3>
+                <p>
+                    <button class="layoutButton" type="button"
+                            value="player-layout">Players</button>
+                    <button class="layoutButton" type="button"
+                            value="commentator-layout">Commentators</button>
+                    <button class="layoutButton" type="button"
+                            value="player-commentator-layout">Players/Commentators</button>
+                    <button class="layoutButton" type="button"
+                            value="empty-layout">Empty Layout</button>
+                </p>
+                <h3>4 by 3</h3>
+                <p>
+                    <button class="layoutButton" type="button"
+                            value="game4by3-layout-1cam">Game 1 Cam</button>
+                    <button class="layoutButton" type="button"
+                            value="all4by3-layout-2cam">All 2 Cams</button>
+                </p>
+                <h3>16 by 9</h3>
+                <p>
+                    <button class="layoutButton" type="button"
+                            value="game16by9-layout-1cam">Game 1 Cam</button>
+                    <button class="layoutButton" type="button"
+                            value="all16by9-layout-2cam">All 2 Cams</button>
+                </p>
+                <p>
+                    <input type="submit"/>
+                </p>
+            </form>
+            <form action="javascript:obsConnect()">
+                <h2>OBS Remote Login</h2>
+                <p>
+                    <label for="obs-address">Address:</label>
+                    <input id="obs-address" placeholder="localhost:4444"></input>
+                </p>
+                <p>
+                    <label for="obs-password">Password:</label>
+                    <input id="obs-password" type="password"></input>
+                </p>
+                <p>
+                    <input type="submit" value="Connect"></input>
+                </p>
+            </form>                
         </div>
     </div>
 </div>
