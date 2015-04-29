@@ -1,7 +1,8 @@
 var redis = require('redis');
 
 var client = redis.createClient();
-var redisKey = 'web-overlay-overlay';
+var redisOverlayKey = 'web-overlay-overlay';
+var redisLayoutKey = 'web-overlay-layout';
 
 module.exports = function (io) {
 
@@ -12,11 +13,20 @@ module.exports = function (io) {
     console.log('overlay user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
     // Send out existing data to the new connection
-    client.get(redisKey, function (err, reply) {
+    client.get(redisOverlayKey, function (err, reply) {
       if (err) {
         console.log(err);
       } else if (reply) {
         socket.emit('update overlay', JSON.parse(reply));
+      }
+    });
+
+    // Set the layout to last-selected option
+    client.get(redisLayoutKey, function (err, reply) {
+      if (err) {
+        console.log(err);
+      } else if (reply) {
+        socket.emit('change layout', JSON.parse(reply));
       }
     });
 
@@ -25,7 +35,7 @@ module.exports = function (io) {
     });
 
     socket.on('update overlay', function(msg) {
-      client.set(redisKey, JSON.stringify(msg));
+      client.set(redisOverlayKey, JSON.stringify(msg));
       overlay.emit('update overlay', msg);
       console.log('update overlay: ' + JSON.stringify(msg));
     });
@@ -35,22 +45,14 @@ module.exports = function (io) {
     });
 
     socket.on('play intro', function(msg) {
-      client.set(redisKey, JSON.stringify(msg));
       overlay.emit('play intro', msg);
       console.log('play intro: ' + JSON.stringify(msg));
     });
 
     socket.on('change layout', function(msg) {
-      client.set(redisKey, JSON.stringify(msg));
+      client.set(redisLayoutKey, JSON.stringify(msg));
       overlay.emit('change layout', msg);
       console.log('change layout: ' + JSON.stringify(msg));
     });
-
-    socket.on('obs connect', function(msg) {
-      client.set(redisKey, JSON.stringify(msg));
-      overlay.emit('obs connect', msg);
-      console.log('obs connect: ' + JSON.stringify(msg));
-    });
   });
-
 };

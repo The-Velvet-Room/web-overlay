@@ -328,17 +328,15 @@ function changeLayout() {
         'background': document.getElementById('layout-background').value
     };
 
+    obs.setCurrentScene(data.layout);
     socket.emit('change layout', data);
     toastNotify('Layout updated.');
 }
 
 function obsConnect() {
-    var data = {
-        'address': document.getElementById('obs-address').value,
-        'password': document.getElementById('obs-password').value
-    };
-
-    socket.emit('obs connect', data);
+    var address = document.getElementById('obs-address').value;
+    var password = document.getElementById('obs-password').value;
+    remoteConnect(address, password);
 }
 
 // 0: Reset, 1: Update, 2: Play, -1: Init
