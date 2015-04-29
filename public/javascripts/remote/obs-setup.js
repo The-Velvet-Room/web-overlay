@@ -3,13 +3,13 @@ var obs = new OBSRemote();
 var authenticated = false;
 
 obs.onAuthenticationSucceeded = function() { 
-	authenticated = true;
-	toastNotify('OBS-remote authenticated.');
+  authenticated = true;
+  toastNotify('OBS-remote authenticated.');
 };
 
 obs.onAuthenticationFailed = function(remaining) { 
-	authenticated = false; 
-	toastNotify('OBS-remote failed authentication. ' + remaining.toString() + ' tries remaining.');
+  authenticated = false; 
+  toastNotify('OBS-remote failed authentication. ' + remaining.toString() + ' tries remaining.');
 };
 
 obs.onConnectionOpened = function() {
@@ -20,9 +20,9 @@ obs.onConnectionOpened = function() {
 };
 
 function remoteConnect(address, password) {
-	if (!obs._connected)
-	  obs.connect(address);
+  if (!obs._connected)
+    obs.connect(address);
 
-	if (!authenticated)
-	  obs.authenticate(password);
+  if (!authenticated)
+    obs.authenticate(password);
 }
