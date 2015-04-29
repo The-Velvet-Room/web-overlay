@@ -1,0 +1,62 @@
+.commentator-layout {
+    -webkit-clip-path: polygon(
+        /* Outer border */
+        0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 192px 10px, 
+        /* Inner border */ 192px 854px,  
+        /* Commentators */
+        332px 854px, 340px 844px, 535px 844px,
+        555px 804px, 1365px 804px, 1385px 844px,
+        1580px 844px, 1588px 854px, 1728px 854px,
+        /* Right edge */ 1728px 10px, 
+        /* Title */ 
+        1588px 10px, 1580px 30px, 1190px 30px, 
+        1170px 60px, 750px 60px, 730px 30px, 
+        340px 30px, 332px 10px, 192px 10px
+    );
+}
+
+#main-container.commentator-layout .playerText {
+    position: absolute;
+    color: white;
+    font-size: 42px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+    /* Oswald sits a little low, so raise the baseline */
+    margin-top: -5px;
+
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+#main-container.commentator-layout .title {
+    top: 0px;
+    width: 420px;
+    left: 750px;
+    height: 60px;
+    text-align: center;
+}
+
+#main-container.commentator-layout .commentators {
+    top: 814px;
+    left: 555px;
+    height: 60px;
+    width: 810px;
+    text-align: center;
+}   
+
+#main-container.commentator-layout .tourneyInfo,
+#main-container.commentator-layout .lCharacter,
+#main-container.commentator-layout .rCharacter,
+#main-container.commentator-layout .lIcons,
+#main-container.commentator-layout .lState, 
+#main-container.commentator-layout .lPort,  
+#main-container.commentator-layout .lPlayer, 
+#main-container.commentator-layout .lScore, 
+#main-container.commentator-layout .rScore, 
+#main-container.commentator-layout .rPlayer, 
+#main-container.commentator-layout .rPort, 
+#main-container.commentator-layout .rState, 
+#main-container.commentator-layout .rIcons  {
+    display: none;
+}

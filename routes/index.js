@@ -76,8 +76,8 @@ router.get('/overlays/springshowdown/all4by3', function(req, res) {
 });
 
 /*Generic*/
-router.get('/overlays/generic/generic', function(req, res) {
-  res.render('overlays/generic/generic', { title: 'Generic Overlay', layout: false });
+router.get('/overlays/generic', function(req, res) {
+  res.render('overlays/generic', { title: 'Generic Overlay', layout: false });
 });
 
 /* GET commentators. */
