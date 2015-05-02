@@ -25,8 +25,8 @@ var usStates = ['ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO',
     'TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA','WISCONSIN','WYOMING', 'DC'];
 
 var usStatesKeys = ['B','A','D','C','E','F','G','H','I','J','K','M','N','O','L','P','Q','R','U','T',
-	'S','V','W','Y','X','Z','c','g','d','e','f','h','a','b','i','j','k','l','m','n','o','p','q','r',
-	't','s','u','w','v','x','y'];
+    'S','V','W','Y','X','Z','c','g','d','e','f','h','a','b','i','j','k','l','m','n','o','p','q','r',
+    't','s','u','w','v','x','y'];
 
 //Pass in either 'Left' or 'Right'
 function createCharacterList(direction) {
@@ -318,7 +318,25 @@ function sendUpdate() {
         'stateRight': window.stateRight
     };
     socket.emit('update overlay', data);
-    toastNotify();
+    toastNotify('Overlay data updated.');
+}
+
+function changeLayout() {
+    var layout = document.getElementsByClassName('selectedLayout')[0];
+    var data = {
+        'layout': layout ? layout.value : 'empty-layout',
+        'background': document.getElementById('layout-background').value
+    };
+
+    obs.setCurrentScene(data.layout);
+    socket.emit('change layout', data);
+    toastNotify('Layout updated.');
+}
+
+function obsConnect() {
+    var address = document.getElementById('obs-address').value;
+    var password = document.getElementById('obs-password').value;
+    remoteConnect(address, password);
 }
 
 // 0: Reset, 1: Update, 2: Play, -1: Init
@@ -327,7 +345,7 @@ function playMatchIntro(flag) {
         'flag': flag,
         'lplayer': document.getElementById('lplayer').value,
         'rplayer': document.getElementById('rplayer').value,
-        'title': document.getElementById('title').value,
+        'tourneyInfo': document.getElementById('tourneyInfo').value,
         'lCharacter': window.characterLeft || null,
         'rCharacter': window.characterRight || null
     };
@@ -536,5 +554,11 @@ $(function() {
 
     $("#play-intro-btn").one("click", function() {  
         playMatchIntro(0);
+    });
+
+    $(".layoutButton").click(function () {
+        $(".layoutButton").removeClass('selectedLayout');
+        $(this).addClass('selectedLayout');
+        changeLayout();
     });
 });

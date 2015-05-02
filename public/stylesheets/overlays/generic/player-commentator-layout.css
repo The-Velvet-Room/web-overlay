@@ -1,0 +1,48 @@
+.player-commentator-layout {
+    -webkit-clip-path: polygon(
+        /* Outer border */
+        0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 10px 150px, 
+        /* Player cam */ 10px 690px, 950px 690px, 950px 150px, 960px 150px,
+        /* Commentator cam */ 960px 690px, 1910px 690px, 1910px 150px, 10px 150px
+    );
+}
+
+#main-container.player-commentator-layout .playerText {
+    position: absolute;
+    color: white;
+    font-size: 42px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+    /* Oswald sits a little low, so raise the baseline */
+    margin-top: -5px;
+
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+#main-container.player-commentator-layout .title {
+    top: 0px;
+    width: 1920px;
+    left: 0px;
+    height: 150px;
+    font-size: 100px;
+    text-align: center;
+}
+
+#main-container.player-commentator-layout .tourneyInfo,
+#main-container.player-commentator-layout .commentators,
+#main-container.player-commentator-layout .lCharacter,
+#main-container.player-commentator-layout .rCharacter,
+#main-container.player-commentator-layout .lIcons,
+#main-container.player-commentator-layout .lState, 
+#main-container.player-commentator-layout .lPort,   
+#main-container.player-commentator-layout .lPlayer, 
+#main-container.player-commentator-layout .lScore, 
+#main-container.player-commentator-layout .rScore, 
+#main-container.player-commentator-layout .rPlayer, 
+#main-container.player-commentator-layout .rPort, 
+#main-container.player-commentator-layout .rState, 
+#main-container.player-commentator-layout .rIcons  {
+    display: none;
+}
