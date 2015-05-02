@@ -79,6 +79,10 @@ router.get('/overlays/springshowdown/game16by9', function(req, res) {
   res.render('overlays/springshowdown/game16by9', { title: 'Spring Showdown Overlay', layout: false });
 });
 
+/*Generic*/
+router.get('/overlays/generic', function(req, res) {
+  res.render('overlays/generic', { title: 'Generic Overlay', layout: false });
+});
 
 /* GET commentators. */
 router.get('/overlays/commentators', function(req, res) {

@@ -1,0 +1,31 @@
+#main-container.empty-layout .playerText {
+    position: absolute;
+    color: white;
+    font-size: 42px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+    /* Oswald sits a little low, so raise the baseline */
+    margin-top: -5px;
+
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+#main-container.empty-layout .title,
+#main-container.empty-layout .tourneyInfo,
+#main-container.empty-layout .commentators,
+#main-container.empty-layout .lCharacter,
+#main-container.empty-layout .rCharacter,
+#main-container.empty-layout .lIcons,
+#main-container.empty-layout .lState, 
+#main-container.empty-layout .lPort,    
+#main-container.empty-layout .lPlayer, 
+#main-container.empty-layout .lScore, 
+#main-container.empty-layout .rScore, 
+#main-container.empty-layout .rPlayer, 
+#main-container.empty-layout .rPort, 
+#main-container.empty-layout .rState, 
+#main-container.empty-layout .rIcons  {
+    display: none;
+}

@@ -14,7 +14,7 @@
             src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
             autoplay="false">
       </audio>
-      <h1 id="title" class="text"></h1>
+      <h1 id="tourneyInfo" class="text"></h1>
       <div id="lContainer">
         <img id="lCharacter" class="fadeIn" height="640" width="640" src="" />
         <h3 id="lplayer" class="text"></h1>
@@ -131,7 +131,7 @@
           return true;
         }
 
-        var showArr = [$('#title'), $('#lplayer'), $('#rplayer')];
+        var showArr = [$('#tourneyInfo'), $('#lplayer'), $('#rplayer')];
 
         if (data.flag === 0) {
           // Reset the page and fade out background
@@ -149,7 +149,7 @@
             step = 1;
         } else if (data.flag === 1) {
           // Update the page with all relevant data/images
-          $('#title').text(data.title || '');
+          $('#tourneyInfo').text(data.tourneyInfo || '');
           $('#lplayer').text(data.lplayer || '');
           $('#rplayer').text(data.rplayer || '');
           $('#lCharacter').attr('src', charImageDict[data.lCharacter] || '');

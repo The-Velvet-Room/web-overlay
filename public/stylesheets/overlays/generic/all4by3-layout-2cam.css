@@ -1,0 +1,53 @@
+.all4by3-layout-2cam {
+    -webkit-clip-path: polygon(
+        /* Outer border */
+        0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 20px 20px, 20px 880px,
+        /* Commentator cam */ 1900px 880px, 1900px 475px, 1200px 475px, 
+        /* Cam separator */ 1200px 425px, 
+        /* Player cam */ 1900px 425px, 1900px 20px, 1200px 20px, 1200px 880px, 1180px 880px,
+        /* Right game edge */ 1180px 20px, 
+        /* Title */ 
+        1040px 20px, 1034px 36px, 830px 36px, 
+        814px 60px, 386px 60px, 370px 36px, 
+        166px 36px, 160px 20px, 20px 20px
+    );
+}
+
+#main-container.all4by3-layout-2cam .playerText {
+    position: absolute;
+    color: white;
+    font-size: 42px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+    /* Oswald sits a little low, so raise the baseline */
+    margin-top: -5px;
+
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+#main-container.all4by3-layout-2cam .title {
+    top: 0px;
+    width: 420px;
+    left: 390px;
+    height: 60px;
+    text-align: center;
+}
+
+#main-container.all4by3-layout-2cam .tourneyInfo,
+#main-container.all4by3-layout-2cam .commentators,
+#main-container.all4by3-layout-2cam .lCharacter,
+#main-container.all4by3-layout-2cam .rCharacter,
+#main-container.all4by3-layout-2cam .lIcons,
+#main-container.all4by3-layout-2cam .lState, 
+#main-container.all4by3-layout-2cam .lPort,     
+#main-container.all4by3-layout-2cam .lPlayer, 
+#main-container.all4by3-layout-2cam .lScore, 
+#main-container.all4by3-layout-2cam .rScore, 
+#main-container.all4by3-layout-2cam .rPlayer, 
+#main-container.all4by3-layout-2cam .rPort, 
+#main-container.all4by3-layout-2cam .rState, 
+#main-container.all4by3-layout-2cam .rIcons  {
+    display: none;
+}
