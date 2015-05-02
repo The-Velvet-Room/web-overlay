@@ -66,13 +66,17 @@ router.get('/overlays/rolltierv/all4by3', function(req, res) {
   res.render('overlays/rolltierv/all4by3', { title: 'Roll Tier V Overlay', layout: false });
 });
 
-/*Spring Showdown*/
+/*UNO Temp Routes*/
 router.get('/overlays/springshowdown/game4by3', function(req, res) {
   res.render('overlays/springshowdown/game4by3', { title: 'Spring Showdown Overlay', layout: false });
 });
 
 router.get('/overlays/springshowdown/all4by3', function(req, res) {
   res.render('overlays/springshowdown/all4by3', { title: 'Spring Showdown Overlay', layout: false });
+});
+
+router.get('/overlays/springshowdown/game16by9', function(req, res) {
+  res.render('overlays/springshowdown/game16by9', { title: 'Spring Showdown Overlay', layout: false });
 });
 
 /*Generic*/
