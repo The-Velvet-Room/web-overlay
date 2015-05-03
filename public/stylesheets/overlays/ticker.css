@@ -1,0 +1,47 @@
+#ticker {
+	position: absolute;
+	height: 50px;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+#ticker-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: red;
+	overflow: hidden;
+}
+
+#ticker-overlay {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+#ticker-display {
+	position: absolute;
+	width: 1000%;
+	height: 30px;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	background-color: black;
+	overflow: hidden;
+}
+
+.tickerResult {
+	display: inline-block;
+	padding: 0 50px;
+	white-space: nowrap;
+}
+
+.tickerText {
+    color: white;
+    font-size: 20px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+}

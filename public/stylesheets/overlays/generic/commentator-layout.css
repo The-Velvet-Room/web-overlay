@@ -15,6 +15,11 @@
     );
 }
 
+#main-container.commentator-layout #ticker {
+    top: 864px;
+    width: 1536px;
+} 
+
 #main-container.commentator-layout .playerText {
     position: absolute;
     color: white;

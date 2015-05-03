@@ -5,8 +5,11 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/stylesheets/overlays/generic/generic.css' />
     <link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
+    <link rel='stylesheet' href='/stylesheets/overlays/ticker.css' />   
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/overlays/ticker.js"></script>
   </head>
   <body>
     <div id="background" class="container"></div>
@@ -28,9 +31,14 @@
       </div>
       <div class="rPlayer playerText"></div>
       <div class="rScore playerText"></div>
+      <div id="ticker">
+        <div id="ticker-container">
+          <div id="ticker-overlay"></div>
+          <div id="ticker-display"></div>
+        </div>     
+      </div>  
     </div>
     <script>
-    
     $(function () {
       var socket = io('/overlay');
 
@@ -141,7 +149,6 @@
             $(this).text(newText);
           }).animate({'opacity': '1', 'margin-left': '0'}, 350);
       });
-
     });
     </script>
   </body>
