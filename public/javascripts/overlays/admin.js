@@ -288,6 +288,30 @@ function swapNames() {
     sendUpdate();
 }
 
+function swapAll() {
+    var tempPlayer = document.getElementById('lplayer').value;
+    document.getElementById('lplayer').value = document.getElementById('rplayer').value;
+    document.getElementById('rplayer').value = tempPlayer;
+    
+    var tempScore = document.getElementById('lscore').value;
+    document.getElementById('lscore').value = document.getElementById('rscore').value;
+    document.getElementById('rscore').value = tempScore;
+    
+    var tempCharacter = window.characterLeft;
+    window.characterLeft = window.characterRight;
+    window.characterLeft = tempCharacter;
+    
+    var tempPort = window.portLeft;
+    window.portLeft = window.portRight;
+    window.portRight = tempPort;
+    
+    var tempState = window.stateLeft;
+    window.stateLeft = window.stateRight;
+    window.stateRight = tempState;
+    
+    sendUpdate('Information swapped.');
+}
+
 function zeroScores() {
     document.getElementById('lscore').value = 0;
     document.getElementById('rscore').value = 0;
@@ -299,7 +323,7 @@ function zeroScores() {
     sendUpdate();
 }
 
-function sendUpdate() {
+function sendUpdate(infoMessage) {
     var data = {
         'lplayer': document.getElementById('lplayer').value,
         'rplayer': document.getElementById('rplayer').value,
@@ -318,7 +342,13 @@ function sendUpdate() {
         'stateRight': window.stateRight
     };
     socket.emit('update overlay', data);
-    toastNotify('Overlay data updated.');
+    
+    if(infoMessage) {
+        toastNotify(infoMessage);
+    }
+    else {
+      toastNotify('Overlay data updated.');
+    }   
 }
 
 function changeLayout() {
