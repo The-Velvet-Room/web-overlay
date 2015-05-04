@@ -16,14 +16,18 @@
 }
 
 #main-container.commentator-layout #ticker {
-    top: 864px;
+    top: 874px;
     width: 1536px;
+    -webkit-clip-path: polygon(
+			0px 25px, 25px 50px, 1511px 50px, 1536px 25px, 1511px 0px, 25px 0px, 0px 25px
+		);
+		background-color: red;
 } 
 
 #main-container.commentator-layout .playerText {
     position: absolute;
     color: white;
-    font-size: 42px;
+    font-size: 38px;
     font-family: 'Oswald', cursive;
     text-shadow: 2px 2px 2px rgb(50, 50, 50);
 

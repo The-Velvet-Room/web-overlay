@@ -31,11 +31,22 @@
       </div>
       <div class="rPlayer playerText"></div>
       <div class="rScore playerText"></div>
-      <div id="ticker">
+      <div id="ticker" class="tickerText">
         <div id="ticker-container">
-          <div id="ticker-overlay"></div>
-          <div id="ticker-display"></div>
-        </div>     
+          <div id="overlay-container">
+            <div id="current-tab"></div>
+            <div id="custom-overlay"></div>
+            <div id="tabs">
+              <div id="announcements" class="tab">Announcements</div>
+              <div id="results" class="tab">Results</div>
+              <div id="media" class="tab">Media</div>
+              <div id="info" class="tab">Info</div>
+            </div>
+          </div>     
+          <div id="display-container">
+            <div id="ticker-display"></div>
+          </div> 
+        </div>  
       </div>  
     </div>
     <script>

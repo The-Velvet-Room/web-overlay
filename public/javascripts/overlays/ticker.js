@@ -14,46 +14,38 @@ var tickerData = {
       lScore: 1
     },
     {
-      winner: 'Majik',
-      loser: 'Cue',
-      wScore: 3,
-      lScore: 2
-    },
-    {
-      winner: 'Bee',
-      loser: 'Doodler',
-      wScore: 3,
-      lScore: 1
-    },
-    {
       winner: 'Tyser',
       loser: 'Darkrain',
       wScore: 3,
       lScore: 0
-    },
-    {
-      winner: 'Smeesh',
-      loser: 'RFrizzle',
-      wScore: 3,
-      lScore: 1
     }
   ],
   announcement: "We will be taking an hour break for lunch at 1:00 PM CDT. We will return promptly at 2:00. Thank you for your understanding!"
 };
 
-var mainTimeline = new TimelineMax({ paused: true, repeat: -1 });
+var mainTimeline = new TimelineMax({ paused: true });
 
 function go() {
   updateResults();
+  animateIn('results');
   mainTimeline.resume();
 }
+
+//function updateLabel(label) {
+//  switch(label) {
+//    case 'announcement'
+//  }
+//}
 
 function updateResults() {
   var tl = new TimelineMax();
   var resultList = document.getElementById('ticker-display');
+  clearLabel("results");
   resultList.innerHTML = '';
+  TweenMax.set(resultList, { marginLeft: 0 });
 
   var speed = 50;
+  tl.add(animateIn('results'));
   tickerData.results.forEach(function(o) {
     var e = createResult(o);
     resultList.appendChild(e);
@@ -69,7 +61,8 @@ function updateResults() {
       .set(resultList, { marginLeft: 0 });
   });
   
-  mainTimeline.add(tl);
+  tl.add(animateIn('results').reverse());
+  mainTimeline.add(tl, 'results');
 }
 
 function createResult(o) {
@@ -82,5 +75,39 @@ function createResult(o) {
 
 function cycleResult(element, parent) {
   parent.appendChild(element);
+}
+
+function clearLabel(label, tl) {
+  if (!tl)
+    tl = mainTimeline;
+    
+  var time = tl.getLabelTime(label);
+  var tls = tl.getChildren(false, false, true);
+  tls.forEach(function(t) {
+    if (t.startTime() == time) {
+      t.kill();
+      tl.remove(t);
+    }    
+  });
+}
+
+function animateIn(label) {
+  var tabs = [].slice.call(document.getElementById('tabs').children);
+  var tl = new TimelineMax();
+  
+  // Store a reference to the current tab
+  var i = tabs.map(function (e) { return e.id; }).indexOf(label);
+  var current = tabs.splice(i, 1);
+  
+  // Animate out all the unused tabs then move the current tab
+  tl.staggerTo(tabs, 1, { top: '50px', height: '0px', display: 'none'}, .3)
+    .to(current, 1, { left: '100px', borderWidth: '0px' })
+    .to('#ticker-display', 1.5, { right: '-1920px' }); 
+  
+  return tl;
+}
+
+function animateOut() {
+  
 }
 

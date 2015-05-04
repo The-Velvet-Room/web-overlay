@@ -5,33 +5,83 @@
 	right: 0;
 	margin: auto;
 }
+	#ticker #ticker-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
 
-#ticker-container {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	background-color: red;
-	overflow: hidden;
-}
+	#ticker #display-container {
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 100%;
+		width: 80%;
+		margin: auto;
+		background-color: red;
+		overflow: hidden;
+	}
+	
+	#ticker #overlay-container {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+		
+	#current-tab {
+		width: 200px;
+		left: 50px;
+	}
 
-#ticker-overlay {
-	position: relative;
-	width: 100%;
-	height: 100%;
-}
+	#overlay-container #tabs .tab {
+		position: absolute;
+		top: -2px;
+		display: inline-block;
+		border: 2px solid black;
+		border-bottom: 0px;
+		background-color: red;
+		width: 200px;
+		height: 50px;
+		font-size: 25px;
+		line-height: 50px;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+		-webkit-transform: skew(-20deg);
+		-webkit-backface-visibility: hidden;
+		z-index:10;
+		overflow: hidden;
+	}
+	
+	#tabs #announcements {
+		left: 360px;
+	}
+	
+	#tabs #results {
+		left: 560px;
+	}
+	
+	#tabs #media {
+		left: 760px;
+	}
+	
+	#tabs #info {
+		left: 960px;
+	}
 
 #ticker-display {
 	position: absolute;
-	width: 1000%;
 	height: 30px;
-	left: 0;
-	right: 0;
+	left: 140px;
+	right: 1920px;
 	top: 0;
 	bottom: 0;
 	margin: auto;
+	text-align: left;
 	background-color: black;
 	overflow: hidden;
 }
+
+
 
 .tickerResult {
 	display: inline-block;
@@ -44,4 +94,5 @@
     font-size: 20px;
     font-family: 'Oswald', cursive;
     text-shadow: 2px 2px 2px rgb(50, 50, 50);
+	text-align: center;
 }
