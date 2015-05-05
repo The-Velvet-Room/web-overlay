@@ -1,32 +1,45 @@
+.tickerText {
+    color: white;
+    font-size: 20px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+	text-align: center;
+}
+
 #ticker {
 	position: absolute;
 	height: 50px;
 	left: 0;
 	right: 0;
 	margin: auto;
+	overflow: hidden;
 }
 
 	#ticker .container {
 		width: 100%;
-		height: 100%;
+		height: 44px;
+		bottom: 0px;
 	}
-		
+
+/* ticker-background */
+
 	#ticker-background .left {
 		width: 17px;
 		float: left;
+	}
+	
+	#ticker-background .right {
+		width: 17px;
+		float: right;
 	}
 	
 	#ticker-background .center {
 		height: 40px;
 		margin-left: 17px;
 		margin-right: 17px;
+		background-color: red;
 		border-top: 2px solid yellow;
 		border-bottom: 2px solid yellow;
-	}
-	
-	#ticker-background .right {
-		width: 17px;
-		float: right;
 	}
 
 	#ticker-background .left .edge {
@@ -68,95 +81,74 @@
 		border-left: 17px solid yellow;
 		border-bottom: 22px solid transparent;
 	}
-	
-	#ticker #ticker-container {
-		position: relative;
-		width: 100%;
-		height: 100%;
-	}
 
-	#ticker #display-container {
+/* ticker-display */
+
+#ticker-display.container {
+	left: 0px;
+	right: 0px;
+	margin: auto;
+	width: 80%;
+	overflow: hidden;
+	-webkit-transform: skew(-20deg);
+}
+
+	#ticker-display .display {
 		position: absolute;
-		left: 0;
-		right: 0;
-		height: 100%;
-		width: 80%;
+		top: 0;
+		bottom: 0;
+		left: 140px;
+		right: 1920px;
 		margin: auto;
-		background-color: red;
+		height: 30px;		
+		text-align: left;
+		background-color: black;
 		overflow: hidden;
+		-webkit-transform: skew(20deg);
 	}
 	
-	#ticker #overlay-container {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-		
-	#current-tab {
-		width: 200px;
-		left: 50px;
-	}
-
-	#overlay-container #tabs .tab {
-		position: absolute;
-		top: -2px;
+	#ticker-display .display .text {
 		display: inline-block;
-		border: 2px solid black;
-		border-bottom: 0px;
-		background-color: red;
-		width: 200px;
-		height: 50px;
-		font-size: 25px;
-		line-height: 50px;
-		border-top-left-radius: 5px;
-		border-top-right-radius: 5px;
-		-webkit-transform: skew(-20deg);
-		-webkit-backface-visibility: hidden;
-		z-index:10;
-		overflow: hidden;
+		font-size: 18px;
+		padding: 0 50px;
+		white-space: nowrap;
+		text-shadow: none;
 	}
 	
-	#tabs #announcements {
+/* ticker-overlay */
+
+/* ticker-tabs */
+
+	#ticker-tabs .tab {
+		position: absolute;
+		bottom: 0px;
+		width: 200px;
+		height: 46px;
+		border: 2px solid yellow;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;		
+		font-size: 26px;
+		line-height: 46px;	
+		background-color: red;
+		-webkit-transform: skew(-20deg);
+	}
+	
+	#ticker-tabs .tab .text {
+		-webkit-transform: skew(20deg);
+	}
+	
+	#ticker-tabs .tab.announcements {
 		left: 360px;
 	}
 	
-	#tabs #results {
+	#ticker-tabs .tab.results {
 		left: 560px;
 	}
 	
-	#tabs #media {
+	#ticker-tabs .tab.media {
 		left: 760px;
 	}
 	
-	#tabs #info {
+	#ticker-tabs .tab.info {
 		left: 960px;
 	}
-
-/*#ticker-display {
-	position: absolute;
-	height: 30px;
-	left: 140px;
-	right: 1920px;
-	top: 0;
-	bottom: 0;
-	margin: auto;
-	text-align: left;
-	background-color: black;
-	overflow: hidden;
-}*/
-
-
-
-.tickerResult {
-	display: inline-block;
-	padding: 0 50px;
-	white-space: nowrap;
-}
-
-.tickerText {
-    color: white;
-    font-size: 20px;
-    font-family: 'Oswald', cursive;
-    text-shadow: 2px 2px 2px rgb(50, 50, 50);
-	text-align: center;
-}

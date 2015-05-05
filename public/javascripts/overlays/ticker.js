@@ -27,7 +27,6 @@ var mainTimeline = new TimelineMax({ paused: true });
 
 function go() {
   updateResults();
-  animateIn('results');
   mainTimeline.resume();
 }
 
@@ -39,7 +38,7 @@ function go() {
 
 function updateResults() {
   var tl = new TimelineMax();
-  var resultList = document.getElementById('ticker-display');
+  var resultList = document.querySelector('#ticker-display .results');
   clearLabel("results");
   resultList.innerHTML = '';
   TweenMax.set(resultList, { marginLeft: 0 });
@@ -68,7 +67,7 @@ function updateResults() {
 function createResult(o) {
   var e = document.createElement('div');
   e.innerText = o.winner + ' ' + o.wScore + '-' + o.lScore + ' ' + o.loser;
-  e.className = 'tickerResult tickerText';
+  e.className = 'text';
 
   return e;
 }
@@ -92,17 +91,18 @@ function clearLabel(label, tl) {
 }
 
 function animateIn(label) {
-  var tabs = [].slice.call(document.getElementById('tabs').children);
+  var tabs = [].slice.call(document.getElementById('ticker-tabs').children);
   var tl = new TimelineMax();
   
   // Store a reference to the current tab
-  var i = tabs.map(function (e) { return e.id; }).indexOf(label);
-  var current = tabs.splice(i, 1);
+  var i = tabs.map(function (e) { return e.classList.contains(label); }).indexOf(true);
+  var currentTab = tabs.splice(i, 1);
   
   // Animate out all the unused tabs then move the current tab
-  tl.staggerTo(tabs, 1, { top: '50px', height: '0px', display: 'none'}, .3)
-    .to(current, 1, { left: '100px', borderWidth: '0px' })
-    .to('#ticker-display', 1.5, { right: '-1920px' }); 
+  var display = document.querySelector('#ticker-display .display.' + label);
+  tl.staggerTo(tabs, .7, { top: '50px', height: '0px', display: 'none'}, .2)
+    .to(currentTab, 1, { left: '100px' })
+    .to(display, 1.5, { right: '-1920px' }); 
   
   return tl;
 }
