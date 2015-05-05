@@ -5,6 +5,70 @@
 	right: 0;
 	margin: auto;
 }
+
+	#ticker .container {
+		width: 100%;
+		height: 100%;
+	}
+		
+	#ticker-background .left {
+		width: 17px;
+		float: left;
+	}
+	
+	#ticker-background .center {
+		height: 40px;
+		margin-left: 17px;
+		margin-right: 17px;
+		border-top: 2px solid yellow;
+		border-bottom: 2px solid yellow;
+	}
+	
+	#ticker-background .right {
+		width: 17px;
+		float: right;
+	}
+
+	#ticker-background .left .edge {
+		position:absolute;
+		top: 2px;
+		left: 2px;
+		width: 0;
+		height: 0;
+		border-top: 20px solid transparent;
+		border-right: 15px solid red;
+		border-bottom: 20px solid transparent;
+	}
+	
+	#ticker-background .left .edgeBorder {
+		position:absolute;
+		width: 0;
+		height: 0;
+		border-top: 22px solid transparent;
+		border-right: 17px solid yellow;
+		border-bottom: 22px solid transparent;
+	}
+	
+	#ticker-background .right .edge {
+		position:absolute;
+		top: 2px;
+		right: 2px;
+		width: 0;
+		height: 0;
+		border-top: 20px solid transparent;
+		border-left: 15px solid red;
+		border-bottom: 20px solid transparent;
+	}
+	
+	#ticker-background .right .edgeBorder {
+		position:absolute;
+		width: 0;
+		height: 0;
+		border-top: 22px solid transparent;
+		border-left: 17px solid yellow;
+		border-bottom: 22px solid transparent;
+	}
+	
 	#ticker #ticker-container {
 		position: relative;
 		width: 100%;
@@ -68,7 +132,7 @@
 		left: 960px;
 	}
 
-#ticker-display {
+/*#ticker-display {
 	position: absolute;
 	height: 30px;
 	left: 140px;
@@ -79,7 +143,7 @@
 	text-align: left;
 	background-color: black;
 	overflow: hidden;
-}
+}*/
 
 
 

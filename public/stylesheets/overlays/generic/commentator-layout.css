@@ -18,11 +18,7 @@
 #main-container.commentator-layout #ticker {
     top: 874px;
     width: 1536px;
-    -webkit-clip-path: polygon(
-			0px 25px, 25px 50px, 1511px 50px, 1536px 25px, 1511px 0px, 25px 0px, 0px 25px
-		);
-		background-color: red;
-} 
+}
 
 #main-container.commentator-layout .playerText {
     position: absolute;

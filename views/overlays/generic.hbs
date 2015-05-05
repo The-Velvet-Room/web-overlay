@@ -32,22 +32,36 @@
       <div class="rPlayer playerText"></div>
       <div class="rScore playerText"></div>
       <div id="ticker" class="tickerText">
-        <div id="ticker-container">
-          <div id="overlay-container">
-            <div id="current-tab"></div>
-            <div id="custom-overlay"></div>
-            <div id="tabs">
-              <div id="announcements" class="tab">Announcements</div>
-              <div id="results" class="tab">Results</div>
-              <div id="media" class="tab">Media</div>
-              <div id="info" class="tab">Info</div>
-            </div>
+        <div id="ticker-background" class="container">        
+          <div class="left">
+            <div class="edgeBorder"></div>
+            <div class="edge"></div>
           </div>     
-          <div id="display-container">
-            <div id="ticker-display"></div>
-          </div> 
-        </div>  
-      </div>  
+          <div class="right">
+            <div class="edgeBorder"></div>
+            <div class="edge"></div>
+          </div>
+          <div class="center" style="background-color:red;"></div>
+        </div>
+        <div id="ticker-display" class="container">
+          <div class="display announcements">Announcements</div>
+          <div class="display results">Results</div>
+          <div class="display media">Media</div>
+          <div class="display info">Info</div>
+        </div>
+        <div id="ticker-overlay" class="container">
+          <div class="overlay announcements">Announcements</div>
+          <div class="overlay results">Results</div>
+          <div class="overlay media">Media</div>
+          <div class="overlay info">Info</div>
+        </div>
+        <div id="ticker-tabs" class="container">
+          <div class="tab announcements">Announcements</div>
+          <div class="tab results">Results</div>
+          <div class="tab media">Media</div>
+          <div class="tab info">Info</div>
+        </div>
+      </div>
     </div>
     <script>
     $(function () {
