@@ -69,11 +69,24 @@ var ticker = {
   tab4: 'info',
 };
 
-var mainTimeline = new TimelineMax({ paused: true });
+var mainTimeline = new TimelineMax({ paused: true, repeat: -1 });
 
-function go() {
-  updateTicker();
-  mainTimeline.resume();
+function clearLabel(label, tl) {
+  if (!tl)
+    tl = mainTimeline;
+    
+  var time = tl.getLabelTime(label);
+  var tls = tl.getChildren(false, false, true);
+  tls.forEach(function(t) {
+    if (t.startTime() == time) {
+      t.kill();
+      tl.remove(t);
+    }    
+  });
+}
+
+function selectTab(label) {
+  mainTimeline.play(label);
 }
 
 function updateTicker() {
@@ -123,7 +136,7 @@ function animateScrollDisplay(label) {
   var elements = [].slice.call(display.children);
   elements.forEach(function(e, i) {
     var width = e.offsetWidth;
-    var speed = 50;
+    var speed = 500;
     
     tl.to(display, width/speed, { marginLeft: '-=' + width + 'px', ease: Linear.easeNone })
     for (var j=0; j<elements.length; j++) {
@@ -166,20 +179,6 @@ function createScrollElement(str) {
   e.className = 'text scroll';
 
   return e;
-}
-
-function clearLabel(label, tl) {
-  if (!tl)
-    tl = mainTimeline;
-    
-  var time = tl.getLabelTime(label);
-  var tls = tl.getChildren(false, false, true);
-  tls.forEach(function(t) {
-    if (t.startTime() == time) {
-      t.kill();
-      tl.remove(t);
-    }    
-  });
 }
 
 function animateTabIn(label) {

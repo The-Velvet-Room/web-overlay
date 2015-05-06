@@ -3,6 +3,7 @@ var redis = require('redis');
 var client = redis.createClient();
 var redisOverlayKey = 'web-overlay-overlay';
 var redisLayoutKey = 'web-overlay-layout';
+var redisTickerKey = 'web-overlay-ticker';
 
 module.exports = function (io) {
 
@@ -29,6 +30,18 @@ module.exports = function (io) {
         socket.emit('change layout', JSON.parse(reply));
       }
     });
+    
+    // Send the stored ticker data
+    client.get(redisTickerKey, function (err, reply) {
+      if (err) {
+        console.log(err);
+      } else if (reply) {
+        // We always want to start on the first
+        var r = JSON.parse(reply);
+        r.changeTab = null;
+        socket.emit('update ticker', r);
+      }
+    });
 
     socket.on('disconnect', function() {
       console.log('overlay user disconnected: ' + socket.handshake.address);
@@ -53,6 +66,12 @@ module.exports = function (io) {
       client.set(redisLayoutKey, JSON.stringify(msg));
       overlay.emit('change layout', msg);
       console.log('change layout: ' + JSON.stringify(msg));
+    });
+    
+    socket.on('update ticker', function(msg) {
+      client.set(redisTickerKey, JSON.stringify(msg));
+      overlay.emit('update ticker', msg);
+      console.log('update ticker: ' + JSON.stringify(msg));
     });
   });
 };

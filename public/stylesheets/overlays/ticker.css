@@ -109,6 +109,7 @@
 	#ticker-display .display .text {
 		display: inline-block;
 		font-size: 18px;
+		line-height: 30px;
 		white-space: nowrap;
 		text-shadow: none;
 	}

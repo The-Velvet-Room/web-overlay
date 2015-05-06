@@ -74,7 +74,15 @@
     <script>
     $(function () {
       var socket = io('/overlay');
-
+      
+      updateTicker();
+      mainTimeline.resume();
+      socket.on('update ticker', function(data) {
+        if (data.changeTab) {
+          selectTab(data.changeTab);
+        }
+      });
+      
       socket.on('change layout', function(data) {
         var background = $('#background');
         var container = $('#main-container');
