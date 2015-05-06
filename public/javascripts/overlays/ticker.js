@@ -5,18 +5,18 @@ var tickerData = {
   ],
   game: 'Melee',
   results: [
-//    {
-//      winner: 'Noah',
-//      loser: 'JBM',
-//      wScore: 3,
-//      lScore: 0
-//    },
-//    {
-//      winner: 'Echo',
-//      loser: 'MegaRobMan',
-//      wScore: 3,
-//      lScore: 1
-//    },
+    {
+      winner: 'Noah',
+      loser: 'JBM',
+      wScore: 3,
+      lScore: 0
+    },
+    {
+      winner: 'Echo',
+      loser: 'MegaRobMan',
+      wScore: 3,
+      lScore: 1
+    },
     {
       winner: 'Tyser',
       loser: 'Darkrain',
@@ -26,8 +26,24 @@ var tickerData = {
   ],
   media: [
     {
-      icon: '',
-      url: ''
+      name: 'Twitch',
+      icon: 'something',
+      url: 'twitch.tv/Camtendo'
+    },
+    {
+      name: 'Facebook',
+      icon: 'something',
+      url: 'facebook.com/thevelvetroomsmash'
+    },
+    {
+      name: 'Youtube',
+      icon: 'something',
+      url: 'www.youtube.com/user/Camtendo'
+    },
+    {
+      name: 'Twitter',
+      icon: 'something',
+      url: '@TVRSmash'
     }
   ],
   info: [
@@ -38,61 +54,118 @@ var tickerData = {
     {
       key: 'Latest Follower',
       value: 'mike_hawk'
+    },
+    {
+      key: 'Current Viewers',
+      value: '1337'
     }
   ]
+};
+
+var ticker = {
+  tab1: 'announcements',
+  tab2: 'results',
+  tab3: 'media',
+  tab4: 'info',
 };
 
 var mainTimeline = new TimelineMax({ paused: true });
 
 function go() {
-  updateResults();
+  updateTicker();
   mainTimeline.resume();
 }
 
-//function updateLabel(label) {
-//  switch(label) {
-//    case 'announcement'
-//  }
-//}
+function updateTicker() {
+  mainTimeline.clear();
+  mainTimeline.add(createTabTimeline(ticker.tab1, 'scroll'), ticker.tab1);
+  mainTimeline.add(createTabTimeline(ticker.tab2, 'scroll'), ticker.tab2);
+  mainTimeline.add(createTabTimeline(ticker.tab3, 'scroll'), ticker.tab3);
+  mainTimeline.add(createTabTimeline(ticker.tab4, 'scroll'), ticker.tab4);
+}
 
-function updateResults() {
+function createTabTimeline(label, tlType) {
+  if (tlType === 'scroll') {
+    return animateScrollDisplay(label);
+  }
+}
+
+function animateScrollDisplay(label) {
   var tl = new TimelineMax();
-  var resultList = document.querySelector('#ticker-display .announcements');
-  clearLabel("announcements");
-  resultList.innerHTML = '';
-  TweenMax.set(resultList, { marginLeft: 0 });
+  var display = document.querySelector('#ticker-display .display.' + label);
+  display.innerHTML = '';
+  
+  var totalWidth = 0;
+  var bigWidth = 0;
+  var minWidth = document.querySelector('#ticker-display').offsetWidth;
 
-  var speed = 50;
-  tl.add(animateTabIn('announcements'));
-  tickerData.results.forEach(function(o) {
-    var e = createResult(o);
-    resultList.appendChild(e);
+  // Add the tab intro to the timeline
+  tl.add(animateTabIn(label));
+  
+  function addToDisplay() {
+    tickerData[label].forEach(function(o) {
+      var e = createScrollElement(createScrollText(o, label));
+      display.appendChild(e);
+      e.style.left = totalWidth + 'px';
+      
+      var width = e.offsetWidth;
+      totalWidth += width;
+      bigWidth = width > bigWidth ? width : bigWidth;
+    });
+  }
+  
+  // In order to have data constantly scrolling, we may have to duplicate elements
+  do {
+    addToDisplay();
+  } while (display.children.length < 2 || (totalWidth-bigWidth) < minWidth);
+  
+  // Add the scrolling animations for each element
+  var elements = [].slice.call(display.children);
+  elements.forEach(function(e, i) {
     var width = e.offsetWidth;
-
-    tl.to(resultList, 
-          width/speed, 
-          { marginLeft: '-=' + width.toString() + 'px', 
-            ease: Linear.easeNone, 
-            onComplete: cycleResult, 
-            onCompleteParams: [e, resultList] 
-          })
-      .set(resultList, { marginLeft: 0 });
+    var speed = 50;
+    
+    tl.to(display, width/speed, { marginLeft: '-=' + width + 'px', ease: Linear.easeNone })
+    for (var j=0; j<elements.length; j++) {
+      if (j !== i) {
+        var w = elements[i].offsetWidth;
+        tl.set(elements[j], { left: '-=' + w + 'px' });
+      } 
+    }
+        
+    tl.set(e, { left: (totalWidth-width) + 'px' })
+      .set(display, { marginLeft: 0 });
   });
   
-  tl.add(animateTabOut('announcements'));
-  mainTimeline.add(tl, 'announcements');
+  // Add the tab outro to the timeline
+  tl.add(animateTabOut(label));
+  return tl;
 }
 
-function createResult(o) {
+function createScrollText(o, label) {  
+  if (label === ticker.tab1) {
+    return o;
+  }
+  
+  if (label === ticker.tab2) {
+    return o.winner + ' ' + o.wScore + '-' + o.lScore + ' ' + o.loser;
+  }
+  
+  if (label === ticker.tab3) {
+    return o.name + ': ' + o.url;
+  }
+  
+  if (label === ticker.tab4) {
+    return o.key + ': ' + o.value;
+  }
+}
+
+function createScrollElement(str) {
   var e = document.createElement('div');
-  e.innerText = o.winner + ' ' + o.wScore + '-' + o.lScore + ' ' + o.loser;
-  e.className = 'text';
+  e.innerText = str; 
+  e.className = 'text scroll';
 
   return e;
-}
-
-function cycleResult(element, parent) {
-  parent.appendChild(element);
 }
 
 function clearLabel(label, tl) {
@@ -133,11 +206,11 @@ function animateTab(state, label) {
   
   if (state === 'in') {
     // Slide all tabs to the left
-    tl.staggerTo(tabs, .5, { left: '-=' + tabWidth.toString() + 'px'}, .1)
+    tl.staggerTo(tabs, .5, { left: '-=' + tabWidth + 'px'}, .1)
     
     // Slide all unused tabs out and show the display
     tabs.shift();
-    tl.staggerTo(tabs, .5, { bottom: '-' + tabFullHeight.toString() +'px' }, .1)
+    tl.staggerTo(tabs, .5, { bottom: '-' + tabFullHeight +'px' }, .1)
       .to(display, 1.5, { right: '-1920px' }); 
   } else {
     // Shift the tabs one more time, so the current tab goes to the end
@@ -148,8 +221,8 @@ function animateTab(state, label) {
     tl.to(display, .5, { right: '1920px' })
       .to(currentTab, .5, { left: '-=100px', opacity: 0 })
       .set(currentTab, { 
-        left: '+=' + (100+tabWidth*tabs.length).toString() + 'px', 
-        bottom: '-' + tabFullHeight.toString() + 'px', 
+        left: '+=' + (100+tabWidth*tabs.length) + 'px', 
+        bottom: '-' + tabFullHeight + 'px', 
         opacity: 1
       })
       .staggerTo(tabs, .5, { bottom: '0px' }, .1);

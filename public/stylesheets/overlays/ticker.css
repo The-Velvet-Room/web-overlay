@@ -85,10 +85,9 @@
 /* ticker-display */
 
 #ticker-display.container {
-	left: 0px;
+	left: 290px;
 	right: 0px;
-	margin: auto;
-	width: 80%;
+	width: 70%;
 	overflow: hidden;
 	-webkit-transform: skew(-20deg);
 }
@@ -97,7 +96,7 @@
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		left: 140px;
+		left: 0px;
 		right: 1920px;
 		margin: auto;
 		height: 30px;		
@@ -110,9 +109,14 @@
 	#ticker-display .display .text {
 		display: inline-block;
 		font-size: 18px;
-		padding: 0 50px;
 		white-space: nowrap;
 		text-shadow: none;
+	}
+	
+	#ticker-display .display .scroll {
+		position: absolute;
+		left: 0px;
+		padding: 0 50px;
 	}
 	
 /* ticker-overlay */
