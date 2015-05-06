@@ -138,17 +138,17 @@
 	}
 	
 	#ticker-tabs .tab.announcements {
-		left: 360px;
+		left: 300px;
 	}
 	
 	#ticker-tabs .tab.results {
-		left: 560px;
+		left: 500px;
 	}
 	
 	#ticker-tabs .tab.media {
-		left: 760px;
+		left: 700px;
 	}
 	
 	#ticker-tabs .tab.info {
-		left: 960px;
+		left: 900px;
 	}
