@@ -1,0 +1,159 @@
+.tickerText {
+    color: white;
+    font-size: 20px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+	text-align: center;
+}
+
+#ticker {
+	position: absolute;
+	height: 50px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	overflow: hidden;
+}
+
+	#ticker .container {
+		width: 100%;
+		height: 44px;
+		bottom: 0px;
+	}
+
+/* ticker-background */
+
+	#ticker-background .left {
+		width: 17px;
+		float: left;
+	}
+	
+	#ticker-background .right {
+		width: 17px;
+		float: right;
+	}
+	
+	#ticker-background .center {
+		height: 40px;
+		margin-left: 17px;
+		margin-right: 17px;
+		background-color: red;
+		border-top: 2px solid yellow;
+		border-bottom: 2px solid yellow;
+	}
+
+	#ticker-background .left .edge {
+		position:absolute;
+		top: 2px;
+		left: 2px;
+		width: 0;
+		height: 0;
+		border-top: 20px solid transparent;
+		border-right: 15px solid red;
+		border-bottom: 20px solid transparent;
+	}
+	
+	#ticker-background .left .edgeBorder {
+		position:absolute;
+		width: 0;
+		height: 0;
+		border-top: 22px solid transparent;
+		border-right: 17px solid yellow;
+		border-bottom: 22px solid transparent;
+	}
+	
+	#ticker-background .right .edge {
+		position:absolute;
+		top: 2px;
+		right: 2px;
+		width: 0;
+		height: 0;
+		border-top: 20px solid transparent;
+		border-left: 15px solid red;
+		border-bottom: 20px solid transparent;
+	}
+	
+	#ticker-background .right .edgeBorder {
+		position:absolute;
+		width: 0;
+		height: 0;
+		border-top: 22px solid transparent;
+		border-left: 17px solid yellow;
+		border-bottom: 22px solid transparent;
+	}
+
+/* ticker-display */
+
+#ticker-display.container {
+	left: 290px;
+	right: 0px;
+	width: 70%;
+	overflow: hidden;
+	-webkit-transform: skew(-20deg);
+}
+
+	#ticker-display .display {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0px;
+		right: 1920px;
+		margin: auto;
+		height: 30px;		
+		text-align: left;
+		background-color: black;
+		overflow: hidden;
+		-webkit-transform: skew(20deg);
+	}
+	
+	#ticker-display .display .text {
+		display: inline-block;
+		font-size: 18px;
+		line-height: 30px;
+		white-space: nowrap;
+		text-shadow: none;
+	}
+	
+	#ticker-display .display .scroll {
+		position: absolute;
+		left: 0px;
+		padding: 0 50px;
+	}
+	
+/* ticker-overlay */
+
+/* ticker-tabs */
+
+	#ticker-tabs .tab {
+		position: absolute;
+		bottom: 0px;
+		width: 200px;
+		height: 46px;
+		border: 2px solid yellow;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;		
+		font-size: 26px;
+		line-height: 46px;	
+		background-color: red;
+		-webkit-transform: skew(-20deg);
+	}
+	
+	#ticker-tabs .tab .text {
+		-webkit-transform: skew(20deg);
+	}
+	
+	#ticker-tabs .tab.announcements {
+		left: 300px;
+	}
+	
+	#ticker-tabs .tab.results {
+		left: 500px;
+	}
+	
+	#ticker-tabs .tab.media {
+		left: 700px;
+	}
+	
+	#ticker-tabs .tab.info {
+		left: 900px;
+	}

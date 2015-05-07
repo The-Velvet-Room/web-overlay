@@ -15,10 +15,15 @@
     );
 }
 
+#main-container.commentator-layout #ticker {
+    top: 874px;
+    width: 1536px;
+}
+
 #main-container.commentator-layout .playerText {
     position: absolute;
     color: white;
-    font-size: 42px;
+    font-size: 38px;
     font-family: 'Oswald', cursive;
     text-shadow: 2px 2px 2px rgb(50, 50, 50);
 

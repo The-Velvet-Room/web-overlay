@@ -351,6 +351,15 @@ function sendUpdate(infoMessage) {
     }   
 }
 
+function updateTicker(changeTab) {
+    var data = {
+      'changeTab': changeTab  
+    };
+    
+    socket.emit('update ticker', data);
+    toastNotify('Ticker data updated.');
+}
+
 function changeLayout() {
     var layout = document.getElementsByClassName('selectedLayout')[0];
     var data = {
@@ -590,5 +599,9 @@ $(function() {
         $(".layoutButton").removeClass('selectedLayout');
         $(this).addClass('selectedLayout');
         changeLayout();
+    });
+    
+    $(".changeTabBtn").click(function () {
+        updateTicker($(this).val());
     });
 });

@@ -5,8 +5,11 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/stylesheets/overlays/generic/generic.css' />
     <link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
+    <link rel='stylesheet' href='/stylesheets/overlays/ticker.css' />   
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/overlays/ticker.js"></script>
   </head>
   <body>
     <div id="background" class="container"></div>
@@ -28,12 +31,58 @@
       </div>
       <div class="rPlayer playerText"></div>
       <div class="rScore playerText"></div>
+      <div id="ticker" class="tickerText">
+        <div id="ticker-background" class="container">        
+          <div class="left">
+            <div class="edgeBorder"></div>
+            <div class="edge"></div>
+          </div>     
+          <div class="right">
+            <div class="edgeBorder"></div>
+            <div class="edge"></div>
+          </div>
+          <div class="center"></div>
+        </div>
+        <div id="ticker-display" class="container">
+          <div class="display announcements"></div>
+          <div class="display results"></div>
+          <div class="display media"></div>
+          <div class="display info"></div>
+        </div>
+        <div id="ticker-overlay" class="container">
+          <div class="overlay announcements"></div>
+          <div class="overlay results"></div>
+          <div class="overlay media"></div>
+          <div class="overlay info"></div>
+        </div>
+        <div id="ticker-tabs" class="container">
+          <div class="tab announcements">
+            <div class="text">Announcements</div>
+          </div>
+          <div class="tab results">
+            <div class="text">Results</div>             
+          </div>
+          <div class="tab media">
+            <div class="text">Media</div>            
+          </div>
+          <div class="tab info">
+            <div class="text">Info</div>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
-    
     $(function () {
       var socket = io('/overlay');
-
+      
+      updateTicker();
+      mainTimeline.resume();
+      socket.on('update ticker', function(data) {
+        if (data.changeTab) {
+          selectTab(data.changeTab);
+        }
+      });
+      
       socket.on('change layout', function(data) {
         var background = $('#background');
         var container = $('#main-container');
@@ -141,7 +190,6 @@
             $(this).text(newText);
           }).animate({'opacity': '1', 'margin-left': '0'}, 350);
       });
-
     });
     </script>
   </body>
