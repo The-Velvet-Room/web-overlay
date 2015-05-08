@@ -86,21 +86,25 @@ function clearLabel(label, tl) {
 }
 
 function selectTab(label) {
-  mainTimeline.play(label);
+  mainTimeline.play(label + 'In');
 }
 
 function updateTicker() {
+  mainTimeline.progress(1);
   mainTimeline.clear();
-  mainTimeline.add(createTabTimeline(ticker.tab1, 'scroll'), ticker.tab1);
-  mainTimeline.add(createTabTimeline(ticker.tab2, 'scroll'), ticker.tab2);
-  mainTimeline.add(createTabTimeline(ticker.tab3, 'scroll'), ticker.tab3);
-  mainTimeline.add(createTabTimeline(ticker.tab4, 'scroll'), ticker.tab4);
+  createTabTimeline(ticker.tab1, 'scroll');
+  createTabTimeline(ticker.tab2, 'scroll');
+  createTabTimeline(ticker.tab3, 'scroll');
+  createTabTimeline(ticker.tab4, 'scroll');
 }
 
 function createTabTimeline(label, tlType) {
+  mainTimeline.add(animateTabIn(label), label + 'In');  
   if (tlType === 'scroll') {
-    return animateScrollDisplay(label);
+    mainTimeline.add(animateScrollDisplay(label), label);
   }
+  
+  mainTimeline.add(animateTabOut(label), label + 'Out');
 }
 
 function animateScrollDisplay(label) {
@@ -112,9 +116,6 @@ function animateScrollDisplay(label) {
   var bigWidth = 0;
   var minWidth = document.querySelector('#ticker-display').offsetWidth;
 
-  // Add the tab intro to the timeline
-  tl.add(animateTabIn(label));
-  
   function addToDisplay() {
     tickerData[label].forEach(function(o) {
       var e = createScrollElement(createScrollText(o, label));
@@ -136,9 +137,9 @@ function animateScrollDisplay(label) {
   var elements = [].slice.call(display.children);
   elements.forEach(function(e, i) {
     var width = e.offsetWidth;
-    var speed = 500;
+    var speed = 250;
     
-    tl.to(display, width/speed, { marginLeft: '-=' + width + 'px', ease: Linear.easeNone })
+    tl.to(display, width/speed, { marginLeft: '-=' + width + 'px', ease: Linear.easeNone });
     for (var j=0; j<elements.length; j++) {
       if (j !== i) {
         var w = elements[i].offsetWidth;
@@ -149,9 +150,7 @@ function animateScrollDisplay(label) {
     tl.set(e, { left: (totalWidth-width) + 'px' })
       .set(display, { marginLeft: 0 });
   });
-  
-  // Add the tab outro to the timeline
-  tl.add(animateTabOut(label));
+
   return tl;
 }
 

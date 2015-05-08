@@ -72,12 +72,13 @@
       </div>
     </div>
     <script>
-    $(function () {
+    $(document).ready(function () {
       var socket = io('/overlay');
       
       updateTicker();
       mainTimeline.resume();
-      socket.on('update ticker', function(data) {
+      
+      socket.on('update ticker', function(data) { 
         if (data.changeTab) {
           selectTab(data.changeTab);
         }
@@ -189,7 +190,7 @@
         $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
             $(this).text(newText);
           }).animate({'opacity': '1', 'margin-left': '0'}, 350);
-      });
+      });   
     });
     </script>
   </body>
