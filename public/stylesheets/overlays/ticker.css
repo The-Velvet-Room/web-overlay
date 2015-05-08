@@ -106,6 +106,16 @@
 		-webkit-transform: skew(20deg);
 	}
 	
+	#ticker-display .display .vertical {
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: auto;	
+		text-align: left;
+		background-color: black;
+/*		overflow: hidden;*/
+	}
+	
 	#ticker-display .display .text {
 		display: inline-block;
 		font-size: 18px;
@@ -118,6 +128,14 @@
 		position: absolute;
 		left: 0px;
 		padding: 0 50px;
+	}
+	
+	#ticker-display .display .score {
+		position: absolute;
+		left: 0px;
+		padding: 0 50px;
+		background-color: darkslateblue;
+		border-right: 1px solid cornflowerblue;
 	}
 	
 /* ticker-overlay */
