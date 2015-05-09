@@ -138,6 +138,14 @@
 		border-right: 1px solid cornflowerblue;
 	}
 	
+	#ticker-display .display .badge {
+		position: absolute;
+		left: -100px;
+		width: 100px;
+		overflow: hidden;
+		border-top-right-radius: 10px;
+	}
+	
 /* ticker-overlay */
 
 /* ticker-tabs */

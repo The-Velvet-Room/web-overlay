@@ -33,23 +33,27 @@ var tickerData = {
   media: [
     {
       name: 'Twitch',
-      icon: 'something',
-      url: 'twitch.tv/Camtendo'
+      icon: '',
+      color: 'blueviolet',
+      text: ['twitch.tv/Camtendo']
     },
     {
       name: 'Facebook',
-      icon: 'something',
-      url: 'facebook.com/thevelvetroomsmash'
+      icon: '',
+      color: 'blue',
+      text: ['facebook.com/thevelvetroomsmash']
     },
     {
       name: 'Youtube',
-      icon: 'something',
-      url: 'www.youtube.com/user/Camtendo'
+      icon: '',
+      color: 'red',
+      text: ['www.youtube.com/user/Camtendo']
     },
     {
       name: 'Twitter',
-      icon: 'something',
-      url: '@TVRSmash'
+      icon: '',
+      color: 'dodgerblue',
+      text: ['@TVRSmash', '@nswartz1990', '@Camtendo', '@daguenther', '@EchoRKO']
     }
   ],
   info: [
@@ -100,7 +104,7 @@ function updateTicker() {
   mainTimeline.clear();
   createTabTimeline(ticker.tab1, 'scroll');
   createTabTimeline(ticker.tab2, 'score');
-  createTabTimeline(ticker.tab3, 'scroll');
+  createTabTimeline(ticker.tab3, 'badge');
   createTabTimeline(ticker.tab4, 'scroll');
 }
 
@@ -110,9 +114,85 @@ function createTabTimeline(label, tlType) {
     mainTimeline.add(animateScrollDisplay(label), label);
   } else if (tlType = 'score') {
     mainTimeline.add(animateScoreDisplay(label), label);
+  } else if (tlType = 'badge') {
+    mainTimeline.add(animateBadgeDisplay(label), label);
   }
   
   mainTimeline.add(animateTabOut(label), label + 'Out');
+}
+
+function animateBadgeDisplay(label) {
+  var tl = new TimelineMax();
+  var display = document.querySelector('#ticker-display .display.' + label);
+  display.innerHTML = '';
+  
+  var badgeCont = document.createElement('div');
+  badgeCont.className = 'vertical';
+  display.appendChild(vertical);
+  
+  tickerData[label].forEach(function(o) {
+    var e = createBadgeElement(createBadgeText(o));
+    display.appendChild(e);
+  });
+    
+  // Add the scrolling animations for each element
+  var badges = [].slice.call(display.children);
+  badges.forEach(function(b, i) {
+    var height = b.clientHeight;
+    var speed = 60;
+    // Determines how long before a new element cycles into view
+    var duration = 2;
+    
+    tl.to(b, height/speed, { left: '0px' });
+    
+    var msgs = tickerData[label][i];
+    msgs.forEach(function(m, j) {
+      tl.to(m, height/speed, {  })
+    });
+    
+    tl.to(vertical, height/speed, { marginTop: '-=' + height + 'px', ease: Linear.easeNone }, '+=' + duration);
+  });
+
+  return tl;
+}
+
+function createBadgeElement(o) {
+  var e = document.createElement('div');
+  e.className = 'text badge';
+  e.style.backgroundColor = o.color;
+  
+  var icon = '';
+  if (o.icon) {
+    var icon = document.createElement('img');
+    icon.src = o.icon;
+  }
+  
+  var name = document.createElement('div');
+  name.innerText = o.name;
+  
+  e.appendChild(icon);
+  e.appendChild(name);  
+
+  return e;
+}
+
+function createBadgeText(o, label) {  
+  if (label === ticker.tab1) {
+    return o;
+  }
+  
+  if (label === ticker.tab2) {
+    return o.wRank + ' ' + o.winner + ' ' + o.wScore + '    ' 
+    + o.lRank + ' ' + o.loser + ' ' + o.lScore;
+  }
+  
+  if (label === ticker.tab3) {
+    return o.text;
+  }
+  
+  if (label === ticker.tab4) {
+    return o.key + ': ' + o.value;
+  }
 }
 
 function animateScoreDisplay(label) {
