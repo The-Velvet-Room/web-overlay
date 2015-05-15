@@ -77,6 +77,8 @@ var ticker = {
   tab2: 'results',
   tab3: 'media',
   tab4: 'info',
+  speed: 150,
+  duration: '+=2'
 };
 
 var mainTimeline = new TimelineMax({ paused: true, repeat: -1 });
@@ -112,9 +114,9 @@ function createTabTimeline(label, tlType) {
   mainTimeline.add(animateTabIn(label), label + 'In');  
   if (tlType === 'scroll') {
     mainTimeline.add(animateScrollDisplay(label), label);
-  } else if (tlType = 'score') {
+  } else if (tlType === 'score') {
     mainTimeline.add(animateScoreDisplay(label), label);
-  } else if (tlType = 'badge') {
+  } else if (tlType === 'badge') {
     mainTimeline.add(animateBadgeDisplay(label), label);
   }
   
@@ -125,32 +127,48 @@ function animateBadgeDisplay(label) {
   var tl = new TimelineMax();
   var display = document.querySelector('#ticker-display .display.' + label);
   display.innerHTML = '';
-  
-  var badgeCont = document.createElement('div');
-  badgeCont.className = 'vertical';
-  display.appendChild(vertical);
-  
+    
   tickerData[label].forEach(function(o) {
-    var e = createBadgeElement(createBadgeText(o));
-    display.appendChild(e);
+    var badgeCont = document.createElement('div');
+    display.appendChild(badgeCont);
+    badgeCont.className = 'badgeContainer';  
+    
+    var e = createBadgeElement(o);
+    badgeCont.appendChild(e);
+    e.style.left = -e.scrollWidth + 'px';
+    
+    o.text.forEach(function(str) {
+      var msg = document.createElement('div');
+      badgeCont.appendChild(msg);
+      msg.className = 'text badgeMsg';
+      msg.innerText = str;
+      msg.style.top = e.clientHeight + 'px';
+      msg.style.left = e.clientWidth + 'px';
+    });
   });
-    
+     
   // Add the scrolling animations for each element
-  var badges = [].slice.call(display.children);
-  badges.forEach(function(b, i) {
+  var badgeConts = [].slice.call(display.children);
+  badgeConts.forEach(function(bc) {   
+    // Show the badge
+    var b = getChildrenByClass(bc, 'badge')[0];
+    tl.to(b, b.offsetWidth/ticker.speed, {left: '0px'});
+    
     var height = b.clientHeight;
-    var speed = 60;
-    // Determines how long before a new element cycles into view
-    var duration = 2;
-    
-    tl.to(b, height/speed, { left: '0px' });
-    
-    var msgs = tickerData[label][i];
-    msgs.forEach(function(m, j) {
-      tl.to(m, height/speed, {  })
+    var msgs = getChildrenByClass(bc, 'badgeMsg');
+    msgs.forEach(function(m, i, a) {
+      var prev = a[i-1] ? a[i-1] : null;
+      if (prev) {
+        tl.to([prev, m], height/ticker.speed, {top: '-=' + height + 'px'}, ticker.duration);
+      } else {
+        tl.to(m, height/ticker.speed, {top: '-=' + height + 'px'});
+      }
+      
+      if (i === a.length-1)
+        tl.to(m, height/ticker.speed, {top: '-=' + height + 'px'}, ticker.duration);
     });
     
-    tl.to(vertical, height/speed, { marginTop: '-=' + height + 'px', ease: Linear.easeNone }, '+=' + duration);
+    tl.to(b, b.clientWidth/ticker.speed, {left: -b.clientWidth + 'px'});
   });
 
   return tl;
@@ -161,38 +179,17 @@ function createBadgeElement(o) {
   e.className = 'text badge';
   e.style.backgroundColor = o.color;
   
-  var icon = '';
   if (o.icon) {
     var icon = document.createElement('img');
-    icon.src = o.icon;
+    e.appendChild(icon);
+    icon.src = o.icon;  
   }
   
   var name = document.createElement('div');
+  e.appendChild(name);  
   name.innerText = o.name;
   
-  e.appendChild(icon);
-  e.appendChild(name);  
-
   return e;
-}
-
-function createBadgeText(o, label) {  
-  if (label === ticker.tab1) {
-    return o;
-  }
-  
-  if (label === ticker.tab2) {
-    return o.wRank + ' ' + o.winner + ' ' + o.wScore + '    ' 
-    + o.lRank + ' ' + o.loser + ' ' + o.lScore;
-  }
-  
-  if (label === ticker.tab3) {
-    return o.text;
-  }
-  
-  if (label === ticker.tab4) {
-    return o.key + ': ' + o.value;
-  }
 }
 
 function animateScoreDisplay(label) {
@@ -202,8 +199,8 @@ function animateScoreDisplay(label) {
   
   // Add a vertical scrolling section to the display
   var vertical = document.createElement('div');
-  vertical.className = 'vertical';
   display.appendChild(vertical);
+  vertical.className = 'vertical';
   
   var totalHeight = 0;
   tickerData[label].forEach(function(o) {
@@ -218,12 +215,8 @@ function animateScoreDisplay(label) {
   // Add the scrolling animations for each element
   var elements = [].slice.call(vertical.children);
   elements.forEach(function(e, i) {
-    var height = e.clientHeight;
-    var speed = 60;
-    // Determines how long before a new element cycles into view
-    var duration = 2;
-    
-    tl.to(vertical, height/speed, { marginTop: '-=' + height + 'px', ease: Linear.easeNone }, '+=' + duration);
+    var height = e.clientHeight;    
+    tl.to(vertical, height/ticker.speed, {marginTop: '-=' + height + 'px'}, ticker.duration);
   });
 
   return tl;
@@ -286,18 +279,17 @@ function animateScrollDisplay(label) {
   var elements = [].slice.call(display.children);
   elements.forEach(function(e, i) {
     var width = e.offsetWidth;
-    var speed = 250;
     
-    tl.to(display, width/speed, { marginLeft: '-=' + width + 'px', ease: Linear.easeNone });
+    tl.to(display, width/ticker.speed, {marginLeft: '-=' + width + 'px', ease: Linear.easeNone});
     for (var j=0; j<elements.length; j++) {
       if (j !== i) {
         var w = elements[i].offsetWidth;
-        tl.set(elements[j], { left: '-=' + w + 'px' });
+        tl.set(elements[j], {left: '-=' + w + 'px'});
       } 
     }
         
-    tl.set(e, { left: (totalWidth-width) + 'px' })
-      .set(display, { marginLeft: 0 });
+    tl.set(e, {left: (totalWidth-width) + 'px'})
+      .set(display, {marginLeft: 0});
   });
 
   return tl;
@@ -353,11 +345,11 @@ function animateTab(state, label) {
   
   if (state === 'in') {
     // Slide all tabs to the left
-    tl.staggerTo(tabs, .5, { left: '-=' + tabWidth + 'px'}, .1)
+    tl.staggerTo(tabs, .5, {left: '-=' + tabWidth + 'px'}, .1);
     
     // Slide all unused tabs out and show the display
     tabs.shift();
-    tl.staggerTo(tabs, .5, { bottom: '-' + tabFullHeight +'px' }, .1)
+    tl.staggerTo(tabs, .5, {bottom: '-' + tabFullHeight +'px'}, .1)
       .to(display, 1.5, { right: '-1920px' }); 
   } else {
     // Shift the tabs one more time, so the current tab goes to the end
@@ -365,15 +357,31 @@ function animateTab(state, label) {
     tabs.push(currentTab);
     
     // Reset the tab positions
-    tl.to(display, 1.5, { right: '1920px' })
-      .to(currentTab, .5, { left: '-=100px', opacity: 0 })
+    tl.to(display, 1.5, {right: '1920px'})
+      .to(currentTab, .5, {left: '-=100px', opacity: 0})
       .set(currentTab, { 
         left: '+=' + (100+tabWidth*tabs.length) + 'px', 
         bottom: '-' + tabFullHeight + 'px', 
         opacity: 1
       })
-      .staggerTo(tabs, .5, { bottom: '0px' }, .1);
+      .staggerTo(tabs, .5, {bottom: '0px'}, .1);
   }
   
   return tl;
+}
+
+function getChildrenByClass(p, str) {
+  var arr = [];
+  for (var i=0; i<p.children.length; i++) {
+    var e = p.children[i];
+    var classes = e.className ? e.className.split(' ') : [];
+    for(var j=0; j<classes.length; j++) {
+      if (classes[j] === str) {
+        arr.push(e);
+        break;
+      }
+    }
+  }
+  
+  return arr;
 }

@@ -127,7 +127,7 @@
 	#ticker-display .display .scroll {
 		position: absolute;
 		left: 0px;
-		padding: 0 50px;
+		padding-left: 20px;
 	}
 	
 	#ticker-display .display .score {
@@ -135,16 +135,28 @@
 		left: 0px;
 		padding: 0 50px;
 		background-color: darkslateblue;
-		border-right: 1px solid cornflowerblue;
 	}
 	
-	#ticker-display .display .badge {
-		position: absolute;
-		left: -100px;
-		width: 100px;
-		overflow: hidden;
-		border-top-right-radius: 10px;
-	}
+		#ticker-display .display .badgeContainer {
+			position: absolute;
+			top: 0;
+			left: 0;
+			margin: auto;
+		}
+		
+			#ticker-display .display .badgeContainer .badge {
+				position: absolute;
+				width: 150px;
+				padding-left: 20px;
+				overflow: hidden;
+				text-align: center;		
+				border-top-right-radius: 10px;
+			}		
+		
+			#ticker-display .display .badgeContainer .badgeMsg {
+				position: absolute;
+				margin-left: 10px;
+			}
 	
 /* ticker-overlay */
 
