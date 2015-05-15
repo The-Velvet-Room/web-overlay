@@ -46,7 +46,7 @@ var tickerData = {
     {
       name: 'Youtube',
       icon: '',
-      color: 'red',
+      color: 'darkred',
       text: ['www.youtube.com/user/Camtendo']
     },
     {
@@ -78,10 +78,10 @@ var ticker = {
   tab3: 'media',
   tab4: 'info',
   speed: 150,
-  duration: '+=2'
+  duration: '+=3'
 };
 
-var mainTimeline = new TimelineMax({ paused: true, repeat: -1 });
+var mainTimeline = new TimelineMax({paused: true, repeat: -1});
 
 function clearLabel(label, tl) {
   if (!tl)
@@ -131,7 +131,7 @@ function animateBadgeDisplay(label) {
   tickerData[label].forEach(function(o) {
     var badgeCont = document.createElement('div');
     display.appendChild(badgeCont);
-    badgeCont.className = 'badgeContainer';  
+    badgeCont.className = 'text badgeContainer';  
     
     var e = createBadgeElement(o);
     badgeCont.appendChild(e);
@@ -140,7 +140,7 @@ function animateBadgeDisplay(label) {
     o.text.forEach(function(str) {
       var msg = document.createElement('div');
       badgeCont.appendChild(msg);
-      msg.className = 'text badgeMsg';
+      msg.className = 'badgeMsg';
       msg.innerText = str;
       msg.style.top = e.clientHeight + 'px';
       msg.style.left = e.clientWidth + 'px';
@@ -152,7 +152,7 @@ function animateBadgeDisplay(label) {
   badgeConts.forEach(function(bc) {   
     // Show the badge
     var b = getChildrenByClass(bc, 'badge')[0];
-    tl.to(b, b.offsetWidth/ticker.speed, {left: '0px'});
+    tl.to(b, .3, {left: '0px'});
     
     var height = b.clientHeight;
     var msgs = getChildrenByClass(bc, 'badgeMsg');
@@ -168,7 +168,7 @@ function animateBadgeDisplay(label) {
         tl.to(m, height/ticker.speed, {top: '-=' + height + 'px'}, ticker.duration);
     });
     
-    tl.to(b, b.clientWidth/ticker.speed, {left: -b.clientWidth + 'px'});
+    tl.to(b, .3, {left: -b.clientWidth + 'px'});
   });
 
   return tl;
@@ -176,7 +176,7 @@ function animateBadgeDisplay(label) {
 
 function createBadgeElement(o) {
   var e = document.createElement('div');
-  e.className = 'text badge';
+  e.className = 'badge';
   e.style.backgroundColor = o.color;
   
   if (o.icon) {
@@ -197,36 +197,84 @@ function animateScoreDisplay(label) {
   var display = document.querySelector('#ticker-display .display.' + label);
   display.innerHTML = '';
   
-  // Add a vertical scrolling section to the display
-  var vertical = document.createElement('div');
-  display.appendChild(vertical);
-  vertical.className = 'vertical';
-  
-  var totalHeight = 0;
   tickerData[label].forEach(function(o) {
-    var e = createScoreElement(createScoreText(o, label));
-    vertical.appendChild(e);
-    e.style.top = totalHeight + 'px';
-    
-    var height = e.clientHeight;
-    totalHeight += height;
+    var e = createScoreElement(o);
+    display.appendChild(e);
+    e.style.top = display.offsetHeight + 'px';
   });
     
   // Add the scrolling animations for each element
-  var elements = [].slice.call(vertical.children);
-  elements.forEach(function(e, i) {
-    var height = e.clientHeight;    
-    tl.to(vertical, height/ticker.speed, {marginTop: '-=' + height + 'px'}, ticker.duration);
+  var height = display.clientHeight;
+  var elements = [].slice.call(display.children);
+  elements.forEach(function(e, i, a) { 
+    var prev = a[i-1] ? a[i-1] : null;
+      if (prev) {
+        tl.to([prev, e], height/ticker.speed, {top: '-=' + height + 'px'}, ticker.duration);
+      } else {
+        tl.to(e, height/ticker.speed, {top: '-=' + height + 'px'});
+      }
+        
+      if (i === a.length-1)
+        tl.to(e, height/ticker.speed, {top: '-=' + height + 'px'}, ticker.duration);
   });
 
   return tl;
 }
 
-function createScoreElement(str) {
+function createScoreElement(o, label) {
   var e = document.createElement('div');
-  e.innerText = str; 
-  e.className = 'text score';
-
+  e.className = 'scoreContainer';
+  
+  var wResult = document.createElement('div');
+  e.appendChild(wResult);
+  wResult.className = 'wResult';
+  
+  if (o.wRank) {
+    var wRank = document.createElement('div');
+    wResult.appendChild(wRank);
+    wRank.innerText = o.wRank;
+    wRank.className = 'rank';
+  }
+  
+  if (o.winner) {
+    var winner = document.createElement('div');  
+    wResult.appendChild(winner); 
+    winner.innerText = o.winner;
+    winner.className = 'name';
+  }
+  
+  if (o.wScore != null) {
+    var wScore = document.createElement('div');  
+    wResult.appendChild(wScore); 
+    wScore.innerText = o.wScore;
+    wScore.className = 'score';
+  }
+    
+  var lResult = document.createElement('div');
+  e.appendChild(lResult);
+  lResult.className = 'lResult';
+  
+  if (o.lRank) {
+    var lRank = document.createElement('div');
+    lResult.appendChild(lRank);
+    lRank.innerText = o.lRank;
+    lRank.className = 'rank';
+  }
+  
+  if (o.loser) {
+    var loser = document.createElement('div');  
+    lResult.appendChild(loser); 
+    loser.innerText = o.loser;
+    loser.className = 'name';
+  }
+  
+  if (o.lScore != null) {
+    var lScore = document.createElement('div');  
+    lResult.appendChild(lScore); 
+    lScore.innerText = o.lScore;
+    lScore.className = 'score';
+  }
+  
   return e;
 }
 
