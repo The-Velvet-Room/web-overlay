@@ -82,6 +82,8 @@
         if (data.changeTab) {
           selectTab(data.changeTab);
         }
+        
+        ticker.activeTabs = data.activeTabs ? data.activeTabs : [];    
       });
       
       socket.on('change layout', function(data) {

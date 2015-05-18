@@ -67,3 +67,7 @@ body {
         .tab.active {
             display:block;
         }
+        
+        .tab button.active {
+            background-color: cadetblue;
+        }

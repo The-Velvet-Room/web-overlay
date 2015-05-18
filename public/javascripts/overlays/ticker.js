@@ -78,8 +78,17 @@ var ticker = {
   tab3: 'media',
   tab4: 'info',
   speed: 150,
-  duration: '+=3'
+  duration: '+=3',
+  activeTabs: ['announcements', 'results', 'media', 'info']
 };
+
+function updateData() {
+  changeActiveTabs();
+}
+
+function changeActiveTabs() {
+  updateTicker();
+}
 
 var mainTimeline = new TimelineMax({paused: true, repeat: -1});
 
@@ -104,10 +113,14 @@ function selectTab(label) {
 function updateTicker() {
   mainTimeline.progress(1);
   mainTimeline.clear();
-  createTabTimeline(ticker.tab1, 'scroll');
-  createTabTimeline(ticker.tab2, 'score');
-  createTabTimeline(ticker.tab3, 'badge');
-  createTabTimeline(ticker.tab4, 'scroll');
+  if (ticker.activeTabs.indexOf(ticker.tab1) > -1) 
+    createTabTimeline(ticker.tab1, 'scroll');
+  if (ticker.activeTabs.indexOf(ticker.tab2) > -1) 
+    createTabTimeline(ticker.tab2, 'score');
+  if (ticker.activeTabs.indexOf(ticker.tab3) > -1)   
+    createTabTimeline(ticker.tab3, 'badge');
+  if (ticker.activeTabs.indexOf(ticker.tab4) > -1)   
+    createTabTimeline(ticker.tab4, 'scroll');
 }
 
 function createTabTimeline(label, tlType) {
@@ -119,7 +132,7 @@ function createTabTimeline(label, tlType) {
   } else if (tlType === 'badge') {
     mainTimeline.add(animateBadgeDisplay(label), label);
   }
-  
+
   mainTimeline.add(animateTabOut(label), label + 'Out');
 }
 
@@ -412,7 +425,8 @@ function animateTab(state, label) {
         bottom: '-' + tabFullHeight + 'px', 
         opacity: 1
       })
-      .staggerTo(tabs, .5, {bottom: '0px'}, .1);
+      .staggerTo(tabs, .5, {bottom: '0px'}, .1)
+      .call(updateData);
   }
   
   return tl;

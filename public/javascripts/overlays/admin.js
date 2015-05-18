@@ -352,8 +352,11 @@ function sendUpdate(infoMessage) {
 }
 
 function updateTicker(changeTab) {
+    var active = [].slice.call(document.querySelectorAll('.tickerTabBtn.active'));
+    
     var data = {
-      'changeTab': changeTab  
+      'changeTab': changeTab,
+      'activeTabs': active.map(function(e) { return e.value; })
     };
     
     socket.emit('update ticker', data);
@@ -601,7 +604,12 @@ $(function() {
         changeLayout();
     });
     
-    $(".changeTabBtn").click(function () {
+    $(".tickerTabBtn.change").click(function () {
         updateTicker($(this).val());
+    });
+    
+    $(".tickerTabBtnEnable").click(function () {
+        $(this).toggleClass('active');
+        updateTicker();
     });
 });
