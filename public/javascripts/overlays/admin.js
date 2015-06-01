@@ -104,7 +104,7 @@ function createStateList(direction) {
 
     var defaultOption = document.createElement('option');
     defaultOption.text = 'None';
-    defaultOption.value = null;
+    defaultOption.value = ' ';
     selectList.appendChild(defaultOption);
 
     for (var i=0; i < usStates.length; i++) {
