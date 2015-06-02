@@ -89,8 +89,7 @@ function createPortList(direction) {
         if(this['port'+direction]) {
             if(option.value == this['port'+direction]) {
                 //i+1 to account for default option
-                selectList.options[i+1].selected = true;
-                break;      
+                selectList.options[i+1].selected = true;    
             }
         }
     };
@@ -128,8 +127,7 @@ function createStateList(direction) {
         if(this['state'+direction] && this['state'] != ' ') {
             if(option.value == this['state'+direction]) {
                 //i+1 to account for default option
-                selectList.options[i+1].selected = true;
-                break;      
+                selectList.options[i+1].selected = true;  
             }
         }
     };
