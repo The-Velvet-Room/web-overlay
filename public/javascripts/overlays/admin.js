@@ -130,6 +130,42 @@ function createStateList(direction) {
 createStateList('Left');
 createStateList('Right');
 
+//Populate existing information if it exists
+function populateDropdowns(direction) {
+    //Port
+    if(this['port'+direction]) {
+        var portList = document.getElementById('port'+direction);       
+        for (var i = 0; i < portList.options.length; i++) {
+            if(portList.options[i].value == this['port'+direction]) {
+                portList.options[i].selected = true;
+                break;
+            }        
+        }
+    }
+    
+    //Character
+    if(this['character'+direction]) {
+        var characterList = document.getElementById('charList'+direction);       
+        for (var i = 0; i < characterList.options.length; i++) {
+            if(characterList.options[i].value == this['character'+direction]) {
+                characterList.options[i].selected = true;
+                break;
+            }        
+        }
+    }
+    
+    //State
+    if(this['state'+direction] && this['state'] != ' ') {
+        var stateList = document.getElementById('state'+direction);       
+        for (var i = 0; i < stateList.options.length; i++) {
+            if(stateList.options[i].value == this['state'+direction]) {
+                stateList.options[i].selected = true;
+                break;
+            }        
+        }
+    }
+}
+
 var socket = io('/overlay');
 
 socket.on('update overlay', function(data) {
@@ -156,6 +192,9 @@ socket.on('update overlay', function(data) {
         document.getElementById('ready-radio-false').checked = true;
         document.getElementById('ready-radio-true').checked = false;
     }
+    
+    populateDropdowns('Left');
+    populateDropdowns('Right');
 });
 
 var twitchSocket = io('/twitch');
