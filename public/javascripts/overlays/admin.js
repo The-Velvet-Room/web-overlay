@@ -1,3 +1,4 @@
+var dataInitialized = false;
 var characterLeft = null;
 var characterRight = null;
 var portLeft = null;
@@ -39,12 +40,21 @@ function createCharacterList(direction) {
     defaultOption.value = null;
     selectList.appendChild(defaultOption);
 
-    characters.forEach(function(character){
+    characters.forEach(function(character) {
         var option = document.createElement('option');
         option.text = character;
         option.value = character;
         selectList.appendChild(option);
     });
+    
+    for (var i = 0; i < selectList.options.length; i++) {
+        if(this['character'+direction]) {
+            if(selectList.options[i].value == this['character'+direction]) {
+                selectList.options[i].selected = true;
+                break;      
+            }
+        }   
+    }
 
     $('#charList'+direction).change(function(){
         var selectedOption = $('#charList'+direction+' option:selected');
@@ -58,9 +68,6 @@ function createCharacterList(direction) {
         sendUpdate();
     });
 }
-
-createCharacterList('Left');
-createCharacterList('Right');
 
 //Pass in either 'Left' or 'Right'
 function createPortList(direction) {
@@ -78,6 +85,14 @@ function createPortList(direction) {
         option.text = i+1;
         option.value = portColors[i];
         selectList.appendChild(option);
+        
+        if(this['port'+direction]) {
+            if(option.value == this['port'+direction]) {
+                //i+1 to account for default option
+                selectList.options[i+1].selected = true;
+                break;      
+            }
+        }
     };
 
     $('#port'+direction).change(function(){
@@ -92,9 +107,6 @@ function createPortList(direction) {
         sendUpdate();
     });
 }
-
-createPortList('Left');
-createPortList('Right');
 
 //Pass in either 'Left' or 'Right'
 function createStateList(direction) {
@@ -112,6 +124,14 @@ function createStateList(direction) {
         option.text = usStates[i];
         option.value = usStatesKeys[i];
         selectList.appendChild(option);
+        
+        if(this['state'+direction] && this['state'] != ' ') {
+            if(option.value == this['state'+direction]) {
+                //i+1 to account for default option
+                selectList.options[i+1].selected = true;
+                break;      
+            }
+        }
     };
 
     $('#state'+direction).change(function(){
@@ -126,9 +146,6 @@ function createStateList(direction) {
         sendUpdate();
     });
 }
-
-createStateList('Left');
-createStateList('Right');
 
 var socket = io('/overlay');
 
@@ -156,6 +173,17 @@ socket.on('update overlay', function(data) {
         document.getElementById('ready-radio-false').checked = true;
         document.getElementById('ready-radio-true').checked = false;
     }
+    
+    if(!dataInitialized) {
+        createStateList('Left');
+        createStateList('Right');
+        createCharacterList('Left');
+        createCharacterList('Right');
+        createPortList('Left');
+        createPortList('Right');
+        dataInitialized = true;
+    }
+    
 });
 
 var twitchSocket = io('/twitch');
