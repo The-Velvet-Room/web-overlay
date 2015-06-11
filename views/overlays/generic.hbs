@@ -100,11 +100,12 @@
         var element = jQueryElement.get()[0];
         var length = newLength || jQueryElement.text().length;
         console.log(length);
-
-        var top = $('#main-container').attr('class').indexOf('16by9') > -1 ? 814 : 1030; 
+        
+        var layout = $('#main-container').attr('class');
+        var top = layout.indexOf('full') > -1 || layout.indexOf('4by3') > -1 ? 1028 : 812; 
 
         if (length <= 7) {
-          element.style.fontSize = '42px';
+          element.style.fontSize = '38px';
         }
         else if (length <= 20){
           element.style.fontSize = '28px';
