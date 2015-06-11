@@ -1,21 +1,18 @@
-.game16by9-layout-1cam {
+.game16by9-layout-full {
     -webkit-clip-path: polygon(
         /* Outer border */
-        0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 192px 10px, 192px 794px,
-        /* Left name */ 212px 814px, 632px 814px, 652px 854px, 662px 854px, 
-        /* Left score */ 642px 814px, 722px 814px, 742px 854px, 
-        /* Player cam */ 
-        960px 854px, 960px 864px, 768px 864px, 768px 1070px, 
-        1152px 1070px, 1152px 864px, 960px 864px, 960px 854px, 1178px 854px,
-        /* Right score */ 1198px 814px, 1278px 814px, 1258px 854px, 
-        /* Right name */ 1268px 854px, 1288px 814px, 1708px 814px, 1728px 794px, 
-        /* Tourney info */ 1728px 10px, 1536px 10px, 1516px 60px, 1096px 60px, 1076px 30px,
+        0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 0px 1080px, 207px 1080px, 
+        /* Left name */ 182px 1030px, 632px 1030px, 657px 1080px, 667px 1080px, 
+        /* Left score */ 642px 1030px, 722px 1030px, 747px 1080px, 1173px 1080px,         
+        /* Right score */ 1198px 1030px, 1278px 1030px, 1253px 1080px, 
+        /* Right name */ 1263px 1080px, 1288px 1030px, 1738px 1030px, 1713px 1080px, 1920px 1080px,
+        /* Tourney info */ 1920px 0px, 1536px 0px, 1516px 60px, 1096px 60px, 1076px 30px,
         /* Logo space */ 844px 30px,
-        /* Title */ 824px 60px, 404px 60px, 384px 10px, 192px 10px
+        /* Title */ 824px 60px, 404px 60px, 384px 0px, 0px 0px
     );
 }
 
-#main-container.game16by9-layout-1cam .playerText {
+#main-container.game16by9-layout-full .playerText {
     position: absolute;
     color: white;
     font-size: 42px;
@@ -29,7 +26,7 @@
     overflow-wrap: break-word;
 }
 
-#main-container.game16by9-layout-1cam .title {
+#main-container.game16by9-layout-full .title {
     top: 0px;
     width: 420px;
     left: 404px;
@@ -37,7 +34,7 @@
     text-align: center;
 }
 
-#main-container.game16by9-layout-1cam .tourneyInfo {
+#main-container.game16by9-layout-full .tourneyInfo {
     top: 0px;
     width: 420px;
     left: 1096px;
@@ -45,17 +42,17 @@
     text-align: center;
 }
 
-#main-container.game16by9-layout-1cam .commentators {
+#main-container.game16by9-layout-full .commentators {
     display: none;
 }
 
-#main-container.game16by9-layout-1cam .lCharacter,
-#main-container.game16by9-layout-1cam .rCharacter  {
+#main-container.game16by9-layout-full .lCharacter,
+#main-container.game16by9-layout-full .rCharacter  {
     zoom: 175%;
 }
 
-#main-container.game16by9-layout-1cam .lIcons {
-    top: 824px;
+#main-container.game16by9-layout-full .lIcons {
+    top: 1040px;
     height: 50px;
     left: 212px;
     width: 32px;
@@ -63,7 +60,7 @@
     position: absolute;
 }
 
-#main-container.game16by9-layout-1cam .lState {
+#main-container.game16by9-layout-full .lState {
     font-family: 'state-font';
     color: white;
     position: absolute;
@@ -72,26 +69,26 @@
     font-size: 36px;
 }
 
-#main-container.game16by9-layout-1cam .lPort {
+#main-container.game16by9-layout-full .lPort {
     position: absolute;
     opacity: 0.3;
     width: 320px;
     height: 30px;
-    bottom: 226px;
+    bottom: 10px;
     left: 312px;
     -webkit-transform: skew(26.5deg);
 }   
 
-#main-container.game16by9-layout-1cam .lPlayer {
-    top: 812px;
+#main-container.game16by9-layout-full .lPlayer {
+    top: 1028px;
     left: 322px;
-    height: 60px;
+    height: 50px;
     width: 300px;
     text-align: center;
 }
 
-#main-container.game16by9-layout-1cam .lScore {
-    top: 814px;
+#main-container.game16by9-layout-full .lScore {
+    top: 1030px;
     height: 60px;
     left: 662px;
     width: 60px;
@@ -99,8 +96,8 @@
     text-align: center;
 }
 
-#main-container.game16by9-layout-1cam .rScore {
-    top: 814px;
+#main-container.game16by9-layout-full .rScore {
+    top: 1030px;
     height: 60px;
     left: 1198px;
     width: 60px;
@@ -108,25 +105,25 @@
     text-align: center;
 }
 
-#main-container.game16by9-layout-1cam .rPlayer {
-    top: 812px;
-    height: 60px;
+#main-container.game16by9-layout-full .rPlayer {
+    top: 1028px;
+    height: 50px;
     left: 1288px;
     width: 300px;
     text-align: center;
 }   
 
-#main-container.game16by9-layout-1cam .rPort {
+#main-container.game16by9-layout-full .rPort {
     position: absolute;
     opacity: 0.3;
     width: 320px;
     height: 30px;
-    bottom: 226px;
+    bottom: 10px;
     left: 1288px;
     -webkit-transform: skew(-26.5deg);
 }
 
-#main-container.game16by9-layout-1cam .rState {
+#main-container.game16by9-layout-full .rState {
     font-family: 'state-font';
     color: white;
     position: absolute;
@@ -135,8 +132,8 @@
     font-size: 36px;
 }
 
-#main-container.game16by9-layout-1cam .rIcons {
-    top: 824px;
+#main-container.game16by9-layout-full .rIcons {
+    top: 1040px;
     height: 50px;
     left: 1668px;
     width: 32px;

@@ -85,9 +85,9 @@
 }   
 
 #main-container.game4by3-layout-1cam .lPlayer {
-    top: 1030px;
+    top: 1028px;
     left: 140px;
-    height: 50px;
+    height: 60px;
     width: 300px;
     text-align: center;
 }
@@ -111,8 +111,8 @@
 }
 
 #main-container.game4by3-layout-1cam .rPlayer {
-    top: 1030px;
-    height: 50px;
+    top: 1028px;
+    height: 60px;
     left: 990px;
     width: 300px;
     text-align: center;
