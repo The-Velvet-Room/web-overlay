@@ -5,6 +5,7 @@
 @import 'game4by3-layout-1cam.css';
 @import 'all4by3-layout-2cam.css';
 @import 'game16by9-layout-1cam.css';
+@import 'game16by9-layout-full.css';
 @import 'all16by9-layout-2cam.css';
 
 body {

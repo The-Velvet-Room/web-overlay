@@ -1,0 +1,144 @@
+.game16by9-layout-full {
+    -webkit-clip-path: polygon(
+        /* Outer border */
+        0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 0px 1080px, 212px 1080px, 
+        /* Left name */ 192px 1030px, 632px 1030px, 652px 1080px, 662px 1080px, 
+        /* Left score */ 642px 1030px, 722px 1030px, 742px 1080px, 1178px 1080px,
+
+        
+        /* Right score */ 1198px 1030px, 1278px 1030px, 1258px 1080px, 
+        /* Right name */ 1268px 1080px, 1288px 1030px, 1728px 1030px, 1708px 1080px,
+        /* Tourney info */ 1920px 10px, 1536px 10px, 1516px 60px, 1096px 60px, 1076px 30px,
+        /* Logo space */ 844px 30px,
+        /* Title */ 824px 60px, 404px 60px, 384px 10px, 192px 10px
+    );
+}
+
+#main-container.game16by9-layout-full .playerText {
+    position: absolute;
+    color: white;
+    font-size: 42px;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+
+    /* Oswald sits a little low, so raise the baseline */
+    margin-top: -5px;
+
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+#main-container.game16by9-layout-full .title {
+    top: 0px;
+    width: 420px;
+    left: 404px;
+    height: 60px;
+    text-align: center;
+}
+
+#main-container.game16by9-layout-full .tourneyInfo {
+    top: 0px;
+    width: 420px;
+    left: 1096px;
+    height: 60px;
+    text-align: center;
+}
+
+#main-container.game16by9-layout-full .commentators {
+    display: none;
+}
+
+#main-container.game16by9-layout-full .lCharacter,
+#main-container.game16by9-layout-full .rCharacter  {
+    zoom: 175%;
+}
+
+#main-container.game16by9-layout-full .lIcons {
+    top: 824px;
+    height: 50px;
+    left: 212px;
+    width: 32px;
+    text-align: center;
+    position: absolute;
+}
+
+#main-container.game16by9-layout-full .lState {
+    font-family: 'state-font';
+    color: white;
+    position: absolute;
+    bottom: -20px;
+    left: 40px;
+    font-size: 36px;
+}
+
+#main-container.game16by9-layout-full .lPort {
+    position: absolute;
+    opacity: 0.3;
+    width: 320px;
+    height: 30px;
+    bottom: 226px;
+    left: 312px;
+    -webkit-transform: skew(26.5deg);
+}   
+
+#main-container.game16by9-layout-full .lPlayer {
+    top: 814px;
+    left: 322px;
+    height: 50px;
+    width: 300px;
+    text-align: center;
+}
+
+#main-container.game16by9-layout-full .lScore {
+    top: 814px;
+    height: 60px;
+    left: 662px;
+    width: 60px;
+    font-size: 38px;
+    text-align: center;
+}
+
+#main-container.game16by9-layout-full .rScore {
+    top: 814px;
+    height: 60px;
+    left: 1198px;
+    width: 60px;
+    font-size: 38px;
+    text-align: center;
+}
+
+#main-container.game16by9-layout-full .rPlayer {
+    top: 814px;
+    height: 50px;
+    left: 1288px;
+    width: 300px;
+    text-align: center;
+}   
+
+#main-container.game16by9-layout-full .rPort {
+    position: absolute;
+    opacity: 0.3;
+    width: 320px;
+    height: 30px;
+    bottom: 226px;
+    left: 1288px;
+    -webkit-transform: skew(-26.5deg);
+}
+
+#main-container.game16by9-layout-full .rState {
+    font-family: 'state-font';
+    color: white;
+    position: absolute;
+    bottom: -20px;
+    left: -40px;
+    font-size: 36px;
+}
+
+#main-container.game16by9-layout-full .rIcons {
+    top: 824px;
+    height: 50px;
+    left: 1668px;
+    width: 32px;
+    text-align: center;
+    position: absolute;
+}
