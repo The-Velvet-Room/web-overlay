@@ -21,7 +21,7 @@ obs.onConnectionOpened = function() {
 
 function remoteConnect(address, password) {
   if (!obs._connected)
-    obs.connect(address);
+    obs.connect(address, password);
 
   if (!authenticated)
     obs.authenticate(password);
