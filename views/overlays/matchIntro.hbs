@@ -10,6 +10,8 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
+    <input type="range" id="slider" min="0" max="1" value="0" step=".001" oninput="updateTl()"
+      style="width: 800px; height: 100px;" />
     <div id="container">
       <audio  id="audio-chime" 
             src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
@@ -90,7 +92,12 @@
       'zero-suit-samus':'http://i.imgur.com/X7UHAGe.png'
     }
     
-    var mainTl = new TimelineMax({repeat:-1, paused:true});
+    var mainTl = new TimelineMax({paused:true});
+    var slider = document.getElementById('slider');
+    
+    function updateTl() {
+      mainTl.progress(slider.value);
+    }
 
     $(document).ready(function () {
       var step = 0;
@@ -133,7 +140,8 @@
 
     function CreateResetTimeline() {
       var tl = new TimelineMax();
-      tl.set('body', {backgroundColor:'rgba(0,0,0,0)'})
+      tl.set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'})
+        .set('body', {backgroundColor:'rgba(0,0,0,0)'})
         .to('#container', .5, {opacity:0})
         .set('#container', {background: 'url(http://i.imgur.com/tlhS4vA.png)'})
         .set('#lCharacter', {opacity:0, marginLeft: '-3%'})
@@ -149,14 +157,14 @@
       tl.to('#container', .5, {opacity:1})
         .set('body', {backgroundColor: 'rgba(255,255,254,1)'})
         .staggerTo('.fadeIn', .35, {opacity: 1, marginLeft: 0}, .5, '+=.1')
-        .addCallback(PlayChime, '+=0')
+        .call(PlayChime)
         .add(ScreenFlash(.05, .05, 0))    
-        .add(ScreenFlash(.15, .15, 0), '+=.1')
+        .add(ScreenFlash(.15, .15, 0), '+=.2')
         .set('#vs', {display:'block'})
-        .to('#vs', .2, {fontSize: '9em'}, '+=.65')
+        .to('#vs', .2, {fontSize: '9em'}, '+=.4')
         .add(ScreenFlash(.025, .5, .5))
-        .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=1')
-        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'});
+        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'}, '-=1')
+        .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=1');
         
       return tl;
     }
@@ -181,7 +189,7 @@
       if (next)
         tl.tweenFromTo(label, next);     
       else
-        tl.tweenFromTo(label, tl.endTime());    
+        tl.tweenFromTo(label, tl.duration());    
     }
     </script>
   </body>
