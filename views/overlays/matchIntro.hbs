@@ -3,7 +3,6 @@
   <head>
     <title>{{title}}</title>
     <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Covered+By+Your+Grace' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/stylesheets/overlays/matchIntro.css' />
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -11,7 +10,7 @@
   </head>
   <body>
     <input type="range" id="slider" min="0" max="1" value="0" step=".001" oninput="updateTl()"
-      style="width: 800px; height: 100px;" />
+      style="width: 800px; height: 100px; z-index: 20;" />
     <div id="container">
       <audio  id="audio-chime" 
             src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
@@ -22,7 +21,10 @@
         <img id="lCharacter" class="fadeIn" height="640" width="640" src="" />
         <h3 id="lplayer" class="text"></h1>
       </div>
-      <h3 id="vs" class="text">VS</h3>
+      <div id="vs-cont">
+        <img id="vs-complete" src="http://i.imgur.com/joUcLWY.png"/>
+        <img id="vs-animate" src="http://i.imgur.com/4QxVEIf.png"/>        
+      </div>  
       <div id="rContainer">
         <img id="rCharacter" class="fadeIn" height="640" width="640" src="" />
         <h3 id="rplayer" class="text"></h1>
@@ -145,8 +147,8 @@
         .to('#container', .5, {opacity:0})
         .set('#container', {background: 'url(http://i.imgur.com/tlhS4vA.png)'})
         .set('#lCharacter', {opacity:0, marginLeft: '-3%'})
-        .set('#rCharacter', {opacity:0, marginLeft: '-3%'})
-        .set('#vs', {fontSize: '100em', display: 'none'})
+        .set('#rCharacter', {opacity:0, marginRight: '3%'})
+        .set('#vs-complete', {display: 'none'})
         .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'none'});
       
       return tl;
@@ -156,15 +158,16 @@
       var tl = new TimelineMax();
       tl.to('#container', .5, {opacity:1})
         .set('body', {backgroundColor: 'rgba(255,255,254,1)'})
-        .staggerTo('.fadeIn', .35, {opacity: 1, marginLeft: 0}, .5, '+=.1')
+        .to('#lCharacter', .35, {opacity:1, marginLeft: 0})
+        .to('#rCharacter', .35, {opacity:1, marginRight: 0}, '+=.15')
         .call(PlayChime)
         .add(ScreenFlash(.05, .05, 0))    
         .add(ScreenFlash(.15, .15, 0), '+=.2')
-        .set('#vs', {display:'block'})
-        .to('#vs', .2, {fontSize: '9em'}, '+=.4')
-        .add(ScreenFlash(.025, .5, .5))
-        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'}, '-=1')
-        .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=1');
+        .add(VsAnimate(), '+=.1')
+        .add(ScreenFlash(.025, 1.5, .5))
+        .set('#vs-complete', {display: 'block'}, '-=1.5')
+        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'}, '-=1.5')
+        .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=1.5');
         
       return tl;
     }
@@ -179,6 +182,16 @@
     
     function PlayChime() {
       document.getElementById('audio-chime').play();
+    }
+    
+    function VsAnimate() {
+      var vs = document.getElementById('vs-animate');
+      var tl = new TimelineMax();
+      tl.set(vs, {display:'block', immediateRender: false})
+        .from(vs, .5, {scaleX: 5, scaleY: 5, rotationY: 360, top: '-150px', immediateRender: false})
+        .set(vs, {display: 'none'})
+      
+      return tl;
     }
     
     function PlayLabel(label, tl) {
