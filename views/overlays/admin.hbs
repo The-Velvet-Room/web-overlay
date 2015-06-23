@@ -28,7 +28,6 @@
                   <input id="ready-radio-true" type="radio" name="readyStatus" value="true" onchange="sendUpdate()">
                   Ready
                 </p>
-
                 <p>
                     <label for="commentators">
                         Commentators
@@ -40,79 +39,110 @@
                         <input id="twitter"></input>
                     </label>
                 </p>
-                <table border="2">
-                    <tr>
-                        <td>
-                        <label for="lplayer">
-                            Left player:
-                            <input id="lplayer"></input>
-                        </label>
-                        </td>
-                        <td>
-                            <label for="rplayer">
-                                Right player:
-                                <input id="rplayer"></input>
+                <div>
+                    <table border="2">
+                        <tr>
+                            <td>
+                            <label for="lplayer">
+                                Left player:
+                                <input id="lplayer"></input>
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="lscore">
-                                Left score:
-                                <input type="number" id="lscore"></input>
-                            </label>
-                            <button type="button" onclick="plusOneLeft()">+1</button>
-                            <button type="button" onclick="minusOneLeft()">-1</button>
-                        </td>
-                        <td>
-                            <label for="rscore">
-                                Right score:
-                                <input type="number" id="rscore"></input>
-                            </label>
-                            <button type="button" onclick="plusOneRight()">+1</button>
-                            <button type="button" onclick="minusOneRight()">-1</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Left Port:</label>
-                            <p id="portLeftPlaceholder"></p>
-                        </td>
-                        <td>
-                            <label>Right Port:</label>
-                            <p id="portRightPlaceholder"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Left Character:</label>
-                            <p id="charListLeftPlaceholder"></p>
-                        </td>
-                        <td>
-                            <label>Right Character:</label>
-                            <p id="charListRightPlaceholder"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Left Home State:</label>
-                            <p id="stateLeftPlaceholder"></p>
-                        </td>
-                        <td>
-                            <label>Right Home State:</label>
-                            <p id="stateRightPlaceholder"></p>
-                        </td>
-                    </tr>
-                </table>
-                <p>
-                <button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
-                <button type="button" onclick="swapNames()">Swap Names</button>
-                <button type="button" onclick="swapAll()">Swap All</button>
-                <button type="button" onclick="zeroScores()">Zero Scores</button>
-                <button type="button" id="flash-ready-button">Flash Ready Screen</button>
-                <button type="button" id="play-intro-btn">Reset Intro</button>
-                <input type="submit"/>
-                </p>
+                            </td>
+                            <td>
+                                <label for="rplayer">
+                                    Right player:
+                                    <input id="rplayer"></input>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="lscore">
+                                    Left score:
+                                    <input type="number" id="lscore"></input>
+                                </label>
+                                <button type="button" class="expand" onclick="plusOneLeft()">+1</button>
+                                <button type="button" class="expand" onclick="minusOneLeft()">-1</button>
+                            </td>
+                            <td>
+                                <label for="rscore">
+                                    Right score:
+                                    <input type="number" id="rscore"></input>
+                                </label>
+                                <button type="button" class="expand" onclick="plusOneRight()">+1</button>
+                                <button type="button" class="expand" onclick="minusOneRight()">-1</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Left Port:</label>
+                                <p id="portLeftPlaceholder"></p>
+                            </td>
+                            <td>
+                                <label>Right Port:</label>
+                                <p id="portRightPlaceholder"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Left Character:</label>
+                                <p id="charListLeftPlaceholder"></p>
+                            </td>
+                            <td>
+                                <label>Right Character:</label>
+                                <p id="charListRightPlaceholder"></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Left Home State:</label>
+                                <p id="stateLeftPlaceholder"></p>
+                            </td>
+                            <td>
+                                <label>Right Home State:</label>
+                                <p id="stateRightPlaceholder"></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table border="2" class="btnTable">
+                        <tr>
+                            <td>
+                                <h3>Overlay</h3>
+                            </td>
+                            <td>
+                                <button type="button" onclick="swapNames()">Swap Names</button>
+                                <button type="button" onclick="swapAll()">Swap All</button>
+                                <button type="button" onclick="zeroScores()">Zero Scores</button>                                    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>Match Intro</h3>
+                            </td>
+                            <td>
+                                <button type="button" onclick="playMatchIntro('reset')">Reset</button>
+                                <button type="button" onclick="playMatchIntro('transition')">Play</button>                                    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>Misc.</h3>
+                            </td>
+                            <td>
+                                <button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>         
+                                <button type="button" id="flash-ready-button">Flash Ready Screen</button>                                   
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3>Update Overlay</h3>
+                            </td>
+                            <td>
+                                <input type="submit"/>                                   
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </form>
         </div>
 

@@ -9,8 +9,6 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <input type="range" id="slider" min="0" max="1" value="0" step=".001" oninput="updateTl()"
-      style="width: 800px; height: 100px; z-index: 20;" />
     <div id="container">
       <audio  id="audio-chime" 
             src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
@@ -23,7 +21,8 @@
       </div>
       <div id="vs-cont">
         <img id="vs-complete" src="http://i.imgur.com/joUcLWY.png"/>
-        <img id="vs-animate" src="http://i.imgur.com/4QxVEIf.png"/>        
+        <img id="vs-animate" src="http://i.imgur.com/4QxVEIf.png"/>
+        <div id="vs-explode"></div>       
       </div>  
       <div id="rContainer">
         <img id="rCharacter" class="fadeIn" height="640" width="640" src="" />
@@ -95,44 +94,29 @@
     }
     
     var mainTl = new TimelineMax({paused:true});
-    var slider = document.getElementById('slider');
-    
-    function updateTl() {
-      mainTl.progress(slider.value);
-    }
+    var inProgress = false;
 
     $(document).ready(function () {
-      var step = 0;
       var socket = io('/overlay');
       
       // For some reason the autoplay property doesn't work in Chrome
       document.getElementById("audio-chime").pause();   
       CreateMainTimeline();
+      
+      socket.on('update overlay', function(data) {
+        $('#tourneyInfo').text(data.tourneyInfo || '');
+        $('#lplayer').text(data.lplayer || '');
+        $('#rplayer').text(data.rplayer || '');
+        $('#lCharacter').attr('src', charImageDict[data.lCharacter] || '');
+        $('#rCharacter').attr('src', charImageDict[data.rCharacter] || '');
+      });
 
-      socket.on('play intro', function(data) {
-        if(data.flag !== step) { 
-          return true;
-        }
-
-        if (data.flag === 0) {
-          // Reset the page and fade out background
-          PlayLabel('reset');
-          step = 1;
-        } else if (data.flag === 1) {
-          // Update the page with all relevant data/images
-          $('#tourneyInfo').text(data.tourneyInfo || '');
-          $('#lplayer').text(data.lplayer || '');
-          $('#rplayer').text(data.rplayer || '');
-          $('#lCharacter').attr('src', charImageDict[data.lCharacter] || '');
-          $('#rCharacter').attr('src', charImageDict[data.rCharacter] || '');
-
-          step = 2;
-        } else {
-          // Show the background again and begin animation
-          PlayLabel('transition');
-          step = 0;            
-        }     
-      });        
+      socket.on('play intro', function(label) {
+        if (!inProgress) {
+          inProgress = true;
+          PlayLabel(label);
+        }  
+      });      
     });
     
     function CreateMainTimeline() {
@@ -163,11 +147,9 @@
         .call(PlayChime)
         .add(ScreenFlash(.05, .05, 0))    
         .add(ScreenFlash(.15, .15, 0), '+=.2')
-        .add(VsAnimate(), '+=.1')
-        .add(ScreenFlash(.025, 1.5, .5))
-        .set('#vs-complete', {display: 'block'}, '-=1.5')
-        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'}, '-=1.5')
-        .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=1.5');
+        .add(VsAnimate(), '+=.1')  
+        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'}, '-=2')
+        .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=2');
         
       return tl;
     }
@@ -186,10 +168,16 @@
     
     function VsAnimate() {
       var vs = document.getElementById('vs-animate');
+      var exp = document.getElementById('vs-explode');
+      
       var tl = new TimelineMax();
       tl.set(vs, {display:'block', immediateRender: false})
         .from(vs, .5, {scaleX: 5, scaleY: 5, rotationY: 360, top: '-150px', immediateRender: false})
         .set(vs, {display: 'none'})
+        .set(exp, {display: 'block'})
+        .to(exp, .25, {scaleX: 5, scaleY: 5})
+        .set('#vs-complete', {display: 'block'})
+        .to(exp, 2, {opacity: 0}, '+=.5');
       
       return tl;
     }
@@ -200,9 +188,13 @@
       
       var next = tl.getLabelAfter(tl.getLabelTime(label));
       if (next)
-        tl.tweenFromTo(label, next);     
+        tl.tweenFromTo(label, next, {onComplete: AnimationComplete});     
       else
-        tl.tweenFromTo(label, tl.duration());    
+        tl.tweenFromTo(label, tl.duration(), {onComplete: AnimationComplete});    
+    }
+    
+    function AnimationComplete() {
+      inProgress = false;
     }
     </script>
   </body>

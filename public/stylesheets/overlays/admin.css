@@ -2,9 +2,22 @@ body {
     background: #DCDCDC;
 }
 
-#play-intro-btn {
-    background-color: red;
-    width: 90px;
+table {
+    display: inline-block;
+}
+
+    table.btnTable tr td:first-child {
+        text-align: center;
+    }
+
+button, input[type=submit] {
+    height: 40px;
+    min-width: 80px;
+}
+
+button.expand {
+    height: auto;
+    min-width: initial;
 }
 
 .selectedLayout {

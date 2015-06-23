@@ -396,54 +396,9 @@ function obsConnect() {
 }
 
 // 0: Reset, 1: Update, 2: Play, -1: Init
-function playMatchIntro(flag) {
-    var data = {
-        'flag': flag,
-        'lplayer': document.getElementById('lplayer').value,
-        'rplayer': document.getElementById('rplayer').value,
-        'tourneyInfo': document.getElementById('tourneyInfo').value,
-        'lCharacter': window.characterLeft || null,
-        'rCharacter': window.characterRight || null
-    };
-
-    socket.emit('play intro', data);
-    
-    // Set the same button to play the next step of the intro.
-    var btn = $('#play-intro-btn');
-    if (flag === 0) {
-        btn.text('Update Intro');
-        btn.css('background-color', 'yellow');
-        toastNotify('Transition area reset.');
-
-        btn.one('click', function() { 
-            playMatchIntro(1);
-        }); 
-    } else if (flag === 1) {
-        btn.attr('disabled', true);
-        setTimeout(function () {
-            btn.attr('disabled', false);
-            btn.text('Play Intro');
-            btn.css('background-color', 'green');
-            toastNotify('Match intro data updated.');
-        }, 2000); 
-
-        btn.one('click', function() { 
-            playMatchIntro(2);       
-        });
-    } else {
-        toastNotify('Playing character intro.');
-        btn.attr('disabled', true);
-        setTimeout(function () {
-            btn.attr('disabled', false);
-            btn.text('Reset Intro');
-            btn.css('background-color', 'red');
-            toastNotify('Character intro complete.');
-        }, 4000);
-
-        btn.one('click', function() {      
-            playMatchIntro(0);
-        });
-    }  
+function playMatchIntro(label) {
+    socket.emit('play intro', label);
+    toastNotify("Playing match intro at label: '" + label + "'.") 
 }
 
 function sendTwitchUpdate() {
@@ -606,10 +561,6 @@ $(function() {
 
     $("#flash-ready-button").click(function() {
         socket.emit('flash screen');
-    });
-
-    $("#play-intro-btn").one("click", function() {  
-        playMatchIntro(0);
     });
 
     $(".layoutButton").click(function () {

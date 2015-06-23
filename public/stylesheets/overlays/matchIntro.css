@@ -62,9 +62,10 @@ body {
 	overflow-wrap: normal;
 }
 
-	#vs-cont img {
+	#vs-cont > * {
 		position: absolute;
 		width: 600px;
+		height: 450px;
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%);
@@ -72,6 +73,13 @@ body {
 	
 	#vs-animate {
 		display: none;
+	}
+	
+	#vs-explode {
+		display: none;
+	    box-shadow: 0px 0px 50px 50px white;
+	    background-color: white;
+		border-radius: 50%;
 	}
 
 #lCharacter {
