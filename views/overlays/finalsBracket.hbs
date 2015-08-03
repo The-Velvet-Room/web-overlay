@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/overlays/finalsBracket.css' />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <audio  id="audio-chime" 
+            src="https://dl.dropboxusercontent.com/u/35469595/ssb64_challenge.mp3"
+            autoplay="false">
+      </audio>
+      <h1 id="tourneyInfo" class="text"></h1>
+      <div id="lContainer">
+        <img id="lCharacter" class="fadeIn" height="640" width="640" src="" />
+        <h3 id="lplayer" class="text"></h1>
+      </div>
+      <div id="vs-cont">
+        <img id="vs-complete" src="http://i.imgur.com/joUcLWY.png"/>
+        <img id="vs-animate" src="http://i.imgur.com/4QxVEIf.png"/>
+        <div id="vs-explode"></div>       
+      </div>  
+      <div id="rContainer">
+        <img id="rCharacter" class="fadeIn" height="640" width="640" src="" />
+        <h3 id="rplayer" class="text"></h1>
+      </div>    
+    </div>
+
+    <script type="text/javascript">
+     
+    var charImageDict = {
+      'bowser':'http://i.imgur.com/I4FDbIp.png',
+      'bowser-jr':'http://i.imgur.com/oZCN3XK.png',
+      'captain-falcon':'http://i.imgur.com/O9tSVXP.png',
+      'charizard':'http://i.imgur.com/IaepTSF.png',
+      'dark-pit':'http://i.imgur.com/GHyNREc.png',
+      'king-dedede':'http://i.imgur.com/UyfYtX7.png',
+      'diddy-kong':'http://i.imgur.com/5ydUGFP.png',
+      'donkey-kong':'http://i.imgur.com/0gxI1SC.png',
+      'dr-mario':'http://i.imgur.com/dOd3rKc.png',
+      'duck-hunt-dog':'http://i.imgur.com/IWCXW4T.png',
+      'falco':'http://i.imgur.com/s7rgKPz.png',
+      'fox':'http://i.imgur.com/thGD5lN.png',
+      'mr-game-and-watch':'http://i.imgur.com/Ap1LiYU.png',
+      'ganondorf':'http://i.imgur.com/j4bDsqJ.png',     
+      'greninja':'http://i.imgur.com/QVET6wY.png',
+      'ice-climbers':'http://i.imgur.com/5meFrg0.png',
+      'ike':'http://i.imgur.com/EnHaLFZ.png',
+      'ivysaur':'http://i.imgur.com/0MVA3iT.png',
+      'jigglypuff':'http://i.imgur.com/OaD3dPq.png',
+      'kirby':'http://i.imgur.com/yTw3VRy.png',
+      'link':'http://i.imgur.com/0Of8GRi.png',
+      'little-mac':'http://i.imgur.com/ndNPbla.png',
+      'lucario':'http://i.imgur.com/yhlnnpg.png', 
+      'lucas':'http://i.imgur.com/I7s5p0g.png',
+      'lucina':'http://i.imgur.com/RiKMBUb.png',
+      'luigi':'http://i.imgur.com/WINbNgE.png',
+      'mario':'http://i.imgur.com/S1Tar9C.png',
+      'marth':'http://i.imgur.com/hwg52GT.png',
+      'megaman':'http://i.imgur.com/zPy53Pe.png',
+      'metaknight':'http://i.imgur.com/7rEIHxL.png',
+      'mewtwo':'http://i.imgur.com/jgxuOXy.png',
+      'ness':'http://i.imgur.com/eZnJvAF.png',
+      'olimar':'http://i.imgur.com/BBps6t8.png',
+      'pacman':'http://i.imgur.com/0yJCo88.png',
+      'palutena':'http://i.imgur.com/mhdBOYZ.png',
+      'peach':'http://i.imgur.com/4OYGO0g.png',
+      'pichu':'http://i.imgur.com/oSdxktC.png',
+      'pikachu':'http://i.imgur.com/v5CyMoc.png',
+      'pit':'http://i.imgur.com/C9XnoNZ.png',
+      'rob':'http://i.imgur.com/vKTbSzM.png',
+      'robin':'http://i.imgur.com/z9MeZl2.png',
+      'rosalina':'http://i.imgur.com/pgdwC7I.png',
+      'roy':'http://i.imgur.com/j9Lnuud.png',
+      'samus':'http://i.imgur.com/zOJfpLu.png',
+      'sheik':'http://i.imgur.com/xRdxFzA.png',
+      'shulk':'http://i.imgur.com/gCR38YY.png',
+      'snake':'http://i.imgur.com/CubeUX0.png',
+      'sonic':'http://i.imgur.com/J2hyfMk.png',
+      'squirtle':'http://i.imgur.com/ULNH57S.png',
+      'toon-link':'http://i.imgur.com/JP6Kfs5.png',
+      'villager':'http://i.imgur.com/W4ABKmp.png',
+      'wario':'http://i.imgur.com/K2kKP6J.png',
+      'wii-fit-trainer':'http://i.imgur.com/iyZpHVh.png',
+      'wolf':'http://i.imgur.com/m8kv1TQ.png',
+      'yoshi':'http://i.imgur.com/wVb8owN.png',
+      'young-link':'http://i.imgur.com/4U8LZJB.png',
+      'zelda':'http://i.imgur.com/GjIFZgA.png',
+      'zero-suit-samus':'http://i.imgur.com/JTjthUy.png'
+    }
+    
+    var mainTl = new TimelineMax({paused:true});
+    var inProgress = false;
+
+    $(document).ready(function () {
+      var socket = io('/overlay');
+      
+      // For some reason the autoplay property doesn't work in Chrome
+      document.getElementById("audio-chime").pause();   
+      createMainTimeline();
+      
+      socket.on('update overlay', function(data) {
+        $('#tourneyInfo').text(data.tourneyInfo || '');
+        $('#lplayer').text(data.lplayer || '');
+        $('#rplayer').text(data.rplayer || '');
+        $('#lCharacter').attr('src', charImageDict[data.lCharacter] || '');
+        $('#rCharacter').attr('src', charImageDict[data.rCharacter] || '');
+      });
+
+      socket.on('play intro', function(label) {
+        if (!inProgress) {
+          inProgress = true;
+          playTimelineLabel(label);
+        }  
+      });      
+    });
+    
+    function createMainTimeline() {
+      mainTl.add(createResetTimeline(), 'reset');
+      mainTl.add(createTransitionTimeline(), 'transition');
+    }
+
+    function createResetTimeline() {
+      var tl = new TimelineMax();
+      tl.set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'})
+        .set('body', {backgroundColor:'rgba(0,0,0,0)'})
+        .to('#container', .5, {opacity:0})
+        .set('#container', {background: 'url(http://i.imgur.com/tlhS4vA.png)'})
+        .set('#lCharacter', {opacity:0, marginLeft: '-3%'})
+        .set('#rCharacter', {opacity:0, marginRight: '3%'})
+        .set('#vs-complete', {display: 'none'})
+        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'none'});
+      
+      return tl;
+    }
+        
+    function createTransitionTimeline() {
+      var tl = new TimelineMax();
+      tl.to('#container', .5, {opacity:1})
+        .set('body', {backgroundColor: 'rgba(255,255,254,1)'})
+        .to('#lCharacter', .35, {opacity:1, marginLeft: 0})
+        .to('#rCharacter', .35, {opacity:1, marginRight: 0}, '+=.15')
+        .call(playChime)
+        .add(flashScreen(.05, .05, 0))    
+        .add(flashScreen(.15, .15, 0), '+=.2')
+        .add(animateVs(), '+=.1')  
+        .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'}, '-=2')
+        .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=2');
+        
+      return tl;
+    }
+    
+    function flashScreen(o, i, delay) {
+        var tl = new TimelineMax();
+        tl.to('#container', o, {opacity:0})
+          .to('#container', i, {opacity:1}, '+=' + delay);
+        
+        return tl;
+    }
+    
+    function playChime() {
+      document.getElementById('audio-chime').play();
+    }
+    
+    function animateVs() {
+      var vs = document.getElementById('vs-animate');
+      var exp = document.getElementById('vs-explode');
+      
+      var tl = new TimelineMax();
+      tl.set(vs, {display:'block', immediateRender: false})
+        .from(vs, .5, {scaleX: 5, scaleY: 5, rotationY: 360, top: '-150px', immediateRender: false})
+        .set(vs, {display: 'none'})
+        .set(exp, {display: 'block'})
+        .to(exp, .25, {scaleX: 5, scaleY: 5})
+        .set('#vs-complete', {display: 'block'})
+        .to(exp, 2, {opacity: 0}, '+=.5');
+      
+      return tl;
+    }
+    
+    function animationComplete() {
+      inProgress = false;
+    }
+    
+    function playTimelineLabel(label, tl) {
+      if (!tl)
+        tl = mainTl;
+      
+      var next = tl.getLabelAfter(tl.getLabelTime(label));
+      if (next)
+        tl.tweenFromTo(label, next, {onComplete: animationComplete});     
+      else
+        tl.tweenFromTo(label, tl.duration(), {onComplete: animationComplete});    
+    }
+    </script>
+  </body>
+</html>
