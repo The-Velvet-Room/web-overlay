@@ -6,10 +6,6 @@
 	overflow: hidden;
 }
 
-audio {
-	display: none;
-}
-
 body {
 	margin: 0px;
 	position: absolute;
@@ -31,65 +27,85 @@ body {
 	text-align: center;
 }
 
-#tourneyInfo {
-	position: absolute;
-	top: 10px;
-	width: 1280px;
-	left: 320px;
+#columnContainer {
+	width: 100%;
+	height: 100%;
+	display: flex;
 }
 
-#lplayer {
-	position: absolute;
-	bottom: 40px;
-	left: 240px;
-	width: 640px;
+.column {
+	width: 25%;
+	height: 100%;
+	position: relative;
+	background-color: green;
 }
 
-#rplayer {
+.match {
+	width: 350px;
+	height: 150px;
+	
 	position: absolute;
-	bottom: 40px;
-	right: 240px;
-	width: 640px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	
+	background-color: red;
 }
+	.player {
+		width: 330px;
+		height: 60px;
+		
+		margin: 10px;
+		font-size: 26px;
+		background-color: blue;
+	}
 
-#vs-cont {
-	position: absolute;
-	bottom: 50px;
-	left: 660px;
-	width: 600px;
-	height: 450px;
-	z-index: 10;
-	overflow-wrap: normal;
-}
-
-	#vs-cont > * {
-		position: absolute;
-		width: 600px;
-		height: 450px;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
+	/* Column 1 */
+	#winners-semis-1 {
+		top: 150px;
 	}
 	
-	#vs-animate {
-		display: none;
+	#winners-semis-2 {
+		top: 250px;
 	}
 	
-	#vs-explode {
-		display: none;
-	    box-shadow: 0px 0px 50px 50px white;
-	    background-color: white;
-		border-radius: 50%;
+	#losers-1 {
+		bottom: 2px;
 	}
-
-#lCharacter {
-	position: absolute;
-	bottom: 140px;
-	left: 240px;
-}
-
-#rCharacter {
-	position: absolute;
-	bottom: 140px;
-	right: 240px;
-}
+	
+	#losers-2 {
+		bottom: 150px;
+	}
+	
+	/* Column 2 */
+	#winners-finals {
+		top: 300px;
+	}
+	
+	#losers-quarters-1 {
+		top: 500px;
+	}
+	
+	#losers-quarters-2 {
+		top: 700px;
+	}
+	
+	/* Column 3 */
+	#grand-finals {
+		top: 400px;
+	}
+	
+	#losers-semis {
+		top: 800px;
+	}
+	
+	/* Column 4 */
+	#grand-finals-reset {
+		top: 600px;
+		
+		/*display: none;*/
+	}
+	
+	#losers-finals {
+		top: 800px;
+	}
