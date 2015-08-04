@@ -29,45 +29,49 @@
           <div id="grand-finals-reset" class="match"></div>
           <div id="losers-finals" class="match"></div>
         </div>
-      </div>   
+      </div>
     </div>
 
     <script type="text/javascript">
-    
+
     var mainTl = new TimelineMax({paused:true});
     var inProgress = false;
 
     (function () {
       var socket = io('/overlay');
-      
-      createPlayerDivs();
-      
+      var challonge = io('/challonge');
+
       socket.on('update overlay', function(data) {
 
       });
 
       socket.on('play intro', function(label) {
 
-      });      
+      });
+
+      challonge.on('update challonge top8', function(top8) {
+        createPlayerDivs(top8);
+      });
     })();
-    
-    function createPlayerDivs() {
+
+    function createPlayerDivs(top8) {
       var matchDivs = [].slice.call(document.querySelectorAll('.match'));
-      
+      var top8round = top8.top8round;
+
       matchDivs.forEach(function (div) {
         var p1 = document.createElement('div');
         p1.className = 'player p1';
         p1.textContent = 'NE: rando';
-        
+
         var p2 = document.createElement('div');
         p2.className = 'player p2';
         p2.textContent = 'SD: PP Some Dude 892';
-        
+
         div.appendChild(p1);
         div.appendChild(p2);
       });
     }
-    
+
     function createMainTimeline() {
       mainTl.add(createResetTimeline(), 'reset');
       mainTl.add(createTransitionTimeline(), 'transition');
@@ -83,10 +87,10 @@
         .set('#rCharacter', {opacity:0, marginRight: '3%'})
         .set('#vs-complete', {display: 'none'})
         .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'none'});
-      
+
       return tl;
     }
-        
+
     function createTransitionTimeline() {
       var tl = new TimelineMax();
       tl.to('#container', .5, {opacity:1})
@@ -94,31 +98,31 @@
         .to('#lCharacter', .35, {opacity:1, marginLeft: 0})
         .to('#rCharacter', .35, {opacity:1, marginRight: 0}, '+=.15')
         .call(playChime)
-        .add(flashScreen(.05, .05, 0))    
+        .add(flashScreen(.05, .05, 0))
         .add(flashScreen(.15, .15, 0), '+=.2')
-        .add(animateVs(), '+=.1')  
+        .add(animateVs(), '+=.1')
         .set(['#tourneyInfo', '#lplayer', '#rplayer'], {display: 'block'}, '-=2')
         .set('#container', {background: 'url(http://i.imgur.com/WcNnLNO.gif)'}, '-=2');
-        
+
       return tl;
     }
-    
+
     function flashScreen(o, i, delay) {
         var tl = new TimelineMax();
         tl.to('#container', o, {opacity:0})
           .to('#container', i, {opacity:1}, '+=' + delay);
-        
+
         return tl;
     }
-    
+
     function playChime() {
       document.getElementById('audio-chime').play();
     }
-    
+
     function animateVs() {
       var vs = document.getElementById('vs-animate');
       var exp = document.getElementById('vs-explode');
-      
+
       var tl = new TimelineMax();
       tl.set(vs, {display:'block', immediateRender: false})
         .from(vs, .5, {scaleX: 5, scaleY: 5, rotationY: 360, top: '-150px', immediateRender: false})
@@ -127,23 +131,23 @@
         .to(exp, .25, {scaleX: 5, scaleY: 5})
         .set('#vs-complete', {display: 'block'})
         .to(exp, 2, {opacity: 0}, '+=.5');
-      
+
       return tl;
     }
-    
+
     function animationComplete() {
       inProgress = false;
     }
-    
+
     function playTimelineLabel(label, tl) {
       if (!tl)
         tl = mainTl;
-      
+
       var next = tl.getLabelAfter(tl.getLabelTime(label));
       if (next)
-        tl.tweenFromTo(label, next, {onComplete: animationComplete});     
+        tl.tweenFromTo(label, next, {onComplete: animationComplete});
       else
-        tl.tweenFromTo(label, tl.duration(), {onComplete: animationComplete});    
+        tl.tweenFromTo(label, tl.duration(), {onComplete: animationComplete});
     }
     </script>
   </body>
