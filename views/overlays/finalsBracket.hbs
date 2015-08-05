@@ -55,21 +55,101 @@
     })();
 
     function createPlayerDivs(top8) {
+      var top8round = top8.top8Round - 1;
       var matchDivs = [].slice.call(document.querySelectorAll('.match'));
-      var top8round = top8.top8round;
 
-      matchDivs.forEach(function (div) {
+      matchDivs.forEach(function(div) {
+        div.innerHTML = '';
+      });
+
+      top8.matches.forEach(function(match) {
+        var round = match.round < 0 ? match.round + top8round : match.round - top8round;
+        var div = roundToDiv(round);
+
         var p1 = document.createElement('div');
         p1.className = 'player p1';
-        p1.textContent = 'NE: rando';
+        p1.textContent = lookupName(match.player1_id, top8.participants);
 
         var p2 = document.createElement('div');
         p2.className = 'player p2';
-        p2.textContent = 'SD: PP Some Dude 892';
+        p2.textContent = lookupName(match.player2_id, top8.participants);
 
         div.appendChild(p1);
         div.appendChild(p2);
+
+        if (match.winner_id) {
+          var scores = match.scores_csv.split('-');
+
+          if (match.winner_id === match.player1_id) {
+            p1.classList.add('winner');
+          } else {
+            p2.classList.add('winner');
+          }
+
+          var p1score = document.createElement('div');
+          p1score.className = 'score p1';
+          p1score.textContent = scores[0];
+
+          var p2score = document.createElement('div');
+          p2score.className = 'score p2';
+          p2score.textContent = scores[1];
+
+          div.appendChild(p1score);
+          div.appendChild(p2score);
+        }
       });
+    }
+
+    function lookupName(id, players) {
+      if (id === null) {
+        return '';
+      }
+
+      for (var i = 0; i < players.length; i++) {
+        if (players[i].id === id) {
+          return players[i].name;
+        }
+      }
+    }
+
+    function roundToDiv(round) {
+      var div;
+      switch (round) {
+        case 1:
+          div = document.getElementById('winners-semis-1');
+          if (div.innerHTML !== '') {
+            div = document.getElementById('winners-semis-2');
+          }
+          break;
+        case -1:
+          div = document.getElementById('losers-1');
+          if (div.innerHTML !== '') {
+            div = document.getElementById('losers-2');
+          }
+          break;
+        case 2:
+          div = document.getElementById('winners-finals');
+          break;
+        case -2:
+          div = document.getElementById('losers-quarters-1');
+          if (div.innerHTML !== '') {
+            div = document.getElementById('losers-quarters-2');
+          }
+          break;
+        case 3:
+          div = document.getElementById('grand-finals');
+          if (div.innerHTML !== '') {
+            div = document.getElementById('grand-finals-reset');
+          }
+          break;
+        case -3:
+          div = document.getElementById('losers-semis');
+          break;
+        case -4:
+          div = document.getElementById('losers-finals');
+          break;
+      }
+      return div;
     }
 
     function createMainTimeline() {
