@@ -41,7 +41,7 @@ body {
 }
 
 .match {
-	width: 350px;
+	width: 360px;
 	height: 150px;
 	
 	position: absolute;
@@ -52,60 +52,63 @@ body {
 	background-color: red;
 }
 	.player {
-		width: 330px;
+		width: 320px;
 		height: 60px;
 		
 		margin: 10px;
 		font-size: 26px;
+		line-height: 60px;
+		padding-left: 10px;
+		padding-right: 10px;
 		background-color: blue;
 	}
 
 	/* Column 1 */
 	#winners-semis-1 {
-		top: 150px;
+		top: 130px;
 	}
 	
 	#winners-semis-2 {
-		top: 250px;
+		top: 325px;
 	}
 	
 	#losers-1 {
-		bottom: 2px;
+		top: 605px;
 	}
 	
 	#losers-2 {
-		bottom: 150px;
+		top: 800px;
 	}
 	
 	/* Column 2 */
 	#winners-finals {
-		top: 300px;
+		top: 227.5px;
 	}
 	
 	#losers-quarters-1 {
-		top: 500px;
+		top: 535px;
 	}
 	
 	#losers-quarters-2 {
-		top: 700px;
+		top: 730px;
 	}
 	
 	/* Column 3 */
 	#grand-finals {
-		top: 400px;
+		top: 297.5px;
 	}
 	
 	#losers-semis {
-		top: 800px;
+		top: 632.5px;
 	}
 	
 	/* Column 4 */
 	#grand-finals-reset {
-		top: 600px;
+		top: 227.5px;
 		
 		/*display: none;*/
 	}
 	
 	#losers-finals {
-		top: 800px;
+		top: 562.5px;
 	}
