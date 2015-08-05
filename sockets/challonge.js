@@ -17,6 +17,7 @@ module.exports = function(io) {
     var top8Round = 0;
     //Used to check for updates
     var availableMatchesCache = [];
+    var top8cache = {};
     var timeout = null;
 
     // Load existing challonge data
@@ -36,6 +37,7 @@ module.exports = function(io) {
         console.log('challonge user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
         socket.emit('update challonge', challongeData);
+        socket.emit('update challonge top8', top8cache);
         connectedSockets++;
 
         // if we go from 0 to 1 socket, start polling again
@@ -90,7 +92,10 @@ module.exports = function(io) {
 
         function sendTop8Update() {
             var top8 = getTop8();
-            challongeIO.emit('update challonge top8', top8);
+            if (JSON.stringify(top8) !== JSON.stringify(top8cache)) {
+                challongeIO.emit('update challonge top8', top8);
+                top8cache = top8;
+            }
         }
 
         function getTop8() {

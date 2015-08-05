@@ -55,6 +55,10 @@
     })();
 
     function createPlayerDivs(top8) {
+      if (typeof top8.top8Round === 'undefined') {
+        return;
+      }
+
       var top8round = top8.top8Round - 1;
       var matchDivs = [].slice.call(document.querySelectorAll('.match'));
 
