@@ -53,12 +53,18 @@
         createPlayerDivs(top8);
       });
     })();
-
+    
+    var canUpdate = true;
     function createPlayerDivs(top8) {
       var matchDivs = [].slice.call(document.querySelectorAll('.match'));
       var top8round = top8.top8round;
 
-      matchDivs.forEach(function (div) {
+      if (!canUpdate)
+        return;
+      else
+        canUpdate = false;
+        
+      matchDivs.forEach(function (div) {      
         var p1 = document.createElement('div');
         p1.className = 'player p1';
         p1.textContent = 'NE: rando';
