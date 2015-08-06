@@ -66,6 +66,20 @@ router.get('/overlays/rolltierv/all4by3', function(req, res) {
   res.render('overlays/rolltierv/all4by3', { title: 'Roll Tier V Overlay', layout: false });
 });
 
+/*SoDak*/
+router.get('/overlays/sodak/game16by9', function(req, res) {
+  res.render('overlays/sodak/game16by9', { title: 'SoDak Overlay', layout: false });
+});
+
+router.get('/overlays/sodak/game4by3', function(req, res) {
+  res.render('overlays/sodak/game4by3', { title: 'SoDak Overlay', layout: false });
+});
+
+router.get('/overlays/sodak/all', function(req, res) {
+  res.render('overlays/sodak/all', { title: 'SoDak Overlay', layout: false });
+});
+
+
 /*UNO Temp Routes*/
 router.get('/overlays/springshowdown/game4by3', function(req, res) {
   res.render('overlays/springshowdown/game4by3', { title: 'Spring Showdown Overlay', layout: false });
