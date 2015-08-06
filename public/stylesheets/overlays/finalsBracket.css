@@ -8,7 +8,7 @@
 
 #title-container {
 	width: 550px;
-	
+
 	position: absolute;
 	top: 50px;
 	right: 0;
@@ -16,16 +16,16 @@
 	#title-container .title {
 		letter-spacing: 3px;
 	}
-	
+
 	#title-container hr {
 		height: 2px;
-		
+
 		background-color: white;
 		border-color: white;
 		margin-top: -2px;
 		margin-bottom: 2px;
 	}
-	
+
 	#title-container .game {
 		font-size: 20px;
 		letter-spacing: 1px;
@@ -74,17 +74,17 @@ body {
 }
 	.matchContainer .title {
 		position: absolute;
-		top: -35px;
-		font-size: 20px;
-		letter-spacing: 1px;	
+		top: -39px;
+		font-size: 24px;
+		letter-spacing: 1px;
 	}
-	
+
 	.playerContainer {
 		width: 320px;
 		height: 60px;
-		
+
 		display: flex;
-		font-size: 26px;
+		font-size: 34px;
 		line-height: 60px;
 		padding-left: 15px;
 		padding-right: 15px;
@@ -96,70 +96,70 @@ body {
 			width: 90%;
 			overflow: hidden;
 		}
-		
+
 		.playerContainer .score {
 			width: 10%;
 			position: relative;
 			text-align: center;
 		}
-		
+
 		.playerContainer .score:after {
 			-webkit-clip-path: polygon(
 				0% 0%, 3px 0%, 100% 50%, 3px 100%, 0% 100%, 31px 50%, 0% 0%
 			);
-			
+
 			width: 34px;
 			height: 64px;
-			content: '';		
+			content: '';
 			position: absolute;
 		  right: -47px;
-			top: -2px;			
+			top: -2px;
 			background-color: white;
 		}
-		
+
 		.playerContainer .accents {
 			width: 100%;
 			height: 100%;
-			
+
 			position: absolute;
 			left: 0;
 		}
-	
+
 		.playerContainer .accents:before {
 			background: -webkit-gradient(
-				linear, left top, left bottom, 
+				linear, left top, left bottom,
 				color-stop(0%,#aebcbf), color-stop(40%,#1a5d94), color-stop(60%,#082d63), color-stop(100%,#080D63)
 			);
-			
+
 			height: 60px;
 		  width: 10px;
 		  position: absolute;
 		  left: 2px;
 		  content: '';
 		}
-		
+
 		.playerContainer .accents:after {
 			-webkit-clip-path: polygon(
 				0% 0%, 15px 0%, 100% 50%, 15px 100%, 0% 100%, 29px 50%, 0% 0%
 			);
-			
+
 			background: -webkit-gradient(
-				linear, left top, left bottom, 
+				linear, left top, left bottom,
 				color-stop(0%,#aebcbf), color-stop(48%,#1a5d94), color-stop(52%,#082d63), color-stop(100%,#080D63)
 			);
-			
+
 			width: 44px;
 			height: 60px;
-			content: '';		
+			content: '';
 			position: absolute;
-		  right: -15px;			
-			z-index: 1;	
+		  right: -15px;
+			z-index: 1;
 		}
-	
+
 	.playerContainer:first-child {
-		margin-bottom: 10px;	
+		margin-bottom: 10px;
 	}
-	
+
 	.playerContainer:after {
 			position: absolute;
 		  right: -22px;
@@ -167,8 +167,8 @@ body {
 		  border-top: solid 30px transparent;
 		  border-left: solid 30px rgba(40, 68, 104, 0.8);
 		  border-bottom: solid 30px transparent;
-	}	
-		
+	}
+
 	.lineContainer {
 		position: absolute;
 		top: 0;
@@ -176,36 +176,36 @@ body {
 		left: -110px;
 		margin: auto;
 	}
-	
+
 	.line {
 		height: 3px;
 		width: 50px;
-		
+
 		position: absolute;
-		
+
 		background-color: white;
-		border-color: white;	
+		border-color: white;
 	}
 		.line.top {
 			top: 0;
 			left: 0;
 		}
-		
+
 		.line.middle {
 			top: 50%;
 			right: 0;
 		}
-			
+
 		.line.bottom {
 			bottom: 0;
 			left: 0;
 		}
-		
+
 		.line.vertical {
 			width: 3px;
 			left: 50%;
 		}
-	
+
 	.lineContainer.twoPrev {
 		height: 195px;
 		width: 100px;
@@ -213,7 +213,7 @@ body {
 		.twoPrev .vertical {
 			height: 100%;
 		}
-	
+
 	.lineContainer.onePrevDown {
 		height: 140px;
 		width: 100px;
@@ -222,7 +222,7 @@ body {
 			height: 50%;
 			bottom: 0;
 		}
-	
+
 	.lineContainer.onePrevUp {
 		height: 140px;
 		width: 100px;
@@ -235,48 +235,48 @@ body {
 	#winners-semis-1 {
 		top: 130px;
 	}
-	
+
 	#winners-semis-2 {
 		top: 325px;
 	}
-	
+
 	#losers-1 {
 		top: 605px;
 	}
-	
+
 	#losers-2 {
 		top: 800px;
 	}
-	
+
 	/* Column 2 */
 	#winners-finals {
 		top: 227.5px;
 	}
-	
+
 	#losers-quarters-1 {
 		top: 535px;
 	}
-	
+
 	#losers-quarters-2 {
 		top: 730px;
 	}
-	
+
 	/* Column 3 */
 	#grand-finals {
 		top: 297.5px;
 	}
-	
+
 	#losers-semis {
 		top: 632.5px;
 	}
-	
+
 	/* Column 4 */
 	#grand-finals-reset {
 		top: 227.5px;
-		
+
 		display: none;
 	}
-	
+
 	#losers-finals {
 		top: 562.5px;
 	}
