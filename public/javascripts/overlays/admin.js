@@ -154,6 +154,7 @@ socket.on('update overlay', function(data) {
     document.getElementById('tourneyInfo').value = data.tourneyInfo || '';
     document.getElementById('commentators').value = data.commentators || '';
     document.getElementById('twitter').value = data.twitter || '';
+    document.getElementById('current-game').value = data.currentGame || '';
     document.getElementById('lscore').value = data.lscore || 0;
     document.getElementById('rscore').value = data.rscore || 0;
     characterLeft = data.lCharacter || null;
@@ -359,6 +360,7 @@ function sendUpdate(infoMessage) {
         'rscore': document.getElementById('rscore').value,
         'commentators': document.getElementById('commentators').value,
         'twitter': document.getElementById('twitter').value,
+        'currentGame': document.getElementById('current-game').value,
         'lCharacter': window.characterLeft || null,
         'rCharacter': window.characterRight || null,
         'readyStatus': document.getElementById('ready-radio-true').checked,
