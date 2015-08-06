@@ -85,8 +85,10 @@
       createBracketLines();
 
       socket.on('update overlay', function(data) {
-        var currentGame = document.querySelector('#title-container .game');     
-        currentGame.textContent = data.currentGame.toUpperCase();
+        if (data.currentGame) {
+          var currentGame = document.querySelector('#title-container .game');
+          currentGame.textContent = data.currentGame.toUpperCase();
+        }
       });
 
       socket.on('play intro', function(label) {
@@ -118,12 +120,12 @@
         var p1 = createElementWithClass('player');
         p1.textContent = lookupName(match.player1_id, top8.participants);
         p1Container.appendChild(p1);
-        
+
         var p2Container = createElementWithClass('playerContainer');
         var p2 = createElementWithClass('player');
         p2.textContent = lookupName(match.player2_id, top8.participants);
         p2Container.appendChild(p2);
-        
+
         var thing = document.createElement('div').textContent = lookupName(match.player2_id, top8.participants);
         if (match.winner_id) {
           var scores = match.scores_csv.split('-');
@@ -143,7 +145,7 @@
           p1Container.appendChild(p1score);
           p2Container.appendChild(p2score);
         }
-        
+
         p1Container.appendChild(createElementWithClass('accents'));
         p2Container.appendChild(createElementWithClass('accents'));
         div.appendChild(p1Container);
@@ -201,39 +203,39 @@
           div = document.querySelector('#losers-finals .match');
           break;
       }
-      
+
       return div;
     }
-    
+
     function createElementWithClass(className, elementType) {
       var element = document.createElement(elementType || 'div');
       element.className = className;
 
       return element;
     }
-    
+
     function createBracketLines() {
       var lineDivs = [].slice.call(document.querySelectorAll('.lineContainer'));
-      
+
       lineDivs.forEach(function (div) {
         var lineArr = [];
-        
+
         div.appendChild(createElementWithClass('line vertical'));
         div.appendChild(createElementWithClass('line middle'));
-        
+
         if (div.className.includes('twoPrev')) {
           div.appendChild(createElementWithClass('line top'));
           div.appendChild(createElementWithClass('line bottom'));
-                          
+
         } else if (div.className.includes('onePrevDown')) {
           div.appendChild(createElementWithClass('line bottom'));
-                          
+
         } else {
-          div.appendChild(createElementWithClass('line top'));          
+          div.appendChild(createElementWithClass('line top'));
         }
       });
     }
-    
+
     function showGrandFinalsReset() {
       var grandFinalsMatch = document.getElementById('grand-finals-reset');
       grandFinalsMatch.style.display = 'block';
