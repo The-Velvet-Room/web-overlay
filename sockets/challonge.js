@@ -111,7 +111,6 @@ module.exports = function(io) {
 
             for (i = 0; i < matches.length; i++) {
                 match = matches[i].match;
-                console.log(match);
                 if (match.round && (match.round >= top8Round || match.round <= -top8Round)) {
                     top8Object.matches.push(match);
                 }
