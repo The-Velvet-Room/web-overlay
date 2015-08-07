@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/overlays/finalsBracket.css' />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="title-container">
+        <div class="title">TOP 8 BRACKET</div>
+        <hr />
+        <div class="game"></div>
+      </div>
+      <div id="columnContainer">
+        <div class="column c1">
+          <div id="winners-semis-1" class="matchContainer">
+            <div class="title">WINNERS SEMIS</div>
+            <div class="match"></div>
+          </div>
+          <div id="winners-semis-2" class="matchContainer">
+            <div class="title">WINNERS SEMIS</div>
+            <div class="match"></div>
+          </div>
+          <div id="losers-1" class="matchContainer">
+            <div class="title">LOSERS</div>
+            <div class="match"></div>
+          </div>
+          <div id="losers-2" class="matchContainer">
+            <div class="title">LOSERS</div>
+            <div class="match"></div>
+          </div>
+        </div>
+        <div class="column c2">
+          <div id="winners-finals" class="matchContainer">
+            <div class="title">WINNERS FINALS</div>
+            <div class="match"></div>
+            <div class="lineContainer twoPrev"></div>
+          </div>
+          <div id="losers-quarters-1" class="matchContainer">
+            <div class="title">LOSERS QUARTERS</div>
+            <div class="match"></div>
+            <div class="lineContainer onePrevDown"></div>
+          </div>
+          <div id="losers-quarters-2" class="matchContainer">
+            <div class="title">LOSERS QUARTERS</div>
+            <div class="match"></div>
+            <div class="lineContainer onePrevDown"></div>
+          </div>
+        </div>
+        <div class="column c3">
+          <div id="grand-finals" class="matchContainer">
+            <div class="title">GRAND FINALS</div>
+            <div class="match"></div>
+            <div class="lineContainer onePrevUp"></div>
+          </div>
+          <div id="losers-semis" class="matchContainer">
+            <div class="title">LOSERS SEMIS</div>
+            <div class="match"></div>
+            <div class="lineContainer twoPrev"></div>
+          </div>
+        </div>
+        <div class="column c4">
+          <div id="grand-finals-reset" class="matchContainer">
+            <div class="title">GRAND FINALS RESET</div>
+            <div class="match"></div>
+            <div class="lineContainer onePrevDown"></div>
+          </div>
+          <div id="losers-finals" class="matchContainer">
+            <div class="title">LOSERS FINALS</div>
+            <div class="match"></div>
+            <div class="lineContainer onePrevDown"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    (function () {
+      var socket = io('/overlay');
+      var challonge = io('/challonge');
+
+      createBracketLines();
+
+      socket.on('update overlay', function(data) {
+        if (data.currentGame) {
+          var currentGame = document.querySelector('#title-container .game');
+          currentGame.textContent = data.currentGame.toUpperCase();
+        }
+      });
+
+      socket.on('play intro', function(label) {
+
+      });
+
+      challonge.on('update challonge top8', function(top8) {
+        createPlayerDivs(top8);
+      });
+    })();
+
+    function createPlayerDivs(top8) {
+      if (typeof top8.top8Round === 'undefined') {
+        return;
+      }
+
+      var top8round = top8.top8Round - 1;
+      var matchDivs = [].slice.call(document.querySelectorAll('.match'));
+
+      matchDivs.forEach(function(div) {
+        div.innerHTML = '';
+      });
+
+      top8.matches.forEach(function(match) {
+        var round = match.round < 0 ? match.round + top8round : match.round - top8round;
+        var div = roundToDiv(round);
+
+        var p1Container = createElementWithClass('playerContainer');
+        var p1 = createElementWithClass('player');
+        p1.textContent = lookupName(match.player1_id, top8.participants);
+        p1Container.appendChild(p1);
+
+        var p2Container = createElementWithClass('playerContainer');
+        var p2 = createElementWithClass('player');
+        p2.textContent = lookupName(match.player2_id, top8.participants);
+        p2Container.appendChild(p2);
+
+        var thing = document.createElement('div').textContent = lookupName(match.player2_id, top8.participants);
+        if (match.winner_id) {
+          var scores = match.scores_csv.split('-');
+
+          if (match.winner_id === match.player1_id) {
+            p1Container.classList.add('winner');
+          } else {
+            p2Container.classList.add('winner');
+          }
+
+          var p1score = createElementWithClass('score');
+          p1score.textContent = scores[0];
+
+          var p2score = createElementWithClass('score');
+          p2score.textContent = scores[1];
+
+          p1Container.appendChild(p1score);
+          p2Container.appendChild(p2score);
+        }
+
+        p1Container.appendChild(createElementWithClass('accents'));
+        p2Container.appendChild(createElementWithClass('accents'));
+        div.appendChild(p1Container);
+        div.appendChild(p2Container);
+      });
+    }
+
+    function lookupName(id, players) {
+      if (id === null) {
+        return '';
+      }
+
+      for (var i = 0; i < players.length; i++) {
+        if (players[i].id === id) {
+          return players[i].display_name;
+        }
+      }
+    }
+
+    function roundToDiv(round) {
+      var div;
+      switch (round) {
+        case 1:
+          div = document.querySelector('#winners-semis-1 .match');
+          if (div.innerHTML !== '') {
+            div = document.querySelector('#winners-semis-2 .match');
+          }
+          break;
+        case -1:
+          div = document.querySelector('#losers-1 .match');
+          if (div.innerHTML !== '') {
+            div = document.querySelector('#losers-2 .match');
+          }
+          break;
+        case 2:
+          div = document.querySelector('#winners-finals .match');
+          break;
+        case -2:
+          div = document.querySelector('#losers-quarters-1 .match');
+          if (div.innerHTML !== '') {
+            div = document.querySelector('#losers-quarters-2 .match');
+          }
+          break;
+        case 3:
+          div = document.querySelector('#grand-finals .match');
+          if (div.innerHTML !== '') {
+            div = document.querySelector('#grand-finals-reset .match');
+            showGrandFinalsReset();
+          }
+          break;
+        case -3:
+          div = document.querySelector('#losers-semis .match');
+          break;
+        case -4:
+          div = document.querySelector('#losers-finals .match');
+          break;
+      }
+
+      return div;
+    }
+
+    function createElementWithClass(className, elementType) {
+      var element = document.createElement(elementType || 'div');
+      element.className = className;
+
+      return element;
+    }
+
+    function createBracketLines() {
+      var lineDivs = [].slice.call(document.querySelectorAll('.lineContainer'));
+
+      lineDivs.forEach(function (div) {
+        var lineArr = [];
+
+        div.appendChild(createElementWithClass('line vertical'));
+        div.appendChild(createElementWithClass('line middle'));
+
+        if (div.className.includes('twoPrev')) {
+          div.appendChild(createElementWithClass('line top'));
+          div.appendChild(createElementWithClass('line bottom'));
+
+        } else if (div.className.includes('onePrevDown')) {
+          div.appendChild(createElementWithClass('line bottom'));
+
+        } else {
+          div.appendChild(createElementWithClass('line top'));
+        }
+      });
+    }
+
+    function showGrandFinalsReset() {
+      var grandFinalsMatch = document.getElementById('grand-finals-reset');
+      grandFinalsMatch.style.display = 'block';
+    }
+    </script>
+  </body>
+</html>

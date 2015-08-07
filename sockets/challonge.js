@@ -14,8 +14,10 @@ module.exports = function(io) {
     var challongeHash = null;
     var matches = [];
     var players = [];
+    var top8Round = 0;
     //Used to check for updates
     var availableMatchesCache = [];
+    var top8cache = {};
     var timeout = null;
 
     // Load existing challonge data
@@ -35,6 +37,7 @@ module.exports = function(io) {
         console.log('challonge user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
         socket.emit('update challonge', challongeData);
+        socket.emit('update challonge top8', top8cache);
         connectedSockets++;
 
         // if we go from 0 to 1 socket, start polling again
@@ -87,6 +90,44 @@ module.exports = function(io) {
             client.set(redisKey, JSON.stringify(challongeData));
         }
 
+        function sendTop8Update() {
+            var top8 = getTop8();
+            if (JSON.stringify(top8) !== JSON.stringify(top8cache)) {
+                challongeIO.emit('update challonge top8', top8);
+                top8cache = top8;
+            }
+        }
+
+        function getTop8() {
+            var top8Object = {
+                matches: [],
+                participants: [],
+                top8Round: top8Round
+            };
+            var participantIdList = [];
+            var i;
+            var match;
+            var player;
+
+            for (i = 0; i < matches.length; i++) {
+                match = matches[i].match;
+                console.log(match);
+                if (match.round && (match.round >= top8Round || match.round <= -top8Round)) {
+                    top8Object.matches.push(match);
+                }
+                participantIdList.push(match.player1_id);
+                participantIdList.push(match.player2_id);
+            }
+            for (i = 0; i < players.length; i++) {
+                player = players[i].participant;
+                if (participantIdList.indexOf(player['id']) >= 0) {
+                    top8Object.participants.push(player);
+                }
+            }
+
+            return top8Object;
+        }
+
         function fetchChallongeData() {
             var headers = {
                 //Basic Auth must be encoded or request will be denied
@@ -104,9 +145,11 @@ module.exports = function(io) {
                 if (!error && response.statusCode === 200) {
                     try {
                         var challongeResponse = JSON.parse(body);
+                        top8Round = Math.ceil(Math.log(challongeResponse.tournament.participants_count / 4) / Math.log(2)) + 1;
                         matches = challongeResponse.tournament.matches;
                         players = challongeResponse.tournament.participants;
                         sendChallongeUpdate();
+                        sendTop8Update();
                     } catch (e) {
                         var errorMessage = 'Challonge response could not be parsed: ' + body;
                         console.log(errorMessage);
