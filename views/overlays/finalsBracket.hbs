@@ -223,11 +223,11 @@
         div.appendChild(createElementWithClass('line vertical'));
         div.appendChild(createElementWithClass('line middle'));
 
-        if (div.className.includes('twoPrev')) {
+        if (div.classList.contains('twoPrev')) {
           div.appendChild(createElementWithClass('line top'));
           div.appendChild(createElementWithClass('line bottom'));
 
-        } else if (div.className.includes('onePrevDown')) {
+        } else if (div.classList.contains('onePrevDown')) {
           div.appendChild(createElementWithClass('line bottom'));
 
         } else {
