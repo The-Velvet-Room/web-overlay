@@ -115,6 +115,9 @@
       top8.matches.forEach(function(match) {
         var round = match.round < 0 ? match.round + top8round : match.round - top8round;
         var div = roundToDiv(round);
+        if (div === null) {
+          return;
+        }
 
         var p1Container = createElementWithClass('playerContainer');
         var p1 = createElementWithClass('player');
@@ -202,6 +205,9 @@
         case -4:
           div = document.querySelector('#losers-finals .match');
           break;
+        default:
+          div = null;
+          break;
       }
 
       return div;
@@ -223,11 +229,11 @@
         div.appendChild(createElementWithClass('line vertical'));
         div.appendChild(createElementWithClass('line middle'));
 
-        if (div.className.includes('twoPrev')) {
+        if (div.classList.contains('twoPrev')) {
           div.appendChild(createElementWithClass('line top'));
           div.appendChild(createElementWithClass('line bottom'));
 
-        } else if (div.className.includes('onePrevDown')) {
+        } else if (div.classList.contains('onePrevDown')) {
           div.appendChild(createElementWithClass('line bottom'));
 
         } else {
