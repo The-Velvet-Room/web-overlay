@@ -108,12 +108,30 @@
       var top8round = top8.top8Round - 1;
       var matchDivs = [].slice.call(document.querySelectorAll('.match'));
 
+      var losersOffset = 0;
+      var keepCounting = true;
+      while (keepCounting) {
+        var matchCount = 0;
+        for (var i = 0; i < top8.matches.length; i++) {
+          if (top8.matches[i].round === -top8round - 1 - losersOffset) {
+            matchCount++;
+          }
+        }
+        if (matchCount > 2) {
+          losersOffset++;
+          keepCounting = true;
+        } else {
+          keepCounting = false;
+        }
+      }
+
       matchDivs.forEach(function(div) {
         div.innerHTML = '';
       });
 
       top8.matches.forEach(function(match) {
-        var round = match.round < 0 ? match.round + top8round : match.round - top8round;
+        var round = match.round < 0 ? match.round + top8round + losersOffset : match.round - top8round;
+
         var div = roundToDiv(round);
         if (div === null) {
           return;
