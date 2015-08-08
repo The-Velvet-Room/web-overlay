@@ -115,6 +115,9 @@
       top8.matches.forEach(function(match) {
         var round = match.round < 0 ? match.round + top8round : match.round - top8round;
         var div = roundToDiv(round);
+        if (div === null) {
+          return;
+        }
 
         var p1Container = createElementWithClass('playerContainer');
         var p1 = createElementWithClass('player');
@@ -201,6 +204,9 @@
           break;
         case -4:
           div = document.querySelector('#losers-finals .match');
+          break;
+        default:
+          div = null;
           break;
       }
 
