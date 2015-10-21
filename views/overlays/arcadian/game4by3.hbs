@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/overlays/sodak/game4by3.css' />
+    <link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+  	<div id="container">
+  		<div id="title" class="playertext"></div>
+      <div id="tourneyInfo" class="playertext"></div>
+      <div id="leftPort"></div>
+      <div id="rightPort"></div>
+  		<div id="lscore" class="playertext"></div>
+  		<div id="lplayer" class="playertext"></div>
+
+      <div id="licons">
+        <img id="leftCharacter" style="zoom: 125%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+        <p id="leftState"></p>
+      </div>
+      <div id="ricons">
+        <img id="rightCharacter" style="zoom: 125%" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
+        <p id="rightState"></p>
+      </div>
+
+      <div id="rplayer" class="playertext"></div>
+  		<div id="rscore" class="playertext"></div>
+  	</div>
+    <script>
+    $(function () {
+
+      var socket = io('/overlay');
+
+      socket.on('update overlay', function(data) {
+        var leftCharIcon = document.getElementById('leftCharacter');
+        var rightCharIcon = document.getElementById('rightCharacter');
+
+        if(data.title != document.getElementById('title').innerText) {
+          $('#title').trigger('textChanged', data.title || '');
+        }
+
+        if(data.tourneyInfo != document.getElementById('tourneyInfo').innerText) {
+          $('#tourneyInfo').trigger('textChanged', data.tourneyInfo || '');
+        }
+
+        if(data.lplayer != document.getElementById('lplayer').innerText) {
+          $('#lplayer').trigger('newName', data.lplayer || '');
+        }
+
+        if(data.rplayer != document.getElementById('rplayer').innerText) {
+          $('#rplayer').trigger('newName', data.rplayer || '');
+        }
+
+        if(data.lscore != document.getElementById('lscore').innerText) {
+          $('#lscore').trigger('textChanged', data.lscore || '');
+        }
+
+        if(data.rscore != document.getElementById('rscore').innerText) {
+          $('#rscore').trigger('textChanged', data.rscore || '');
+        }
+
+        if(data.lCharacter) {
+          document.getElementById('leftCharacter').className = data.lCharacter;
+        }
+        else {
+          document.getElementById('leftCharacter').className = null;
+        }
+
+        if(data.rCharacter) {
+          document.getElementById('rightCharacter').className = data.rCharacter;
+        }
+        else {
+          document.getElementById('rightCharacter').className = null;
+        }
+
+        document.getElementById('leftPort').style.backgroundColor = data.portLeft || 'transparent';
+        document.getElementById('rightPort').style.backgroundColor = data.portRight || 'transparent';
+        document.getElementById('leftState').innerText = data.stateLeft || '';
+        document.getElementById('rightState').innerText = data.stateRight || '';
+      });
+
+      function createNameChangeEventListener(jQuerySelector) {
+        var element = $(jQuerySelector);
+        element.bind('newName', function(e, newText){
+            $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+                $(this).text(newText);
+              }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+          });
+      }
+
+      createNameChangeEventListener('#lplayer');
+      createNameChangeEventListener('#rplayer');
+
+      $('.playertext').bind('textChanged', function(e, newText){
+        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+            $(this).text(newText);
+          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+      });
+
+    });
+    </script>
+  </body>
+</html>

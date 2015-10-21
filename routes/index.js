@@ -79,6 +79,19 @@ router.get('/overlays/sodak/all', function(req, res) {
   res.render('overlays/sodak/all', { title: 'SoDak Overlay', layout: false });
 });
 
+/*Arcadian*/
+router.get('/overlays/arcadian/game16by9', function(req, res) {
+  res.render('overlays/arcadian/game16by9', { title: 'Arcadian Overlay', layout: false });
+});
+
+router.get('/overlays/arcadian/game4by3', function(req, res) {
+  res.render('overlays/arcadian/game4by3', { title: 'Arcadian Overlay', layout: false });
+});
+
+router.get('/overlays/arcadian/all', function(req, res) {
+  res.render('overlays/arcadian/all', { title: 'Arcadian Overlay', layout: false });
+});
+
 
 /*UNO Temp Routes*/
 router.get('/overlays/springshowdown/game4by3', function(req, res) {
