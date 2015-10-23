@@ -14,7 +14,6 @@ module.exports = function(io) {
     var challongeHash = null;
     var matches = [];
     var players = [];
-    var top8Round = 0;
     //Used to check for updates
     var availableMatchesCache = [];
     var top8cache = {};
@@ -101,17 +100,28 @@ module.exports = function(io) {
         function getTop8() {
             var top8Object = {
                 matches: [],
-                participants: [],
-                top8Round: top8Round
+                participants: []
             };
             var participantIdList = [];
             var i;
             var match;
             var player;
+            var maxRound = 0;
+            var minRound = 0;
+
+            // This is inefficient, but I couldn't figure out the math formula for determining
+            // which round would put you in the top 8 for winners and losers.
+            for (i = 0; i < matches.length; i++) {
+                if (matches[i].match.round > maxRound) {
+                    maxRound = matches[i].match.round;
+                } else if (matches[i].match.round < minRound) {
+                    minRound = matches[i].match.round;
+                }
+            }
 
             for (i = 0; i < matches.length; i++) {
                 match = matches[i].match;
-                if (match.round && (match.round >= top8Round || match.round <= -top8Round)) {
+                if (match.round && (match.round >= maxRound - 3 || match.round <= minRound + 2)) {
                     top8Object.matches.push(match);
                 }
                 participantIdList.push(match.player1_id);
@@ -119,7 +129,7 @@ module.exports = function(io) {
             }
             for (i = 0; i < players.length; i++) {
                 player = players[i].participant;
-                if (participantIdList.indexOf(player['id']) >= 0) {
+                if (participantIdList.indexOf(player.id) >= 0) {
                     top8Object.participants.push(player);
                 }
             }
@@ -144,7 +154,6 @@ module.exports = function(io) {
                 if (!error && response.statusCode === 200) {
                     try {
                         var challongeResponse = JSON.parse(body);
-                        top8Round = Math.ceil(Math.log(challongeResponse.tournament.participants_count / 4) / Math.log(2)) + 1;
                         matches = challongeResponse.tournament.matches;
                         players = challongeResponse.tournament.participants;
                         sendChallongeUpdate();
