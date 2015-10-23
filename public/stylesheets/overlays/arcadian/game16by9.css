@@ -1,0 +1,92 @@
+body {
+	margin: 0px;
+}
+
+a {
+	color: #00B7FF;
+}
+
+#container {
+	width: 1920px;
+	height: 1080px;
+	background: url(http://i.imgur.com/OD9SMnr.png);
+	position: relative;
+}
+
+.playertext {
+	position: absolute;
+	color: black;
+	font-size: 42px;
+	font-family: 'Open Sans';
+	text-shadow: 2px 2px 2px rgb(50, 50, 50);
+	margin-top: -5px;
+
+	overflow: hidden;
+	overflow-wrap: break-word;
+}
+
+#lplayer {
+	top: 68px;
+	left: 330px;
+	height: 60px;
+	width: 429px;
+	text-align: center;
+	font-size: 28px;
+}
+
+#lscore {
+	top: 68px;
+	height: 60px;
+	left: 280px;
+	width: 50px;
+	text-align: center;
+	font-size: 28px;
+}
+
+
+#rplayer {
+	top: 68px;
+	height: 60px;
+	left: 1150px;
+	width: 429px;
+	text-align: center;
+	font-size: 28px;
+}
+
+#rscore {
+	height: 60px;
+	width: 50px;
+	text-align: center;	
+	top: 68px;
+	left: 1590px;
+	width: 50px;
+	text-align: center;
+	font-size: 28px;
+}
+
+#tourneyInfo {
+    top: 280px;
+    width: 400px;
+    /* left: 850px; */
+    height: 60px;
+    text-align: center;
+    right: 40px;
+    color: white;
+	text-align: center;
+}
+
+#leftCharacter {
+    top: 58px;
+    left: 163px;
+    width: 20px;
+    text-align: center;
+    position: absolute;
+}
+
+#rightCharacter {
+	top: 56px;
+    left: 1352px;
+    width: 20px;
+    text-align: center;
+    position: absolute;
+}
