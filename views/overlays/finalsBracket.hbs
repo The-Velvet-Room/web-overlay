@@ -101,27 +101,36 @@
     })();
 
     function createPlayerDivs(top8) {
-      if (typeof top8.top8Round === 'undefined') {
-        return;
-      }
+      showGrandFinalsReset(false);
 
-      var top8round = top8.top8Round - 1;
       var matchDivs = [].slice.call(document.querySelectorAll('.match'));
 
-      var losersOffset = 0;
-      var keepCounting = true;
-      while (keepCounting) {
-        var matchCount = 0;
-        for (var i = 0; i < top8.matches.length; i++) {
-          if (top8.matches[i].round === -top8round - 1 - losersOffset) {
-            matchCount++;
-          }
+      var maxRound = 0;
+      var minRound = 0;
+      var matches = top8.matches.sort(function(a, b) {
+        var aRound = Math.abs(a.round);
+        var bRound = Math.abs(b.round);
+        if (aRound < bRound) {
+          return -1;
         }
-        if (matchCount > 2) {
-          losersOffset++;
-          keepCounting = true;
-        } else {
-          keepCounting = false;
+        if (aRound > bRound) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        if (a.id > b.id) {
+          return 1;
+        }
+        return 0;
+      });
+      var i;
+
+      for (i = 0; i < matches.length; i++) {
+        if (matches[i].round > maxRound) {
+          maxRound = matches[i].round;
+        } else if (matches[i].round < minRound) {
+          minRound = matches[i].round;
         }
       }
 
@@ -129,13 +138,38 @@
         div.innerHTML = '';
       });
 
-      top8.matches.forEach(function(match) {
-        var round = match.round < 0 ? match.round + top8round + losersOffset : match.round - top8round;
+      matches.forEach(function(match) {
+        // Normalize the round number so that 1 is the first round of top 8
+        // winners and -1 is the first round of top 8 losers. The first round
+        // of top 8 losers is the 4th round back from the last round of losers,
+        // and the first round of top 8 winners is the 3rd round back from the
+        // last round of winners.
+        //
+        // We're assuming that 'matches' doesn't contain any matches outside
+        // of the top 8
+        var round = match.round < 0 ? match.round - minRound - 4 : match.round - maxRound + 3;
 
-        var div = roundToDiv(round);
+        console.log(match.round + ' -> ' + round);
+        console.log(match);
+
+        var div = matchToDiv(match, round);
         if (div === null) {
           return;
         }
+
+        // Assuming 'round' is normalized, round 3 corresponds to grand finals.
+        // Challonge doesn't give grand finals reset a different round number
+        // from grand finals, but unlike grand finals, the reset will only have
+        // one prerequisite match
+        if (round === 3 && match.player1_prereq_match_id === match.player2_prereq_match_id) {
+          // Only show grand finals reset if it's necessary to complete the tournament
+          if (match.player1_id === null) {
+            return;
+          }
+          showGrandFinalsReset(true);
+        }
+
+        div.dataset.matchId = match.id;
 
         var p1Container = createElementWithClass('playerContainer');
         var p1 = createElementWithClass('player');
@@ -147,7 +181,6 @@
         p2.textContent = lookupName(match.player2_id, top8.participants);
         p2Container.appendChild(p2);
 
-        var thing = document.createElement('div').textContent = lookupName(match.player2_id, top8.participants);
         if (match.winner_id) {
           var scores = match.scores_csv.split('-');
 
@@ -186,8 +219,15 @@
       }
     }
 
-    function roundToDiv(round) {
-      var div;
+    /**
+     * The round param should be normalized so that 1 corresponds to the first
+     * round of top 8 winners and -1 corresponds to the first round of losers.
+     */
+    function matchToDiv(match, round) {
+      var div = null;
+      var prereqDivs = [];
+      var i;
+      var prereqMatchId;
       switch (round) {
         case 1:
           div = document.querySelector('#winners-semis-1 .match');
@@ -205,16 +245,29 @@
           div = document.querySelector('#winners-finals .match');
           break;
         case -2:
-          div = document.querySelector('#losers-quarters-1 .match');
-          if (div.innerHTML !== '') {
-            div = document.querySelector('#losers-quarters-2 .match');
+          prereqDivs.push(document.querySelector('#losers-1 .match'));
+          prereqDivs.push(document.querySelector('#losers-2 .match'));
+          for (i = 0; i < prereqDivs.length; i++) {
+            prereqMatchId = parseInt(prereqDivs[i].dataset.matchId, 10);
+            if (prereqMatchId === match.player1_prereq_match_id
+              || prereqMatchId === match.player2_prereq_match_id) {
+              div = document.querySelector('#losers-quarters-' + (i + 1) + ' .match');
+            }
           }
+
+          if (!div) {
+            if (!prereqDivs[0].dataset.matchId) {
+              div = document.querySelector('#losers-quarters-1 .match');
+            } else {
+              div = document.querySelector('#losers-quarters-2 .match');
+            }
+          }
+          prereqDivs = [];
           break;
         case 3:
           div = document.querySelector('#grand-finals .match');
           if (div.innerHTML !== '') {
             div = document.querySelector('#grand-finals-reset .match');
-            showGrandFinalsReset();
           }
           break;
         case -3:
@@ -242,27 +295,23 @@
       var lineDivs = [].slice.call(document.querySelectorAll('.lineContainer'));
 
       lineDivs.forEach(function (div) {
-        var lineArr = [];
-
         div.appendChild(createElementWithClass('line vertical'));
         div.appendChild(createElementWithClass('line middle'));
 
         if (div.classList.contains('twoPrev')) {
           div.appendChild(createElementWithClass('line top'));
           div.appendChild(createElementWithClass('line bottom'));
-
         } else if (div.classList.contains('onePrevDown')) {
           div.appendChild(createElementWithClass('line bottom'));
-
         } else {
           div.appendChild(createElementWithClass('line top'));
         }
       });
     }
 
-    function showGrandFinalsReset() {
+    function showGrandFinalsReset(shouldShow) {
       var grandFinalsMatch = document.getElementById('grand-finals-reset');
-      grandFinalsMatch.style.display = 'block';
+      grandFinalsMatch.style.display = shouldShow ? 'block' : 'none';
     }
     </script>
   </body>
