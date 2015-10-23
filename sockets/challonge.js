@@ -121,12 +121,21 @@ module.exports = function(io) {
 
             for (i = 0; i < matches.length; i++) {
                 match = matches[i].match;
-                if (match.round && (match.round >= maxRound - 3 || match.round <= minRound + 2)) {
+                // Check the round so we only send matches and participants
+                // in the top 8. Winners bracket rounds are positive and losers
+                // bracket rounds are negative.
+                //
+                // The first round of top 8 losers is the 4th round back from
+                // the last round of losers, and the first round of top 8
+                // winners is the 3rd round back from the last round of winners.
+                if (match.round && (match.round > maxRound - 3 || match.round < minRound + 4)) {
                     top8Object.matches.push(match);
                 }
                 participantIdList.push(match.player1_id);
                 participantIdList.push(match.player2_id);
             }
+
+            // Put participant objects on the top 8 object
             for (i = 0; i < players.length; i++) {
                 player = players[i].participant;
                 if (participantIdList.indexOf(player.id) >= 0) {
