@@ -139,6 +139,14 @@
       });
 
       matches.forEach(function(match) {
+        // Normalize the round number so that 1 is the first round of top 8
+        // winners and -1 is the first round of top 8 losers. The first round
+        // of top 8 losers is the 4th round back from the last round of losers,
+        // and the first round of top 8 winners is the 3rd round back from the
+        // last round of winners.
+        //
+        // We're assuming that 'matches' doesn't contain any matches outside
+        // of the top 8
         var round = match.round < 0 ? match.round - minRound - 4 : match.round - maxRound + 3;
 
         console.log(match.round + ' -> ' + round);
@@ -149,7 +157,12 @@
           return;
         }
 
+        // Assuming 'round' is normalized, round 3 corresponds to grand finals.
+        // Challonge doesn't give grand finals reset a different round number
+        // from grand finals, but unlike grand finals, the reset will only have
+        // one prerequisite match
         if (round === 3 && match.player1_prereq_match_id === match.player2_prereq_match_id) {
+          // Only show grand finals reset if it's necessary to complete the tournament
           if (match.player1_id === null) {
             return;
           }
@@ -282,18 +295,14 @@
       var lineDivs = [].slice.call(document.querySelectorAll('.lineContainer'));
 
       lineDivs.forEach(function (div) {
-        var lineArr = [];
-
         div.appendChild(createElementWithClass('line vertical'));
         div.appendChild(createElementWithClass('line middle'));
 
         if (div.classList.contains('twoPrev')) {
           div.appendChild(createElementWithClass('line top'));
           div.appendChild(createElementWithClass('line bottom'));
-
         } else if (div.classList.contains('onePrevDown')) {
           div.appendChild(createElementWithClass('line bottom'));
-
         } else {
           div.appendChild(createElementWithClass('line top'));
         }
