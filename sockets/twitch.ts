@@ -1,16 +1,26 @@
 var config = require('../config');
-var request = require('request');
-var redis = require('redis');
+import * as request from 'request';
+import * as redis from 'redis';
 
 var client = redis.createClient();
-var redisKey = 'web-overlay-twitch';
+const redisKey = 'web-overlay-twitch';
 
-module.exports = function(io) {
-    var twitchData = {};
+class TwitchData {
+    public twitchUsername: string;
+    public twitchFollowers: number;
+    public twitchViewers: number;
+    public twitchPeakViewers: number;
+    public twitchLastFollower: string;
+    public twitchGame: string;
+    public twitchStatus: string;
+}
+
+export = function(io: SocketIO.Server) {
+    var twitchData = new TwitchData();
     //In millis
-    var twitchPollFrequency = 30000;
+    const twitchPollFrequency = 30000;
     var connectedSockets = 0;
-    var timeout = null;
+    var timeout: NodeJS.Timer = null;
     var followersAtLaunch = [];
     var newFollowers = [];
     var currentFollowers = [];
@@ -20,7 +30,7 @@ module.exports = function(io) {
     var twitchIO = io.of('/twitch');
 
     // Load existing twitch data
-    client.get(redisKey, function (err, reply) {
+    client.get(redisKey, function(err, reply) {
         if (err) {
             console.log(err);
         } else if (reply) {
@@ -28,7 +38,7 @@ module.exports = function(io) {
         }
     });
 
-    twitchIO.on('connection', function (socket) {
+    twitchIO.on('connection', function(socket) {
         // Log the new connection
         console.log('twitch user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
@@ -38,7 +48,7 @@ module.exports = function(io) {
         // if we go from 0 to 1 socket, start polling again
         pollTwitch();
 
-        socket.on('disconnect', function () {
+        socket.on('disconnect', function() {
             console.log('twitch user disconnected: ' + socket.handshake.address);
             connectedSockets--;
             if (connectedSockets <= 0) {
@@ -47,27 +57,28 @@ module.exports = function(io) {
             }
         });
 
-        socket.on('update twitch user', function (data) {
-            twitchData = { 'twitchUsername': data };
+        socket.on('update twitch user', function(data: string) {
+            twitchData = new TwitchData();
+            twitchData.twitchUsername = data;
             initializeTwitchData();
 
             clearTimeout(timeout);
             pollTwitch();
         });
 
-        socket.on('update twitch channel info', function (data) {
+        socket.on('update twitch channel info', function(data: { game: string, status: string }) {
             updateTwitchData(data.game, data.status);
         });
 
-        socket.on('reset peak viewers', function () {
+        socket.on('reset peak viewers', function() {
             resetPeakViewers();
         });
 
-        socket.on('log out', function () {
+        socket.on('log out', function() {
             logOut();
         });
 
-        socket.on('process followers', function(){
+        socket.on('process followers', function() {
             processFollowers();
         });
 
@@ -84,7 +95,7 @@ module.exports = function(io) {
             getTwitchViewerData();
         }
 
-        function cacheAndSendFollowers(followers, lastFollower) {
+        function cacheAndSendFollowers(followers: number, lastFollower: string) {
             twitchData.twitchFollowers = followers;
             twitchData.twitchLastFollower = lastFollower;
             twitchIO.emit('update twitch followers', {
@@ -107,14 +118,14 @@ module.exports = function(io) {
 
             console.log('Requesting follower data for ' + twitchData.twitchUsername);
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
                     var twitchResponse = JSON.parse(body);
                     var followers = twitchResponse._total;
                     var lastFollower = twitchResponse.follows[0].user.name;
                     cacheAndSendFollowers(followers, lastFollower);
 
-                    if(!followersAtLaunch.length) {
+                    if (!followersAtLaunch.length) {
                         followersAtLaunch = twitchResponse.follows;
                         numFollowersAtLaunch = followers;
                     }
@@ -124,7 +135,7 @@ module.exports = function(io) {
             });
         }
 
-        function cacheAndSendViewers(viewers) {
+        function cacheAndSendViewers(viewers: number) {
             twitchData.twitchViewers = viewers;
 
             if (viewers) {
@@ -153,7 +164,7 @@ module.exports = function(io) {
 
             console.log('Requesting viewer data for ' + twitchData.twitchUsername);
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
                     var twitchResponse = JSON.parse(body);
                     var stream = twitchResponse.stream;
@@ -163,7 +174,7 @@ module.exports = function(io) {
             });
         }
 
-        function updateTwitchData(game, status) {
+        function updateTwitchData(game: string, status: string) {
             if (game && game !== twitchData.twitchGame) {
                 setTwitchGame(game);
             }
@@ -172,7 +183,7 @@ module.exports = function(io) {
             }
         }
 
-        function cacheAndSendChannelInfo(game, status) {
+        function cacheAndSendChannelInfo(game: string, status: string) {
             twitchData.twitchGame = game;
             twitchData.twitchStatus = status;
             twitchIO.emit('update twitch channel info', {
@@ -197,7 +208,7 @@ module.exports = function(io) {
 
             console.log('Requesting channel data for ' + twitchData.twitchUsername);
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
                     var twitchResponse = JSON.parse(body);
                     var game = twitchResponse.game;
@@ -207,7 +218,7 @@ module.exports = function(io) {
             });
         }
 
-        function setTwitchGame(gameName) {
+        function setTwitchGame(gameName: string) {
             var queryData = {
                 'channel': {
                     'game': gameName
@@ -231,14 +242,14 @@ module.exports = function(io) {
             };
 
 
-            request(options, function (error, response) {
+            request(options, function(error, response) {
                 if (!error && response.statusCode === 200) {
                     console.log('Game updated');
                 }
             });
         }
 
-        function setTwitchStatus(status) {
+        function setTwitchStatus(status: string) {
             var queryData = {
                 'channel': {
                     'status': status
@@ -261,7 +272,7 @@ module.exports = function(io) {
                 body: stringQuery
             };
 
-            request(options, function (error, response) {
+            request(options, function(error, response) {
                 if (!error && response.statusCode === 200) {
                     console.log('Status updated');
                 }
@@ -284,16 +295,16 @@ module.exports = function(io) {
             }
             console.log(numNewFollowers);
             newFollowers = [];
-            for(var i=0; i<numNewFollowers; i++) {
+            for (var i = 0; i < numNewFollowers; i++) {
                 newFollowers.push(currentFollowers[i].user.name);
-                console.log('Adding new follower '+currentFollowers[i].user.name);
+                console.log('Adding new follower ' + currentFollowers[i].user.name);
             }
 
             twitchData.newFollowers = newFollowers;
-            if(numNewFollowers != twitchData.twitchFollowers) {
+            if (numNewFollowers != twitchData.twitchFollowers) {
                 numFollowersAtLaunch = twitchData.twitchFollowers;
             }
-            
+
             twitchIO.emit('send twitch data', twitchData);
         }
 
@@ -308,7 +319,7 @@ module.exports = function(io) {
 
         function logOut() {
             console.log('Clearing twitch data');
-            twitchData = {};
+            twitchData = new TwitchData();
             clearTimeout(timeout);
             socket.emit('send twitch data', twitchData);
             client.set(redisKey, JSON.stringify(twitchData));

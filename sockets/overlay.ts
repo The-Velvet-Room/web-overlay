@@ -1,10 +1,10 @@
-var redis = require('redis');
+import * as redis from 'redis'
 
 var client = redis.createClient();
-var redisOverlayKey = 'web-overlay-overlay';
-var redisLayoutKey = 'web-overlay-layout';
+const redisOverlayKey = 'web-overlay-overlay';
+const redisLayoutKey = 'web-overlay-layout';
 
-module.exports = function (io) {
+export = function (io: SocketIO.Server) {
 
   var overlay = io.of('/overlay');
 
@@ -34,7 +34,7 @@ module.exports = function (io) {
       console.log('overlay user disconnected: ' + socket.handshake.address);
     });
 
-    socket.on('update overlay', function(msg) {
+    socket.on('update overlay', function(msg: any) {
       client.set(redisOverlayKey, JSON.stringify(msg));
       overlay.emit('update overlay', msg);
       console.log('update overlay: ' + JSON.stringify(msg));
@@ -44,12 +44,12 @@ module.exports = function (io) {
       overlay.emit('flash screen');
     });
 
-    socket.on('play intro', function(msg) {
+    socket.on('play intro', function(msg: any) {
       overlay.emit('play intro', msg);
       console.log('play intro: ' + JSON.stringify(msg));
     });
 
-    socket.on('change layout', function(msg) {
+    socket.on('change layout', function(msg: any) {
       client.set(redisLayoutKey, JSON.stringify(msg));
       overlay.emit('change layout', msg);
       console.log('change layout: ' + JSON.stringify(msg));

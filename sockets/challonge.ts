@@ -1,23 +1,30 @@
 var config = require('../config');
-var request = require('request');
-var redis = require('redis');
-var pmx = require('pmx');
+import * as request from 'request';
+import * as redis from 'redis';
+import * as pmx from 'pmx';
 
 var client = redis.createClient();
-var redisKey = 'web-overlay-challonge';
+const redisKey = 'web-overlay-challonge';
 
-module.exports = function(io) {
-    var challongeData = {};
-    var challongePollFrequency = 10000;
+class ChallongeData {
+    public challongeApiHash: string;
+    public challongeUrl: string;
+    public players: {};
+    public upcomingMatches: any[];
+}
+
+export = function(io: SocketIO.Server) {
+    var challongeData = new ChallongeData();
+    const challongePollFrequency = 10000;
     var connectedSockets = 0;
-    var challongeApiRoot = 'https://api.challonge.com/v1';
-    var challongeHash = null;
+    const challongeApiRoot = 'https://api.challonge.com/v1';
+    var challongeHash: string = null;
     var matches = [];
     var players = [];
     //Used to check for updates
     var availableMatchesCache = [];
     var top8cache = {};
-    var timeout = null;
+    var timeout: NodeJS.Timer = null;
 
     // Load existing challonge data
     client.get(redisKey, function (err, reply) {
@@ -51,7 +58,7 @@ module.exports = function(io) {
             }
         });
 
-        socket.on('update challonge', function(msg) {
+        socket.on('update challonge', function(msg: ChallongeData) {
             var urlChanged = msg.challongeUrl !== challongeData.challongeUrl;
             challongeData = msg;
             if (challongeData.challongeUrl) {
@@ -103,7 +110,7 @@ module.exports = function(io) {
                 participants: []
             };
             var participantIdList = [];
-            var i;
+            var i: number;
             var match;
             var player;
             var maxRound = 0;
@@ -197,7 +204,7 @@ module.exports = function(io) {
             return playerDict;
         }
 
-        function createChallongeHash(challongeUrl) {
+        function createChallongeHash(challongeUrl: string) {
             var tourneyHash = challongeUrl.substring(challongeUrl.lastIndexOf('/') + 1).trim();
 
             //If tournament belongs to an organization,
@@ -228,7 +235,7 @@ module.exports = function(io) {
         function clearBracket() {
             console.log('Clearing challonge data');
             challongeHash = null;
-            challongeData = {};
+            challongeData = new ChallongeData();
             matches = [];
             players = [];
             availableMatchesCache = [];

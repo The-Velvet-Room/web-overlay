@@ -1,4 +1,4 @@
-var express = require('express');
+import * as express from 'express';
 var router = express.Router();
 
 /* GET home page. */
@@ -171,4 +171,4 @@ router.get('/overlays/arcade/admin', function(req, res) {
   res.render('overlays/arcade/admin', { title: 'Velvet Arcade Admin' });
 });
 
-module.exports = router;
+export = router;

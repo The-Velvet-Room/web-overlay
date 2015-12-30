@@ -1,7 +1,7 @@
-module.exports = function (io) {
+export = function (io: SocketIO.Server) {
 
   var ptsData = {};
-  var ptsTopics = [];
+  var ptsTopics: any[] = [];
 
   var pts = io.of('/pardonthesmash');
 
@@ -17,13 +17,13 @@ module.exports = function (io) {
       console.log('pardonthesmash user disconnected: ' + socket.handshake.address);
     });
 
-    socket.on('start timer', function(msg){
+    socket.on('start timer', function(msg: any){
       ptsData = msg;
       pts.emit('start timer', ptsData);
       console.log('start timer: ' + JSON.stringify(ptsData));
     });
 
-    socket.on('update topics', function (msg) {
+    socket.on('update topics', function (msg: any[]) {
       ptsTopics = msg;
       console.log('update topics: ' + JSON.stringify(ptsTopics));
       pts.emit('update topics', ptsTopics);
