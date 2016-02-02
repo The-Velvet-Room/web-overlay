@@ -11,16 +11,38 @@
   <body>
   	<div id="container">
   		<div id="commentators" class="playertext"></div>
+          
+          <div id="twittercontainer">
+              <img src="http://i.imgur.com/RGl4CvZ.png" class="twitter-icon">
+              <div id="twitter" class="twitter playertext"></div>
+          </div>
+          
+          <div id="commentators2" class="playertext"></div>
+          
+          <div id="twittercontainer2">
+              <img src="http://i.imgur.com/RGl4CvZ.png" class="twitter-icon">
+              <div id="twitter2" class="twitter playertext"></div>
+          </div>
   	</div>
     <script>
     var processedFollowers = [];
-		var socket = io('/overlay');
+    var socket = io('/overlay');
 
-		socket.on('update overlay', function(data) {
-      if(data.commentators != document.getElementById('commentators').innerText) {
+    socket.on('update overlay', function(data) {
+        if(data.commentators != document.getElementById('commentators').innerText) {
           $('#commentators').trigger('textChanged', data.commentators || '');
         }
-		});
+        if(data.commentators2 != document.getElementById('commentators2').innerText) {
+          $('#commentators2').trigger('textChanged', data.commentators2 || '');
+        }
+        if(data.twitter != document.getElementById('twitter').innerText) {
+          $('#twitter').trigger('textChanged', data.twitter || '');
+        }
+        if(data.twitter2 != document.getElementById('twitter2').innerText) {
+          $('#twitter2').trigger('textChanged', data.twitter2 || '');
+        }
+    });
+        
 
     $('.playertext').bind('textChanged', function(e, newText){
         $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
