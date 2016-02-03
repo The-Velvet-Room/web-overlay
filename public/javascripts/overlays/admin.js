@@ -153,7 +153,9 @@ socket.on('update overlay', function(data) {
     document.getElementById('title').value = data.title || '';
     document.getElementById('tourneyInfo').value = data.tourneyInfo || '';
     document.getElementById('commentators').value = data.commentators || '';
+    document.getElementById('commentators2').value = data.commentators2 || '';
     document.getElementById('twitter').value = data.twitter || '';
+    document.getElementById('twitter2').value = data.twitter2 || '';
     document.getElementById('current-game').value = data.currentGame || '';
     document.getElementById('lscore').value = data.lscore || 0;
     document.getElementById('rscore').value = data.rscore || 0;
@@ -359,7 +361,9 @@ function sendUpdate(infoMessage) {
         'lscore': document.getElementById('lscore').value,
         'rscore': document.getElementById('rscore').value,
         'commentators': document.getElementById('commentators').value,
+        'commentators2': document.getElementById('commentators2').value,
         'twitter': document.getElementById('twitter').value,
+        'twitter2': document.getElementById('twitter2').value,
         'currentGame': document.getElementById('current-game').value,
         'lCharacter': window.characterLeft || null,
         'rCharacter': window.characterRight || null,
