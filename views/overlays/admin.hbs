@@ -13,6 +13,16 @@
         <div id="tab1" class="tab active">
             <form action="javascript:sendUpdate()">
                 <p>
+                    <label for="current-game">
+                        Current Game
+                        <input id="current-game"></input>
+                    </label>
+                    <input id="ready-radio-false" type="radio" name="readyStatus" value="false" onchange="sendUpdate()" checked>
+                  Not Ready
+                  <input id="ready-radio-true" type="radio" name="readyStatus" value="true" onchange="sendUpdate()">
+                  Ready
+                </p>
+                <p>
                     <label for="title">
                         Tournament Name
                         <input id="title"></input>
@@ -21,12 +31,7 @@
                     <label for="tourneyInfo">
                         Bracket Info
                         <input id="tourneyInfo"></input>
-                    </label>
-
-                    <input id="ready-radio-false" type="radio" name="readyStatus" value="false" onchange="sendUpdate()" checked>
-                  Not Ready
-                  <input id="ready-radio-true" type="radio" name="readyStatus" value="true" onchange="sendUpdate()">
-                  Ready
+                    </label>                 
                 </p>
                 <p>
                     <label for="commentators">
@@ -38,7 +43,8 @@
                         R Commentator
                         <input id="commentators2"></input>
                     </label>
-
+                </p>
+                <p>
                     <label for="twitter">
                         L Twitter
                         <input id="twitter"></input>
@@ -47,11 +53,6 @@
                     <label for="twitter2">
                         R Twitter
                         <input id="twitter2"></input>
-                    </label>
-                    
-                    <label for="current-game">
-                        Current Game
-                        <input id="current-game"></input>
                     </label>
                 </p>
                 <div>
