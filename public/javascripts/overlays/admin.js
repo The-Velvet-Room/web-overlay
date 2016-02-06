@@ -352,6 +352,11 @@ function zeroScores() {
     sendUpdate();
 }
 
+//Fires the transition animation to all overlays
+function fireTransition() {
+    socket.emit('fire transition');
+}
+
 function sendUpdate(infoMessage) {
     var data = {
         'lplayer': document.getElementById('lplayer').value,
