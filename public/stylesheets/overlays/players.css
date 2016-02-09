@@ -1,0 +1,49 @@
+body {
+	width: 1920px;
+	height: 1080px;
+}
+
+#announcement {
+	position: absolute;
+	top: 900px;
+	left: 192px;
+	width: 1536px;
+	height: 200px;
+}
+
+#elizabeth {
+	zoom: 50%;
+	display: inline-block;
+	float: right;
+}
+
+#textbox {
+	width: 1300px;
+	height: 200px;
+	margin-right: 50px;
+	background: rgb(10,10,70);
+	color: white;
+	display: inline-block;
+	font-size: 36px;
+	font-family: Arial, Helvetica, sans-serif;
+	border-radius: 25px;
+    border: 2px solid white;
+    padding: 10px;
+}
+
+.css-typing
+{
+    width: 50em;
+    white-space:nowrap;
+    overflow:hidden;
+    -webkit-animation: type 5s steps(50, end);
+    animation: type 5s steps(50, end);
+}
+
+@keyframes type{
+    from { width: 0; }
+}
+
+@-webkit-keyframes type{
+    from { width: 0; }
+}

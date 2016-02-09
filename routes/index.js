@@ -146,6 +146,11 @@ router.get('/overlays/finalsBracket', function(req, res) {
   res.render('overlays/finalsBracket', { title: 'Top 8 Bracket', layout: false });
 });
 
+/* GET Players/Empty page. */
+router.get('/overlays/players', function(req, res) {
+  res.render('overlays/players', { title: 'Players', layout: false });
+});
+
 /* GET pardon the smash. */
 router.get('/overlays/pardonthesmash', function(req, res) {
   res.render('overlays/pardonthesmash/overlay', { title: 'PTS Overlay', layout: false });

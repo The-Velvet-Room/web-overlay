@@ -57,6 +57,11 @@ module.exports = function (io) {
 
     socket.on('fire transition', function() {
       overlay.emit('fire transition');
-    })
+    });
+
+    socket.on('fire announcement', function(msg) {
+      overlay.emit('fire announcement', msg);
+    });
+
   });
 };

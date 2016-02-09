@@ -357,6 +357,12 @@ function fireTransition() {
     socket.emit('fire transition');
 }
 
+//Fires the an announcement for Elizabeth to read on appropriate overlays
+function fireAnnouncement() {
+    var newText = document.getElementById('announcement-text').value;
+    socket.emit('fire announcement', newText);
+}
+
 function sendUpdate(infoMessage) {
     var data = {
         'lplayer': document.getElementById('lplayer').value,
