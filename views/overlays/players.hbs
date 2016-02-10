@@ -41,6 +41,7 @@
 
     var announcing = false;
     function renderAnnouncement(newText) {
+    	announcing = true;
     	i = 0;
       	isTag=false;
     	str = '<p>' + newText + '</p>';
@@ -49,12 +50,15 @@
     		setTimeout(function() {
     			$('#announcement').hide(1000);
     			document.getElementById('textbox').innerHTML = '';
+    			announcing = false;
     		}, 10000);
     	});
     }
 
     socket.on('fire announcement', function(newText) {
-    	console.log(newText);
+    	if(announcing) {
+    		return;
+    	}
     	renderAnnouncement(newText);
     });
 
