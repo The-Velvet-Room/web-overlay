@@ -7,8 +7,14 @@
     <link rel='stylesheet' href='/stylesheets/overlays/characters.css' />
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+
+     <!--TODO global-->
+    <script src="https://code.jquery.com/ui/1.12.0-beta.1/jquery-ui.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/overlays/global-source.css' />
   </head>
   <body>
+  <!--TODO global-->
+  <img src="http://i.imgur.com/qkL0ngP.png" id="transition-image" style="display: none;">
     <div id="background" class="container"></div>
     <div id="main-container" class="container">
       <div class="title playerText"></div>
@@ -30,6 +36,24 @@
       <div class="rScore playerText"></div>
     </div>
     <script>
+
+    //TODO global
+    var transitioning = false;
+    function transition() {
+      if(!transitioning) {
+        transitioning = true;
+         //Slide in first
+         $('#transition-image').effect('slide', {}, 1000, function() {
+          //Wait 2 seconds
+          setTimeout(function() {
+            //Blind out of view
+            $('#transition-image').effect('fold', {}, 1000, function() {
+              transitioning=false;
+            });
+          }, 2500);           
+         });
+      }
+    }
     
     $(function () {
       var socket = io('/overlay');
@@ -94,6 +118,10 @@
         $('.rPort').css('background-color', data.portRight || 'transparent');
         $('.lState').text(data.stateLeft || '');
         $('.rState').text(data.stateRight || '');
+      });
+
+      socket.on('fire transition', function() {
+        transition();
       });
 
       function scaleFont(jQueryElement, newLength) {

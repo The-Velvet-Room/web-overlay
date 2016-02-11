@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0-beta.1/jquery-ui.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/overlays/global-source.css' />
+    <link rel='stylesheet' href='/stylesheets/overlays/players.css' />
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <!--TODO global-->
+  <img src="http://i.imgur.com/qkL0ngP.png" id="transition-image" style="display: none;">
+
+  <div id="announcement" style="display: none;">
+  	<div id="textbox"></div>
+  	<img src="http://i.imgur.com/SnNgWQJ.png" id="elizabeth">
+  </div>
+  	<script>
+  	var socket = io('/overlay');
+  	socket.on('fire transition', function() {
+      transition();
+	});
+
+  	//TODO global
+    var transitioning = false;
+    function transition() {
+      if(!transitioning) {
+        transitioning = true;
+         //Slide in first
+         $('#transition-image').effect('slide', {}, 1000, function() {
+          //Wait 2 seconds
+          setTimeout(function() {
+            //Blind out of view
+            $('#transition-image').effect('fold', {}, 1000, function() {
+              transitioning=false;
+            });
+          }, 2500);           
+         });
+      }
+    }
+
+    var announcing = false;
+    function renderAnnouncement(newText) {
+    	announcing = true;
+    	i = 0;
+      	isTag=false;
+    	str = '<p>' + newText + '</p>';
+    	$('#announcement').effect('slide', {direction: 'right'}, 1000, function() {
+    		type();
+    		setTimeout(function() {
+    			$('#announcement').hide(1000);
+    			document.getElementById('textbox').innerHTML = '';
+    			announcing = false;
+    		}, 10000);
+    	});
+    }
+
+    socket.on('fire announcement', function(newText) {
+    	if(announcing) {
+    		return;
+    	}
+    	renderAnnouncement(newText);
+    });
+
+    //https://stackoverflow.com/questions/22180457/typewriter-effect-for-html-with-javascript
+    var caret = '¶';
+    var i = 0;
+    var str;
+    var isTag;
+    var text;
+    function type() {
+        text = str.slice(0, ++i) + caret;
+        if (text === str + caret) return;
+        document.getElementById('textbox').innerHTML = text;
+        var char = text.slice(-1);
+        if( char === '<' ) isTag = true;
+        if( char === '>' ) isTag = false;
+        if (isTag) return type();
+        setTimeout(type, 50);
+    }
+  </script>
+</body>
+</html>

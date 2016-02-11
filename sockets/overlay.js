@@ -54,5 +54,14 @@ module.exports = function (io) {
       overlay.emit('change layout', msg);
       console.log('change layout: ' + JSON.stringify(msg));
     });
+
+    socket.on('fire transition', function() {
+      overlay.emit('fire transition');
+    });
+
+    socket.on('fire announcement', function(msg) {
+      overlay.emit('fire announcement', msg);
+    });
+
   });
 };

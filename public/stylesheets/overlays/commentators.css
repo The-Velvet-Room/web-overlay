@@ -10,7 +10,7 @@ a {
 	width: 1920px;
 	height: 1080px;
 	background: url(http://i.imgur.com/LlPja7O.png);
-	position: relative;
+	position: absolute;
 }
 
 .twitter-icon {
