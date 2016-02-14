@@ -4,4 +4,5 @@ Thumbs.db
 config.js*
 .node-xmlhttprequest-sync-*
 .settings
-built
+build
+typings

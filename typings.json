@@ -1,0 +1,26 @@
+{
+  "ambientDependencies": {
+    "body-parser": "github:DefinitelyTyped/DefinitelyTyped/body-parser/body-parser.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "cookie-parser": "github:DefinitelyTyped/DefinitelyTyped/cookie-parser/cookie-parser.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "form-data": "github:DefinitelyTyped/DefinitelyTyped/form-data/form-data.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "handlebars": "github:DefinitelyTyped/DefinitelyTyped/handlebars/handlebars.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "history": "github:DefinitelyTyped/DefinitelyTyped/react-router/history.d.ts#99f6493ffb1ef5479c6154ec9f82a47178bbf8b6",
+    "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "morgan": "github:DefinitelyTyped/DefinitelyTyped/morgan/morgan.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "object-assign": "github:DefinitelyTyped/DefinitelyTyped/object-assign/object-assign.d.ts#62c95cb5f5a51f6875c9fbd8b5e26d2284f024c9",
+    "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "react-dom": "github:DefinitelyTyped/DefinitelyTyped/react/react-dom.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "react-redux": "github:DefinitelyTyped/DefinitelyTyped/react-redux/react-redux.d.ts#a513c4df6eb8505da8eef432891c8b69b73535d9",
+    "react-router": "github:DefinitelyTyped/DefinitelyTyped/react-router/react-router.d.ts#07feae11780495b90145451d48d4a50923762ef1",
+    "redis": "github:DefinitelyTyped/DefinitelyTyped/redis/redis.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#a820bbdead70913f0c750802b367ed54cb99b442",
+    "redux-thunk": "github:DefinitelyTyped/DefinitelyTyped/redux-thunk/redux-thunk.d.ts#75249b97104d00c1ca2451ac29369009a5f2b101",
+    "request": "github:DefinitelyTyped/DefinitelyTyped/request/request.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "serve-favicon": "github:DefinitelyTyped/DefinitelyTyped/serve-favicon/serve-favicon.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "socket.io": "github:DefinitelyTyped/DefinitelyTyped/socket.io/socket.io.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "socket.io-client": "github:DefinitelyTyped/DefinitelyTyped/socket.io-client/socket.io-client.d.ts#495f2734927a644e913f9ed8f4d7d903f276f41d"
+  }
+}

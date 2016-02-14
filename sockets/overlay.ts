@@ -1,12 +1,12 @@
 import * as redis from 'redis'
 
-var client = redis.createClient();
+const client = redis.createClient();
 const redisOverlayKey = 'web-overlay-overlay';
 const redisLayoutKey = 'web-overlay-layout';
 
 export = function (io: SocketIO.Server) {
 
-  var overlay = io.of('/overlay');
+  const overlay = io.of('/overlay');
 
   overlay.on('connection', function(socket) {
     // Log the new connection

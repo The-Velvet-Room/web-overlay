@@ -1,15 +1,10 @@
 {
     "compilerOptions": {
+        "jsx": "react",
         "module": "commonjs",
         "target": "es5",
         "noImplicitAny": false,
         "rootDir": ".",
         "sourceMap": false
-    },
-    "exclude": [
-        "node_modules",
-        "client",
-        "typings/browser.d.ts",
-        "typings/browser"
-    ]
+    }
 }

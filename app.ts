@@ -5,23 +5,14 @@ import * as logger from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as pmx from 'pmx';
+import { ErrorView } from './views/error';
+
+// declare variables from the webpack config
+declare var __dirname_webpack: string;
 
 import * as routes from './routes/index';
 
 var app = express();
-
-// view engine setup
-import * as hb from 'handlebars';
-import { handlebars } from 'consolidate';
-app.engine('hbs', handlebars);
-
-hb.registerHelper('section', function(name, options) {
-    if(!this._sections) this._sections = {};
-    this._sections[name] = options.fn(this);
-    return null;
-});
-
-app.set('views', path.join(__dirname, 'views'));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -29,7 +20,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.resolve(__dirname_webpack, 'dist')));
 
 app.use('/', routes);
 
@@ -53,22 +44,25 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err: ServerError, req: express.Request, res: express.Response, next) {
-        res.status(err.status || 500);
-        res.render('error', {
+        err.status = err.status || 500;
+        res.status(err.status);
+        console.log(err.stack);
+        res.send(ErrorView.render({
             message: err.message,
             error: err
-        });
+        }));
     });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err: ServerError, req: express.Request, res: express.Response, next) {
-    res.status(err.status || 500);
-    res.render('error', {
+    err.status = err.status || 500;
+    res.status(err.status);
+    res.send(ErrorView.render({
         message: err.message,
-        error: {}
-    });
+        error: {}   
+    }));
 });
 
 // attach more data from express errors:

@@ -1,9 +1,15 @@
 import * as express from 'express';
+import { IndexView } from '../views/index.ts';
+import * as ReactDOM from 'react-dom/server';
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'TVR' });
+    res.send(IndexView.render({}));
+});
+
+router.get('/admin', function(req, res) {
+    res.send(IndexView.render({}));
 });
 
 /* GET home page. */
