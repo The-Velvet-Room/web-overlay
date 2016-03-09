@@ -7,6 +7,7 @@ var client = redis.createClient();
 var redisKey = 'web-overlay-users';
 
 module.exports = function(io) {
+    var connectedSockets = 0;
     var userList = [];
 
     // Load existing challonge data
@@ -78,7 +79,8 @@ module.exports = function(io) {
 
         function getUserById(id) {
             return userList.filter(function(obj) {
-                return obj.id === id;
+                //Typecasting is fine here
+                return obj.id == id;
             })[0];
         }
     });

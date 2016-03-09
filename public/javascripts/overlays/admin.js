@@ -5,6 +5,7 @@ var portLeft = null;
 var portRight = null;
 var stateLeft = null;
 var stateRight = null;
+var userList = null;
 
 //array of character names
 var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
@@ -545,6 +546,134 @@ function toggleNightMode() {
 
     body.style.color = 'white';
     body.style.background = 'black';
+}
+
+//////////////////Users stuff////////////////////////////////////////
+var usersSocket = io('/users');
+
+usersSocket.on('refresh users', function(newList) {
+    userList = newList;
+    console.log(userList);
+    $('#users-edit').hide();
+    createUserList(userList);
+});
+
+function addUser() {
+    var newUser = {
+        firstName: $('#user-first-name').val() || '',
+        lastName: $('#user-last-name').val() || '',
+        gamertag: $('#user-gamertag').val() || '',
+        clan: $('#user-clan').val() || '',
+        twitter: $('#user-twitter').val() || '',
+        city: $('#user-city').val() || '',
+        state: $('#user-state').val() || '',
+        facts: $('#user-facts').val() || '',
+        characters: $('#user-characters').val() || '',
+    }
+
+    usersSocket.emit('create user', newUser);
+    clearNewUserForm();
+    toastNotify('User created!')
+}
+
+function getUpdatedUser() {
+    var newUser = {
+        id: $('#edit-user-id').val() || '',
+        firstName: $('#edit-user-first-name').val() || '',
+        lastName: $('#edit-user-last-name').val() || '',
+        gamertag: $('#edit-user-gamertag').val() || '',
+        clan: $('#edit-user-clan').val() || '',
+        twitter: $('#edit-user-twitter').val() || '',
+        city: $('#edit-user-city').val() || '',
+        state: $('#edit-user-state').val() || '',
+        facts: $('#edit-user-facts').val() || '',
+        characters: $('#edit-user-characters').val() || '',
+    }
+
+    return newUser;
+}
+
+function updateUser() {
+    var newUser = getUpdatedUser();
+    usersSocket.emit('update user', newUser);
+    toastNotify('User updated!');
+    createUserList(userList);
+}
+
+function deleteUser() {
+    var newUser = getUpdatedUser();
+    usersSocket.emit('delete user', newUser);
+    toastNotify('User delted!');
+    createUserList(userList);
+}
+
+function createUserList(users) {
+    var oldVal = null;
+    var matchList = $('#all-users-list');
+    if (matchList) {
+        oldVal = matchList.val();
+        matchList.remove();
+    }
+
+    var selectList = document.createElement('select');
+    selectList.id = 'all-users-list';
+    document.getElementById('user-list-target').appendChild(selectList);
+
+    var defaultOption = document.createElement('option');
+    defaultOption.text = 'Select a user to edit';
+    defaultOption.value = null;
+    selectList.appendChild(defaultOption);
+
+    users.forEach(function(user){
+        var option = document.createElement('option');
+        option.text = ''+user.firstName+' '+user.lastName+' <'+user.gamertag+'>';
+        option.value = user.id;
+        if (oldVal && option.value === oldVal) {
+            option.selected = true;
+        }
+        selectList.appendChild(option);
+    });
+
+    $('#all-users-list').change(function() {
+        var selectedOption = $('#all-users-list option:selected');
+        var identifier = selectedOption.val();
+        if (identifier) {
+            var selectedUser = getUserById(identifier);
+
+            if(selectedUser) {
+                $('#users-edit').show();
+                $('#edit-user-id').val(selectedUser.id);
+                $('#edit-user-first-name').val(selectedUser.firstName || '');
+                $('#edit-user-last-name').val(selectedUser.lastName || '');
+                $('#edit-user-gamertag').val(selectedUser.gamertag || '');
+                $('#edit-user-clan').val(selectedUser.clan || '');
+                $('#edit-user-twitter').val(selectedUser.twitter || '');
+                $('#edit-user-city').val(selectedUser.city || '');
+                $('#edit-user-state').val(selectedUser.state || '');
+                $('#edit-user-facts').val(selectedUser.facts || '');
+                $('#edit-user-characters').val(selectedUser.characters || '');
+            } 
+        }
+    });
+}
+
+function clearNewUserForm() {
+    $('#user-first-name').val('');
+    $('#user-last-name').val('');
+    $('#user-gamertag').val('');
+    $('#user-clan').val('');
+    $('#user-twitter').val('');
+    $('#user-city').val('');
+    $('#user-state').val('');
+    $('#user-facts').val('');
+    $('#user-characters').val('');
+}
+
+function getUserById(id) {
+    return userList.filter(function(obj) {
+        //Typecasting is fine here
+        return obj.id == id;
+    })[0];
 }
 
 $(function() {
