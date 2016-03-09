@@ -5,4 +5,5 @@ module.exports = function (io) {
   require('./twitch')(io);
   require('./challonge')(io);
   require('./arcade')(io);
+  require('./users')(io);
 };
