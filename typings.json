@@ -10,7 +10,7 @@
     "morgan": "github:DefinitelyTyped/DefinitelyTyped/morgan/morgan.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
     "object-assign": "github:DefinitelyTyped/DefinitelyTyped/object-assign/object-assign.d.ts#62c95cb5f5a51f6875c9fbd8b5e26d2284f024c9",
-    "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
+    "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#f407264835650f5f38d4bb2c515a79e7a835916b",
     "react-dom": "github:DefinitelyTyped/DefinitelyTyped/react/react-dom.d.ts#6d3c9f422fe385f4f34d3be4c7920476163c87ec",
     "react-redux": "github:DefinitelyTyped/DefinitelyTyped/react-redux/react-redux.d.ts#a513c4df6eb8505da8eef432891c8b69b73535d9",
     "react-router": "github:DefinitelyTyped/DefinitelyTyped/react-router/react-router.d.ts#07feae11780495b90145451d48d4a50923762ef1",
