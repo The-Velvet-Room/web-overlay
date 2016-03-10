@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { updatePlayerName } from '../../redux/actions'
-import Player from './Player'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../../redux/actions/player';
+import Player from '../Player';
 
 interface Props extends React.Props<PlayerList> {
   playerList?: Array<Object>,

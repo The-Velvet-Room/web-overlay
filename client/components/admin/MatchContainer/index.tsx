@@ -1,26 +1,26 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { updateCommentators } from '../../redux/actions'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../../redux/actions/match';
 
-interface Props extends React.Props<Commentators> {
+interface Props extends React.Props<MatchContainer> {
   commentator?: string,
   updateCommentator?: (name: string) => void
 }
 interface State { text: string }
 
 const mapStateToProps = (state) => {
-  return { commentator: state.commentators.text };
+  return { commentator: 'asd' };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     updateCommentator: (name: string) => {
-      dispatch(updateCommentators(name));
+
     }
   }
 }
 
-class Commentators extends React.Component<Props, State> {
+class MatchContainer extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {text: ''};
@@ -46,4 +46,4 @@ class Commentators extends React.Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Commentators);
+export default connect(mapStateToProps, mapDispatchToProps)(MatchContainer);

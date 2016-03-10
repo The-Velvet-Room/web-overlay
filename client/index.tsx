@@ -4,8 +4,8 @@ import { Router, Route, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 
 import Store from './redux/store';
-import Overlay from './components/overlay/OverlayComponent';
-import Admin from './components/admin/AdminComponent';
+import Overlay from './components/overlay/OverlayContainer';
+import Admin from './components/admin/AdminContainer';
 
 function render() {
   ReactDOM.render(

@@ -1,0 +1,32 @@
+import User from './User';
+import * as data from './AdminData';
+
+export class OverlayDisplay {
+  commentators: CommentatorDisplay;
+  match: MatchDisplay;
+  players: PlayerDisplay;
+  tournament: TournamentDisplay;
+}
+
+export class CommentatorDisplay {
+  leftCommentator: User;
+  rightCommentator: User;
+}
+
+export class MatchDisplay {
+  leftPort: number;
+  rightPort: number;
+  leftCharacter: string;
+  rightCharacter: string;
+}
+
+export class PlayerDisplay {
+  leftPlayer: User;
+  rightPlayer: User;
+}
+
+export class TournamentDisplay {
+  currentGame: string;
+  tournamentName: string;
+  bracketInfo: string;
+}

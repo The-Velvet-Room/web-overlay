@@ -1,8 +1,8 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { updatePlayerName } from '../../redux/actions'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../../redux/actions/player';
 
-interface Props extends React.Props<Player> {
+interface Props extends React.Props<PlayerContainer> {
   playerData: any,
   index: number,
   updatePlayerName?: (index: number, name: string) => void
@@ -16,12 +16,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updatePlayerName: (index: number, name: string) => {
-      dispatch(updatePlayerName(index, name));
+
     }
   }
 }
 
-class Player extends React.Component<Props, State> {
+class PlayerContainer extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {name: ''};
@@ -49,4 +49,4 @@ class Player extends React.Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Player);
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerContainer);

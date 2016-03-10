@@ -1,8 +1,10 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import Commentators from './CommentatorsComponent'
-import PlayerList from './PlayerList'
-import { updateOverlay } from '../../redux/actions'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import CommentatorContainer from '../CommentatorContainer';
+import MatchContainer from '../MatchContainer';
+import ActionContainer from '../ActionContainer';
+import TournamentContainer from '../TournamentContainer';
+import { updateOverlay } from '../../../redux/actions/admin';
 
 interface Props extends React.Props<Admin> { 
   updateOverlay?: () => void,
@@ -32,9 +34,10 @@ class Admin extends React.Component<Props, State> {
       <div>
         <div>Admin Page</div>
         <form onSubmit={this.handleSubmit.bind(this)}>
-          <Commentators />
-          <PlayerList />
-          <input type="submit" />
+          <TournamentContainer />
+          <CommentatorContainer />
+          <MatchContainer />
+          <ActionContainer />
         </form>
       </div>
     );
