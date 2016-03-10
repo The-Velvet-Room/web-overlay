@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var apiService = require('../services/apiService');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -174,6 +175,32 @@ router.get('/overlays/arcade', function(req, res) {
 /* GET velvet arcade admin */
 router.get('/overlays/arcade/admin', function(req, res) {
   res.render('overlays/arcade/admin', { title: 'Velvet Arcade Admin' });
+});
+
+/*Begin API section*/
+router.get('/api/users', function(req, res) {
+  //TODO Make this real
+  res.json({success: true, query: req.query});
+});
+
+router.post('/api/replays', function(req, res) {
+  apiService.addReplay(req.body, function(results) {
+    res.json({results: results});
+  });
+});
+
+//Get match information
+router.get('/api/replays', function(req, res) {
+  apiService.getReplays(function(results) { 
+    res.json(results);
+  });
+});
+
+//Get match information
+router.get('/api/currentMatch', function(req, res) {
+  apiService.getCurrentMatchState(function(results) { 
+    res.json(results);
+  });
 });
 
 module.exports = router;
