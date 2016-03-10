@@ -1,7 +1,8 @@
 import * as actions from '../actions/match';
+import { MatchData } from '../../models/AdminData';
 import objectAssign = require('object-assign');
 
-export default function match(state:any = {}, action) {
+export default function match(state:MatchData = new MatchData(), action) {
   switch (action.type) {
     case actions.UPDATE_LEFT_PORT:
       return objectAssign({}, state, {

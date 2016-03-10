@@ -21,22 +21,22 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class MatchContainer extends React.Component<Props, State> {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {text: ''};
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps (nextProps: Props) {
     this.setState({text: nextProps.commentator});
   }
 
-  handleInputChange(e: React.FormEvent) {
+  handleInputChange (e: React.FormEvent) {
     const text = (e.target as HTMLInputElement).value;
     this.props.updateCommentator(text);
     this.setState({text: text});
   }
 
-  public render() {
+  public render () {
     return (
       <div>
         <label htmlFor="commentators">Commentators</label>

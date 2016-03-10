@@ -1,7 +1,8 @@
 import * as actions from '../actions/player';
+import { PlayerData } from '../../models/AdminData';
 import objectAssign = require('object-assign');
 
-export default function player(state:any = {}, action) {
+export default function player(state:PlayerData = new PlayerData(), action) {
   switch (action.type) {
     case actions.UPDATE_LEFT_PLAYER:
       return objectAssign({}, state, {
@@ -13,7 +14,7 @@ export default function player(state:any = {}, action) {
       });
     case actions.SWAP_PLAYERS:
       const newLeftId = state.rightPlayerId;
-      const newRightId = state.leftPlayer;
+      const newRightId = state.leftPlayerId;
       return objectAssign({}, state, {
         leftPlayerId: newLeftId,
         rightPlayerId: newRightId,

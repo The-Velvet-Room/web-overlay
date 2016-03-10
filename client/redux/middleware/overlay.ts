@@ -1,41 +1,31 @@
 import * as io from 'socket.io-client';
-import * as actions from '../actions/admin'
+import * as actions from '../actions/root'
 
 let socket: SocketIOClient.Socket = null;
 
 export default (store: Redux.Store) => {
-    socket = io('/overlay');
+  const state = store.getState();
+  socket = io('/overlay');
+  
+  socket.on('update overlay', (overlay) => {
+    store.dispatch(actions.setOverlayDisplay(overlay));
+  });
 
-    socket.on('update overlay', (data) => {
-        // if (data.commentators) {
-        //     store.dispatch(actions.updateCommentators(data.commentators));
-        // }
-        // if (data.players) {
-        //     store.dispatch(actions.updatePlayers(data.players));
-        // }
-    });
-
-    return next => action => {
-        const result = next(action);
-        
-        // switch (action.type) {
-        //   case actions.UPDATE_OVERLAY:
-        //     store.dispatch(actions.createOverlayDisplay());
-        //     break;
-        //   case actions.CREATE_OVERLAY_DISPLAY:
-            
-        // }
-
-        if (action.type === actions.UPDATE_OVERLAY) {
-          
-            const commentators = store.getState().commentators.text;
-            const players = store.getState().players;
-            socket.emit('update overlay', {
-                commentators,
-                players
-            });
-        }
-
-        return result;
+  return next => action => {
+    const result = next(action);
+    
+    switch (action.type) {
+      case actions.UPDATE_OVERLAY:
+        const overlay = store.getState().overlay;
+        socket.emit('update overlay', {
+          overlay,
+        });
+        break;
+      case actions.ADD_TEST_USER:
+        socket.emit('add test user', {});
+      default:
     }
+
+    return result;
+  }
 }

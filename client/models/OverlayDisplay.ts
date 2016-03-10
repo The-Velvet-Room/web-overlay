@@ -1,5 +1,4 @@
 import User from './User';
-import * as data from './AdminData';
 
 export class OverlayDisplay {
   commentators: CommentatorDisplay;

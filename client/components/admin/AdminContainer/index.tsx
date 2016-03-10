@@ -4,44 +4,20 @@ import CommentatorContainer from '../CommentatorContainer';
 import MatchContainer from '../MatchContainer';
 import ActionContainer from '../ActionContainer';
 import TournamentContainer from '../TournamentContainer';
-import { updateOverlay } from '../../../redux/actions/admin';
 
-interface Props extends React.Props<Admin> { 
-  updateOverlay?: () => void,
-}
-interface State {}
+interface Props extends React.Props<AdminContainer> { }
+interface State { }
 
-const mapStateToProps = () => {
-  return { };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateOverlay: () => {
-      dispatch(updateOverlay());
-    }
-  }
-}
-
-class Admin extends React.Component<Props, State> {
-  handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    this.props.updateOverlay();
-  }
-
-  render() {
+export default class AdminContainer extends React.Component<Props, State> {
+  render () {
     return (
-      <div>
+      <div className="admin-container">
         <div>Admin Page</div>
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <TournamentContainer />
-          <CommentatorContainer />
-          <MatchContainer />
-          <ActionContainer />
-        </form>
+        <TournamentContainer />
+        <CommentatorContainer />
+        <MatchContainer />
+        <ActionContainer />
       </div>
     );
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Admin);

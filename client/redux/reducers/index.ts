@@ -1,10 +1,10 @@
-import { combineReducers } from 'redux';
 import admin from './admin';
-import overlay from './overlay';
+import root from './root';
+import StateData from '../../models/StateData';
 
-const app = combineReducers({
-  admin,
-  overlay,
-});
-
-export default app;
+export default function app(state:StateData = new StateData(), action) {
+  return {
+    admin: admin(state.admin, action),
+    root: root(state, action),
+  }
+}

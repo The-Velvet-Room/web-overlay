@@ -16,10 +16,10 @@ export default class TournamentContainer extends React.Component<Props, State> {
     this.setState({text: text});
   }
 
-  public render() {
+  public render () {
     return (
       <div>
-        <label htmlFor="commentators">Commentators</label>
+        <label htmlFor="currentGame">Commentators</label>
         <input name="commentators" value={this.props.tournamentName} onChange={this.handleInputChange} />
       </div>
     );

@@ -1,37 +1,43 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import User from '../../../models/User';
+import StateData from '../../../models/StateData';
 import * as actions from '../../../redux/actions/commentator';
 
 interface Props extends React.Props<CommentatorContainer> {
-  commentator?: string,
-  updateCommentator?: (name: string) => void
+  leftCommentatorId?: string,
+  rightCommentatorId?: string,
+  updateLeftCommentator?: (name: string) => void,
+  updateRightCommentator?: (name: string) => void,
 }
 interface State { text: string }
 
-const mapStateToProps = (state) => {
-  return { commentator: 'asdf' };
+const mapStateToProps = (state: StateData) => {
+  return {
+    leftCommentatorId: state.admin.commentators.leftCommentatorId,
+    rightCommentatorId: state.admin.commentators.rightCommentatorId,
+  };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateleftCommentator: (name: string) => {
+    updateLeftCommentator: (name: string) => {
       dispatch(actions.updateLeftCommentator(name));
+    },
+    updateRightCommentator: (name: string) => {
+      dispatch(actions.updateRightCommentator(name));
     }
-  }
+  };
 }
 
 class CommentatorContainer extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {text: ''};
+  componentWillReceiveProps (nextProps: Props) {
+    this.setState({text: nextProps});
   }
-
-  componentWillReceiveProps(nextProps: Props) {
-    this.setState({text: nextProps.commentator});
-  }
-
-  handleInputChange(e: React.FormEvent) {
-    const text = (e.target as HTMLInputElement).value;
+  
+  handleInputChange = (e: React.FormEvent) => {
+    const id = (e.target as HTMLSelectElement).value;
+    e.target.
     this.props.updateCommentator(text);
     this.setState({text: text});
   }
@@ -39,11 +45,13 @@ class CommentatorContainer extends React.Component<Props, State> {
   public render() {
     return (
       <div>
-        <label htmlFor="commentators">Commentators</label>
-        <input name="commentators" value={this.state.text} onChange={this.handleInputChange.bind(this)} />
+        <label htmlFor="leftCommentator">Commentators</label>
+        <select name="leftCommentator" value={this.props.leftCommentatorId} onChange={this.handleInputChange} />
+        <label htmlFor="rightCommentator">Commentators</label>
+        <select name="rightCommentator" value={this.props.rightCommentatorId} onChange={this.handleInputChange} />
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentatorContainer);
+export default connect(mapDispatchToProps)(CommentatorContainer);
