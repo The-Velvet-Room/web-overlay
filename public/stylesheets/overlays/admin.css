@@ -80,3 +80,8 @@ button.expand {
         .tab.active {
             display:block;
         }
+
+/*User stuff*/
+#users-create .user-field {
+    margin-bottom: 10px;
+}

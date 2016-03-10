@@ -7,20 +7,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
     <link rel='stylesheet' href='/stylesheets/overlays/commentators.css' />
     <script src="/socket.io/socket.io.js"></script>
+
+    <!--TODO global-->
+    <script src="https://code.jquery.com/ui/1.12.0-beta.1/jquery-ui.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/overlays/global-source.css' />
+
   </head>
   <body>
+  <!--TODO global-->
+  <img src="http://i.imgur.com/qkL0ngP.png" id="transition-image" style="display: none;">
   	<div id="container">
   		<div id="commentators" class="playertext"></div>
+          
+          <div id="twittercontainer">
+              <img src="http://i.imgur.com/RGl4CvZ.png" class="twitter-icon">
+              <div id="twitter" class="twitter playertext"></div>
+          </div>
+          
+          <div id="commentators2" class="playertext"></div>
+          
+          <div id="twittercontainer2">
+              <img src="http://i.imgur.com/RGl4CvZ.png" class="twitter-icon">
+              <div id="twitter2" class="twitter playertext"></div>
+          </div>          
   	</div>
     <script>
     var processedFollowers = [];
-		var socket = io('/overlay');
+    var socket = io('/overlay');
 
-		socket.on('update overlay', function(data) {
-      if(data.commentators != document.getElementById('commentators').innerText) {
+    //TODO global
+    var transitioning = false;
+    function transition() {
+      if(!transitioning) {
+        transitioning = true;
+         //Slide in first
+         $('#transition-image').effect('slide', {}, 1000, function() {
+          //Wait 2 seconds
+          setTimeout(function() {
+            //Blind out of view
+            $('#transition-image').effect('fold', {}, 1000, function() {
+              transitioning=false;
+            });
+          }, 2500);           
+         });
+      }
+    }
+
+    socket.on('update overlay', function(data) {
+        if(data.commentators != document.getElementById('commentators').innerText) {
           $('#commentators').trigger('textChanged', data.commentators || '');
         }
-		});
+        if(data.commentators2 != document.getElementById('commentators2').innerText) {
+          $('#commentators2').trigger('textChanged', data.commentators2 || '');
+        }
+        if(data.twitter != document.getElementById('twitter').innerText) {
+          $('#twitter').trigger('textChanged', data.twitter || '');
+        }
+        if(data.twitter2 != document.getElementById('twitter2').innerText) {
+          $('#twitter2').trigger('textChanged', data.twitter2 || '');
+        }
+    });
+
+    socket.on('fire transition', function() {
+      transition();
+    });
+        
 
     $('.playertext').bind('textChanged', function(e, newText){
         $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {

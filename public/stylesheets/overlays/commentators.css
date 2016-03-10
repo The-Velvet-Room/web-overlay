@@ -9,24 +9,68 @@ a {
 #container {
 	width: 1920px;
 	height: 1080px;
-	background: url(https://i.imgur.com/VeDdEp2.png);
-	position: relative;
+	background: url(http://i.imgur.com/LlPja7O.png);
+	position: absolute;
 }
 
-.playertext {
-	position: absolute;
+.twitter-icon {
+    width: 48px;
+    height: 48px;
+    background: url(http://i.imgur.com/RGl4CvZ.png);
+    display: inline-block;
+    vertical-align: text-top;
+    margin-right: -10px;
+}
+
+.playertext {	
 	color: white;
-	font-size: 42px;
 	font-family: Arial, sans-serif;
 	overflow: hidden;
 	overflow-wrap: break-word;
 }
 
 #commentators {
-	top: 933px;
-	left: 500px;
-	height: 83px;
-	width: 880px;
+	top: 850px;
+	left: 100px;
+	height: 50px;
+	width: 800px;
 	text-align: center;
 	font-size: 48px;
+    position: absolute;
+}
+
+#twittercontainer {
+	top: 963px;
+	left: 84px;
+	height: 50px;
+	width: 800px;
+	text-align: center;
+	font-size: 36px;
+    position: absolute;
+}
+
+.twitter{
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+#twittercontainer2 {
+	top: 963px;
+	right: 112px;
+	height: 50px;
+	width: 800px;
+	text-align: center;
+	font-size: 36px;
+    position: absolute;
+}
+
+
+#commentators2 {
+	top: 850px;
+	right: 100px;
+	height: 50px;
+	width: 800px;
+	text-align: center;
+	font-size: 48px;
+    position: absolute;
 }
