@@ -7,6 +7,7 @@
         <li><a href="#tab2">Twitch</a></li>
         <li><a href="#tab3">Challonge</a></li>
         <li><a href="#tab4">Layout</a></li>
+        <li><a href="#tab5">Users</a></li>
     </ul>
 
     <div class="tab-content">
@@ -297,14 +298,168 @@
                 </p>
             </form>                
         </div>
+
+        <div id="tab5" class="tab">
+            <div id="users-create">
+                <h2>Create User</h2>
+                <div class="user-field">
+                    <label for="userFirstName">
+                        First Name
+                        <input id="user-first-name"></input>
+                    </label>
+                </div>
+                
+                <div class="user-field">
+                    <label for="userLastName">
+                        Last Name
+                        <input id="user-last-name"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userGamertag">
+                        Gamertag
+                        <input id="user-gamertag"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userClan">
+                        Clan Prefix String
+                        <input id="user-clan"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userTwitter">
+                        Twitter Handle
+                        <input id="user-twitter"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userCity">
+                        City
+                        <input id="user-city"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userState">
+                        State
+                        <input id="user-state"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userFacts">
+                        Facts (Comma separated)
+                        <input id="user-facts"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userCharacters">
+                        Main Characters (Comma separated)
+                        <input id="user-characters"></input>
+                    </label>
+                </div>
+
+                <button id="create-user-btn" type="button" onclick="javascript:addUser()">Create User</button>
+
+            </div> 
+
+            <h2>Edit User</h2>
+            <p id="user-list-target"></p>
+            <div id="users-edit" style="display: none;">
+                
+                <div id='edit-user-form'>
+
+                <div class="user-field">
+                    <label for="userId">
+                        UserId (Read Only)
+                        <input id="edit-user-id" disabled="true"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userFirstName">
+                        First Name
+                        <input id="edit-user-first-name"></input>
+                    </label>
+                </div>
+                
+                <div class="user-field">
+                    <label for="userLastName">
+                        Last Name
+                        <input id="edit-user-last-name"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userGamertag">
+                        Gamertag
+                        <input id="edit-user-gamertag"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userClan">
+                        Clan Prefix String
+                        <input id="edit-user-clan"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userTwitter">
+                        Twitter Handle
+                        <input id="edit-user-twitter"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userCity">
+                        City
+                        <input id="edit-user-city"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userState">
+                        State
+                        <input id="edit-user-state"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userFacts">
+                        Facts (Comma separated)
+                        <input id="edit-user-facts"></input>
+                    </label>
+                </div>
+
+                <div class="user-field">
+                    <label for="userCharacters">
+                        Main Characters (Comma separated)
+                        <input id="edit-user-characters"></input>
+                    </label>
+                </div>
+
+                <button id="update-user-btn" type="button" onclick="javascript:updateUser()">Update User</button>
+                <button id="delete-user-btn" type="button" onclick="javascript:deleteUser()">Delete User</button>
+                </div>
+            </div>           
+        </div>
     </div>
 </div>
 
 <link rel='stylesheet' href='/stylesheets/overlays/admin.css' />
 <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css">
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js"></script>
 <script src="/javascripts/remote/obs-remote.min.js"></script>
 <script src="/javascripts/remote/obs-setup.js"></script>
 <script src="/javascripts/overlays/admin.js"></script>

@@ -5,6 +5,7 @@ var portLeft = null;
 var portRight = null;
 var stateLeft = null;
 var stateRight = null;
+var userList = null;
 
 //array of character names
 var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
@@ -145,15 +146,351 @@ function createStateList(direction) {
     });
 }
 
+function setDropdownByText(selector, text) {
+    $(selector).filter(function() {
+        return $(this).text() == text; 
+    }).prop('selected', true);
+}
+
+//////////////////Users stuff////////////////////////////////////////
+var usersSocket = io('/users');
+
+usersSocket.on('refresh users', function(newList) {
+    userList = newList;
+    $('#users-edit').hide();
+    createUserList(userList);
+    createSelectizedInputs();
+});
+
+function createSelectizedInputs() {
+    $('#commentators').selectize({
+        labelField: 'gamertag',
+        valueField: 'id',
+        options: userList,
+        searchField: ['clan', 'gamertag', 'firstName', 'lastName'],
+        sortField: 'gamertag',
+        create: true,
+        maxItems: 1,
+        render: {
+        item: function(item, escape) {
+            var fullGamertag = getFullGamertagForUser(item);
+            return '<div>' +
+                ('<span class="name">' + escape(fullGamertag) + '</span>') +
+            '</div>';
+        },
+        option: function(item, escape) {
+                var fullGamertag = getFullGamertagForUser(item);
+                var caption = ''+item.firstName + ' ' + item.lastName || item.twitter;
+                var label = fullGamertag;
+                return '<div>' +
+                    '<div class="label">' + escape(label) + '</div>' +
+                    (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                '</div>';
+            }
+        },
+        onChange: function(value) {
+            var user = getUserById(value);
+
+            if(user) {
+                $('#twitter').val(user.twitter);
+            }
+            
+            
+            if(dataInitialized) {
+                sendUpdate();
+            }
+        }
+    });
+
+    $('#commentators2').selectize({
+        labelField: 'gamertag',
+        valueField: 'id',
+        options: userList,
+        searchField: ['clan', 'gamertag', 'firstName', 'lastName'],
+        sortField: 'gamertag',
+        create: true,
+        maxItems: 1,
+        render: {
+        item: function(item, escape) {
+            var fullGamertag = getFullGamertagForUser(item);
+            return '<div>' +
+                ('<span class="name">' + escape(fullGamertag) + '</span>') +
+            '</div>';
+        },
+        option: function(item, escape) {
+                var fullGamertag = getFullGamertagForUser(item);
+                var caption = ''+item.firstName + ' ' + item.lastName || item.twitter;
+                var label = fullGamertag;
+                return '<div>' +
+                    '<div class="label">' + escape(label) + '</div>' +
+                    (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                '</div>';
+            }
+        },
+        onChange: function(value) {
+            var user = getUserById(value);
+
+            if(user) {
+                $('#twitter2').val(user.twitter);
+            }
+            
+            if(dataInitialized) {
+                sendUpdate();
+            }
+        }
+    });
+
+    $('#lplayer').selectize({
+        labelField: 'gamertag',
+        valueField: 'id',
+        options: userList,
+        searchField: ['clan', 'gamertag', 'firstName', 'lastName'],
+        sortField: 'gamertag',
+        create: true,
+        maxItems: 1,
+        render: {
+        item: function(item, escape) {
+            var fullGamertag = getFullGamertagForUser(item);
+            return '<div>' +
+                ('<span class="name">' + escape(fullGamertag) + '</span>') +
+            '</div>';
+        },
+        option: function(item, escape) {
+                var fullGamertag = getFullGamertagForUser(item);
+                var caption = ''+item.firstName + ' ' + item.lastName || item.twitter;
+                var label = fullGamertag;
+                return '<div>' +
+                    '<div class="label">' + escape(label) + '</div>' +
+                    (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                '</div>';
+            }
+        },
+        onChange: function(value) {
+            var user = getUserById(value);
+
+            if(user) {
+                setDropdownByText('#stateLeft option', user.state);
+            }
+
+            if(dataInitialized) {
+                sendUpdate();
+            }
+        }
+    });
+
+    $('#rplayer').selectize({
+        labelField: 'gamertag',
+        valueField: 'id',
+        options: userList,
+        searchField: ['clan', 'gamertag', 'firstName', 'lastName'],
+        sortField: 'gamertag',
+        create: true,
+        maxItems: 1,
+        render: {
+        item: function(item, escape) {
+            var fullGamertag = getFullGamertagForUser(item);
+            return '<div>' +
+                ('<span class="name">' + escape(fullGamertag) + '</span>') +
+            '</div>';
+        },
+        option: function(item, escape) {
+                var fullGamertag = getFullGamertagForUser(item);
+                var caption = ''+item.firstName + ' ' + item.lastName || item.twitter;
+                var label = fullGamertag;
+                return '<div>' +
+                    '<div class="label">' + escape(label) + '</div>' +
+                    (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+                '</div>';
+            }
+        },
+        onChange: function(value) {
+            var user = getUserById(value);
+
+            if(user) {
+                setDropdownByText('#stateRight option', user.state);
+            } 
+
+            if(dataInitialized) {
+                sendUpdate();
+            }
+        }
+    });
+}
+
+function addUser() {
+    var newUser = {
+        firstName: $('#user-first-name').val() || '',
+        lastName: $('#user-last-name').val() || '',
+        gamertag: $('#user-gamertag').val() || '',
+        clan: $('#user-clan').val() || '',
+        twitter: $('#user-twitter').val() || '',
+        city: $('#user-city').val() || '',
+        state: $('#user-state').val() || '',
+        facts: $('#user-facts').val() || '',
+        characters: $('#user-characters').val() || '',
+    }
+
+    usersSocket.emit('create user', newUser);
+    clearNewUserForm();
+    toastNotify('User created!')
+}
+
+function getUpdatedUser() {
+    var newUser = {
+        id: $('#edit-user-id').val() || '',
+        firstName: $('#edit-user-first-name').val() || '',
+        lastName: $('#edit-user-last-name').val() || '',
+        gamertag: $('#edit-user-gamertag').val() || '',
+        clan: $('#edit-user-clan').val() || '',
+        twitter: $('#edit-user-twitter').val() || '',
+        city: $('#edit-user-city').val() || '',
+        state: $('#edit-user-state').val() || '',
+        facts: $('#edit-user-facts').val() || '',
+        characters: $('#edit-user-characters').val() || '',
+    }
+
+    return newUser;
+}
+
+function updateUser() {
+    var newUser = getUpdatedUser();
+    usersSocket.emit('update user', newUser);
+    toastNotify('User updated!');
+    createUserList(userList);
+}
+
+function deleteUser() {
+    var newUser = getUpdatedUser();
+    usersSocket.emit('delete user', newUser);
+    toastNotify('User delted!');
+    createUserList(userList);
+}
+
+function createUserList(users) {
+    var oldVal = null;
+    var matchList = $('#all-users-list');
+    if (matchList) {
+        oldVal = matchList.val();
+        matchList.remove();
+    }
+
+    var selectList = document.createElement('select');
+    selectList.id = 'all-users-list';
+    document.getElementById('user-list-target').appendChild(selectList);
+
+    var defaultOption = document.createElement('option');
+    defaultOption.text = 'Select a user to edit';
+    defaultOption.value = null;
+    selectList.appendChild(defaultOption);
+
+    users.forEach(function(user){
+        var option = document.createElement('option');
+        option.text = ''+user.firstName+' '+user.lastName+' <'+user.gamertag+'>';
+        option.value = user.id;
+        if (oldVal && option.value === oldVal) {
+            option.selected = true;
+        }
+        selectList.appendChild(option);
+    });
+
+    $('#all-users-list').change(function() {
+        var selectedOption = $('#all-users-list option:selected');
+        var identifier = selectedOption.val();
+        if (identifier) {
+            var selectedUser = getUserById(identifier);
+
+            if(selectedUser) {
+                $('#users-edit').show();
+                $('#edit-user-id').val(selectedUser.id);
+                $('#edit-user-first-name').val(selectedUser.firstName || '');
+                $('#edit-user-last-name').val(selectedUser.lastName || '');
+                $('#edit-user-gamertag').val(selectedUser.gamertag || '');
+                $('#edit-user-clan').val(selectedUser.clan || '');
+                $('#edit-user-twitter').val(selectedUser.twitter || '');
+                $('#edit-user-city').val(selectedUser.city || '');
+                $('#edit-user-state').val(selectedUser.state || '');
+                $('#edit-user-facts').val(selectedUser.facts || '');
+                $('#edit-user-characters').val(selectedUser.characters || '');
+            } 
+        }
+    });
+}
+
+function clearNewUserForm() {
+    $('#user-first-name').val('');
+    $('#user-last-name').val('');
+    $('#user-gamertag').val('');
+    $('#user-clan').val('');
+    $('#user-twitter').val('');
+    $('#user-city').val('');
+    $('#user-state').val('');
+    $('#user-facts').val('');
+    $('#user-characters').val('');
+}
+
+function getIdFromFullGamertag(fullGamertag) {
+    if(!fullGamertag) {
+        return '';
+    }
+
+    return userList.filter(function(obj) {
+        return getFullGamertagForUser(obj) == fullGamertag
+    })[0].id;
+}
+
+function getUserById(id) {
+    if(!id) {
+        return '';
+    }
+
+    return userList.filter(function(obj) {
+        //Typecasting is fine here
+        return obj.id == id;
+    })[0];
+}
+
+function getFullGamertagForUser(user) {
+    if(!user) {
+        return '';
+    }
+
+    if(user.clan) {
+        return user.clan + ' | ' + user.gamertag;
+    }
+
+    return user.gamertag;
+}
+
 var socket = io('/overlay');
 
 socket.on('update overlay', function(data) {
-    document.getElementById('lplayer').value = data.lplayer || '';
-    document.getElementById('rplayer').value = data.rplayer || '';
+
+    if(isNumeric(data.lplayer)) {
+        $('#lplayer')[0].selectize.setValue(getIdFromFullGamertag(data.lplayer));
+    } else {
+        $('#lplayer')[0].selectize.createItem(data.lplayer);
+    }
+
+    if(isNumeric(data.rplayer)) {
+        $('#rplayer')[0].selectize.setValue(getIdFromFullGamertag(data.rplayer));
+    } else {
+        $('#rplayer')[0].selectize.createItem(data.rplayer);
+    }
+
+    if(isNumeric(data.commentators)) {
+        $('#commentators')[0].selectize.setValue(getIdFromFullGamertag(data.commentators));
+    } else {
+        $('#commentators')[0].selectize.createItem(data.commentators);
+    }
+
+    if(isNumeric(data.commentators2)) {
+        $('#commentators2')[0].selectize.setValue(getIdFromFullGamertag(data.commentators2));
+    } else {
+        $('#commentators2')[0].selectize.createItem(data.commentators2);
+    }
+
     document.getElementById('title').value = data.title || '';
-    document.getElementById('tourneyInfo').value = data.tourneyInfo || '';
-    document.getElementById('commentators').value = data.commentators || '';
-    document.getElementById('commentators2').value = data.commentators2 || '';
+    document.getElementById('tourneyInfo').value = data.tourneyInfo || ''; 
     document.getElementById('twitter').value = data.twitter || '';
     document.getElementById('twitter2').value = data.twitter2 || '';
     document.getElementById('current-game').value = data.currentGame || '';
@@ -328,15 +665,22 @@ function swapAll() {
     
     var tempCharacter = window.characterLeft;
     window.characterLeft = window.characterRight;
-    window.characterLeft = tempCharacter;
+    window.characterRight = tempCharacter;
+
+    $('#charListLeft').val(window.characterLeft);
+    $('#charListRight').val(window.characterRight);
     
     var tempPort = window.portLeft;
     window.portLeft = window.portRight;
     window.portRight = tempPort;
+    $('#portLeft').val(window.portLeft);
+    $('#portRight').val(window.portRight);
     
     var tempState = window.stateLeft;
     window.stateLeft = window.stateRight;
     window.stateRight = tempState;
+    $('#stateLeft').val(window.stateLeft);
+    $('#stateRight').val(window.stateRight);
     
     sendUpdate('Information swapped.');
 }
@@ -364,15 +708,27 @@ function fireAnnouncement() {
 }
 
 function sendUpdate(infoMessage) {
+    var comm1Value = document.getElementById('commentators').value;
+    var commentator1 = isNumeric(comm1Value) ? getFullGamertagForUser(getUserById(comm1Value)) : comm1Value;
+
+    var comm2Value = document.getElementById('commentators2').value;
+    var commentator2 = isNumeric(comm2Value) ? getFullGamertagForUser(getUserById(comm2Value)) : comm2Value;
+
+    var p1Value = document.getElementById('lplayer').value;
+    var leftPlayer = isNumeric(p1Value) ? getFullGamertagForUser(getUserById(p1Value)) : p1Value;
+
+    var p2Value = document.getElementById('rplayer').value;
+    var rightPlayer = isNumeric(p2Value) ? getFullGamertagForUser(getUserById(p2Value)) : p2Value;
+
     var data = {
-        'lplayer': document.getElementById('lplayer').value,
-        'rplayer': document.getElementById('rplayer').value,
+        'lplayer': leftPlayer,
+        'rplayer': rightPlayer,
         'title': document.getElementById('title').value,
         'tourneyInfo': document.getElementById('tourneyInfo').value,
         'lscore': document.getElementById('lscore').value,
         'rscore': document.getElementById('rscore').value,
-        'commentators': document.getElementById('commentators').value,
-        'commentators2': document.getElementById('commentators2').value,
+        'commentators':  commentator1,
+        'commentators2': commentator2,
         'twitter': document.getElementById('twitter').value,
         'twitter2': document.getElementById('twitter2').value,
         'currentGame': document.getElementById('current-game').value,
@@ -545,6 +901,10 @@ function toggleNightMode() {
 
     body.style.color = 'white';
     body.style.background = 'black';
+}
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 $(function() {
