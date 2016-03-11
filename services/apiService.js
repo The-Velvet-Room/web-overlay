@@ -1,19 +1,10 @@
-//TODO Break into separate services
-
-var config = require('../config');
-var request = require('request');
-var redis = require('redis');
 var pmx = require('pmx');
-
-var client = redis.createClient();
-var redisUsersKey = 'web-overlay-users';
-var redisOverlayKey = 'web-overlay-overlay';
-var redisReplaysKey = 'web-overlay-replays';
+var redisService = require('./redisService');
 
 module.exports = {
 	getCurrentMatchState: function(callback) {
-		client.get(redisOverlayKey, function(err, reply) {
-			return callback(JSON.parse(reply));
+		redisService.getOverlayData(function(data) {
+			return callback(data);
 		});
 	},
 
@@ -29,19 +20,18 @@ module.exports = {
 		var date = new Date();
 		newReplay.dateCreated = date.getTime();
 
-		client.get(redisReplaysKey, function(err, reply) {
-			var replays = JSON.parse(reply) || [];
-			console.log(replays);
+		redisService.getReplayData(function(reply) {
+			var replays = reply || [];
 			replays.push(newReplay);
-			client.set(redisReplaysKey, JSON.stringify(replays));
+			redisService.setReplayData(replays);
 			console.log('New replay count: '+replays.length);
 			callback(true);
 		});
 	},
 
 	getReplays: function(callback) {
-		client.get(redisReplaysKey, function(err, reply) {
-			return callback(JSON.parse(reply));
+		redisService.getReplayData(function(data) {
+			return callback(data);
 		});
 	}
 }
