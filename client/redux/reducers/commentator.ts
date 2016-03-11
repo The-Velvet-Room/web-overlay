@@ -2,7 +2,7 @@ import * as actions from '../actions/commentator';
 import { CommentatorData } from '../../models/AdminData';
 import objectAssign = require('object-assign');
 
-export default function commentator(state:CommentatorData = new CommentatorData(), action) {
+export default function commentator(state: CommentatorData = new CommentatorData(), action) {
   switch (action.type) {
     case actions.UPDATE_LEFT_COMMENTATOR:
       return objectAssign({}, state, {

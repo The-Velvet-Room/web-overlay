@@ -1,10 +1,17 @@
+import * as actions from '../actions/root';
 import admin from './admin';
-import root from './root';
+import overlay from './overlay';
+import user from './user';
 import StateData from '../../models/StateData';
+import objectAssign = require('object-assign');
 
-export default function app(state:StateData = new StateData(), action) {
-  return {
-    admin: admin(state.admin, action),
-    root: root(state, action),
+export default function app(state: StateData = new StateData(), action) {
+  switch (action.type) {
+    default:
+      return {
+        admin: admin(state.admin, action),
+        overlay: overlay(state.overlay, action, state),
+        users: user(state.users, action),
+      }
   }
 }

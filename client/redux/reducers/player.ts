@@ -2,7 +2,7 @@ import * as actions from '../actions/player';
 import { PlayerData } from '../../models/AdminData';
 import objectAssign = require('object-assign');
 
-export default function player(state:PlayerData = new PlayerData(), action) {
+export default function player(state: PlayerData = new PlayerData(), action) {
   switch (action.type) {
     case actions.UPDATE_LEFT_PLAYER:
       return objectAssign({}, state, {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import CommentatorContainer from '../CommentatorContainer';
 import MatchContainer from '../MatchContainer';
+import PlayerContainer from '../PlayerContainer';
 import ActionContainer from '../ActionContainer';
 import TournamentContainer from '../TournamentContainer';
 
@@ -15,6 +16,7 @@ export default class AdminContainer extends React.Component<Props, State> {
         <div>Admin Page</div>
         <TournamentContainer />
         <CommentatorContainer />
+        <PlayerContainer />
         <MatchContainer />
         <ActionContainer />
       </div>

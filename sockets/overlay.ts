@@ -1,4 +1,5 @@
 import * as redis from 'redis'
+import { OverlayDisplay } from '../client/models/OverlayDisplay';
 
 const client = redis.createClient();
 const redisOverlayKey = 'web-overlay-overlay';
@@ -34,7 +35,7 @@ export = function (io: SocketIO.Server) {
       console.log('overlay user disconnected: ' + socket.handshake.address);
     });
 
-    socket.on('update overlay', function(msg: any) {
+    socket.on('update overlay', function(msg: OverlayDisplay) {
       client.set(redisOverlayKey, JSON.stringify(msg));
       overlay.emit('update overlay', msg);
       console.log('update overlay: ' + JSON.stringify(msg));
@@ -62,6 +63,5 @@ export = function (io: SocketIO.Server) {
     socket.on('fire announcement', function(msg) {
       overlay.emit('fire announcement', msg);
     });
-
   });
 };

@@ -7,6 +7,7 @@ import * as actions from '../../../redux/actions/commentator';
 interface Props extends React.Props<CommentatorContainer> {
   leftCommentatorId?: string,
   rightCommentatorId?: string,
+  users?: Object,
   updateLeftCommentator?: (name: string) => void,
   updateRightCommentator?: (name: string) => void,
 }
@@ -14,44 +15,73 @@ interface State { text: string }
 
 const mapStateToProps = (state: StateData) => {
   return {
-    leftCommentatorId: state.admin.commentators.leftCommentatorId,
-    rightCommentatorId: state.admin.commentators.rightCommentatorId,
+    leftCommentatorId: state.admin.commentators.leftCommentatorId || '',
+    rightCommentatorId: state.admin.commentators.rightCommentatorId || '',
+    users: state.users,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateLeftCommentator: (name: string) => {
-      dispatch(actions.updateLeftCommentator(name));
+    updateLeftCommentator: (id: string) => {
+      dispatch(actions.updateLeftCommentator(id));
     },
-    updateRightCommentator: (name: string) => {
-      dispatch(actions.updateRightCommentator(name));
+    updateRightCommentator: (id: string) => {
+      dispatch(actions.updateRightCommentator(id));
     }
   };
 }
 
 class CommentatorContainer extends React.Component<Props, State> {
-  componentWillReceiveProps (nextProps: Props) {
-    this.setState({text: nextProps});
-  }
-  
-  handleInputChange = (e: React.FormEvent) => {
-    const id = (e.target as HTMLSelectElement).value;
-    e.target.
-    this.props.updateCommentator(text);
-    this.setState({text: text});
+  handleSelectorChange = (e: React.FormEvent) => {
+    const target = (e.target as HTMLSelectElement);
+    const callback = target.dataset['callback'];
+    this.props[callback](target.options[target.selectedIndex].value)
   }
 
   public render() {
+    const optionsLeft = [];
+    const optionsRight = [];
+    const users = this.props.users;
+    for (const prop in users) {
+      if (users.hasOwnProperty(prop)) {
+        const user = users[prop];
+        const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
+        if (user.id === this.props.leftCommentatorId) {
+          optionsLeft.push(<option key={user.id} value={user.id} selected>{name}</option>);
+        } else {
+          optionsLeft.push(<option key={user.id} value={user.id}>{name}</option>);
+        }
+        
+        if (user.id === this.props.rightCommentatorId) {
+          optionsRight.push(<option key={user.id} value={user.id} selected>{name}</option>);
+        } else {
+          optionsRight.push(<option key={user.id} value={user.id}>{name}</option>);
+        }
+      }
+    }
+    
     return (
       <div>
-        <label htmlFor="leftCommentator">Commentators</label>
-        <select name="leftCommentator" value={this.props.leftCommentatorId} onChange={this.handleInputChange} />
-        <label htmlFor="rightCommentator">Commentators</label>
-        <select name="rightCommentator" value={this.props.rightCommentatorId} onChange={this.handleInputChange} />
+        <label htmlFor="leftCommentator">L Commentator</label>
+        <select 
+          name="leftCommentator"
+          data-callback="updateLeftCommentator"
+          onChange={this.handleSelectorChange}
+        >
+          {optionsLeft}
+        </select>
+        <label htmlFor="rightCommentator">R Commentator</label>
+        <select 
+          name="rightCommentator"
+          data-callback="updateRightCommentator"
+          onChange={this.handleSelectorChange}
+        >
+          {optionsRight}
+        </select>
       </div>
     );
   }
 }
 
-export default connect(mapDispatchToProps)(CommentatorContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentatorContainer);

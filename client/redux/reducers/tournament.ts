@@ -2,7 +2,7 @@ import * as actions from '../actions/tournament';
 import { TournamentData } from '../../models/AdminData';
 import objectAssign = require('object-assign');
 
-export default function tournament(state:TournamentData = new TournamentData(), action) {
+export default function tournament(state: TournamentData = new TournamentData(), action) {
   switch (action.type) {
     case actions.UPDATE_CURRENT_GAME:
       return objectAssign({}, state, {
