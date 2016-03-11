@@ -7,29 +7,6 @@ var stateLeft = null;
 var stateRight = null;
 var userList = null;
 
-//array of character names
-var characters =['bowser','bowser-jr','captain-falcon','charizard','dark-pit','king-dedede',
-'diddy-kong','donkey-kong','dr-mario','duck-hunt-dog','falco','fox','ganondorf',
-'mr-game-and-watch','greninja','ice-climbers','ike','ivysaur','jigglypuff','kirby','link',
-'little-mac','lucario', 'lucas','lucina','luigi','mario','marth','megaman','metaknight',
-'mewtwo','mii','ness','olimar','pacman','palutena','peach','pichu','pikachu','pit','rob',
-'robin','rosalina','roy','samus','sheik','shulk', 'snake','squirtle','sonic','toon-link',
-'villager','wario','wii-fit-trainer','wolf','yoshi','young-link','zelda','zero-suit-samus'];
-
-var portColors = ['red','blue','yellow','green'];
-
-var usStates = ['ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO','CONNECTICUT',
-    'DELAWARE','FLORIDA','GEORGIA','HAWAII','IDAHO','ILLINOIS','INDIANA',
-    'IOWA','KANSAS','KENTUCKY','LOUISIANA','MAINE','MARYLAND','MASSACHUSETTS','MICHIGAN',
-    'MINNESOTA','MISSISSIPPI','MISSOURI','MONTANA','NEBRASKA','NEVADA','NEW HAMPSHIRE',
-    'NEW JERSEY','NEW MEXICO','NEW YORK','NORTH CAROLINA','NORTH DAKOTA','OHIO','OKLAHOMA',
-    'OREGON','PENNSYLVANIA','RHODE ISLAND','SOUTH CAROLINA','SOUTH DAKOTA','TENNESSEE',
-    'TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA','WISCONSIN','WYOMING', 'DC'];
-
-var usStatesKeys = ['B','A','D','C','E','F','G','H','I','J','K','M','N','O','L','P','Q','R','U','T',
-    'S','V','W','Y','X','Z','c','g','d','e','f','h','a','b','i','j','k','l','m','n','o','p','q','r',
-    't','s','u','w','v','x','y'];
-
 //Pass in either 'Left' or 'Right'
 function createCharacterList(direction) {
     var selectList = document.createElement('select');
@@ -520,6 +497,32 @@ socket.on('update overlay', function(data) {
         createPortList('Left');
         createPortList('Right');
         dataInitialized = true;
+
+        var gameDictionary = CONSTANT_GAMES.map(function(x) {
+            return {item: x};
+        });
+
+        $('#current-game').selectize({
+            options: gameDictionary,
+            labelField: 'item',
+            valueField: 'item',
+            create: true,
+            maxItems: 1,
+            onChange: function(value) {
+                if(dataInitialized) {
+                    sendUpdate();
+                }
+            },
+            item: function(item, escape) {
+                return '<div>' +
+                    ('<span class="name">' + escape(item) + '</span>') +
+                '</div>';
+            },
+            option: function(item, escape) {
+                    return '<div>' +
+                        '<div class="label">' + escape(item) + '</div>';
+            },
+        });
     }
     
 });
