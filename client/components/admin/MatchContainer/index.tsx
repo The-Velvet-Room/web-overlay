@@ -2,29 +2,32 @@ import * as React from 'react';
 import * as actions from '../../../redux/actions/match';
 import { connect } from 'react-redux';
 import { MatchData } from '../../../models/AdminData';
+import { ports, characters, usStates, usStateKeys } from '../../../../public/javascripts/constants/constants';
 import StateData from '../../../models/StateData';
 
 interface Props extends React.Props<MatchContainer> {
   data?: MatchData,
-  updateLeftPort?: (port: number) => void,
-  updateRightPort?: (port: number) => void,
+  updateLeftPort?: (port: string) => void,
+  updateRightPort?: (port: string) => void,
   updateLeftCharacter?: (character: string) => void,
   updateRightCharacter?: (character: string) => void,
+  updateLeftStateKey?: (state: string) => void,
+  updateRightStateKey?: (state: string) => void,
 }
 interface State { }
 
 const mapStateToProps = (state: StateData) => {
   return {
     data: state.admin.match,
-  }
+  };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateLeftPort: (port: number) => {
+    updateLeftPort: (port: string) => {
       dispatch(actions.updateLeftPort(port));
     },
-    updateRightPort: (port: number) => {
+    updateRightPort: (port: string) => {
       dispatch(actions.updateRightPort(port));
     },
     updateLeftCharacter: (character: string) => {
@@ -32,40 +35,37 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateRightCharacter: (character: string) => {
       dispatch(actions.updateRightCharacter(character));
-    }
-  }
+    },
+    updateLeftStateKey: (stateKey: string) => {
+      dispatch(actions.updateLeftStateKey(stateKey));
+    },
+    updateRightStateKey: (stateKey: string) => {
+      dispatch(actions.updateRightStateKey(stateKey));
+    },
+  };
 }
 
 class MatchContainer extends React.Component<Props, State> {
-  handleSelectorChange (e: React.FormEvent) {
+  handleSelectorChange = (e: React.FormEvent) => {
+    // callback is from the 'callback' data attribute of the select element and matches a prop on the component
     const target = (e.target as HTMLSelectElement);
     const callback = target.dataset['callback'];
-    this.props[callback](target.options[target.selectedIndex].value)
+    const value = (target.options[target.selectedIndex] as HTMLOptionElement).value;
+    this.props[callback](value);
   }
 
   public render() {
-    const ports = [1,2,3,4];
-    const characters = [];
-    const optionsLeft = [];
-    const optionsRight = [];
-    const users = this.props.users;
-    for (const prop in users) {
-      if (users.hasOwnProperty(prop)) {
-        const user = users[prop];
-        const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
-        if (user.id === this.props.leftPlayerId) {
-          optionsLeft.push(<option key={user.id} value={user.id} selected>{name}</option>);
-        } else {
-          optionsLeft.push(<option key={user.id} value={user.id}>{name}</option>);
-        }
-        
-        if (user.id === this.props.rightPlayerId) {
-          optionsRight.push(<option key={user.id} value={user.id} selected>{name}</option>);
-        } else {
-          optionsRight.push(<option key={user.id} value={user.id}>{name}</option>);
-        }
-      }
-    }
+    const portOptions = ports.map(port => {
+      return <option key={port} value={port.toString()}>{port}</option>;
+    });
+    
+    const charOptions = characters.map(character => {
+      return <option key={character} value={character} selected>{character}</option>;
+    });
+    
+    const stateOptions = usStates.map((state, index) => {
+      return <option key={state} value={usStateKeys[index]}>{state}</option>;
+    });
     
     return (
       <div>
@@ -73,49 +73,60 @@ class MatchContainer extends React.Component<Props, State> {
         <select 
           name="leftPort"
           data-callback="updateLeftPort"
+          value={this.props.data.leftPort}
           onChange={this.handleSelectorChange}
         >
-        {
-          ports.map(port => {
-            if (port === this.props.data.leftPort) {
-              return <option key={port} value={port.toString()} selected>{port}</option>;
-            }
-            
-            return <option key={port} value={port.toString()}>{port}</option>
-          })
-        }
+        {portOptions}
         </select>
+        
         <label htmlFor="rightPort">R Port</label>
         <select 
           name="rightPort"
           data-callback="updateRightPort"
+          value={this.props.data.rightPort}
           onChange={this.handleSelectorChange}
         >
-        {
-          ports.map(port => {
-            if (port === this.props.data.rightPort) {
-              return <option key={port} value={port.toString()} selected>{port}</option>;
-            }
-            
-            return <option key={port} value={port.toString()}>{port}</option>
-          })
-        }
+        {portOptions}
         </select>
+        
         <label htmlFor="leftCharacter">L Character</label>
         <select 
           name="leftCharacter"
           data-callback="updateLeftCharacter"
+          value={this.props.data.leftCharacter}
           onChange={this.handleSelectorChange}
         >
-          {optionsLeft}
+        {charOptions}
         </select>
+        
         <label htmlFor="rightCharacter">R Character</label>
         <select 
           name="rightCharacter"
           data-callback="updateRightCharacter"
+          value={this.props.data.rightCharacter}
           onChange={this.handleSelectorChange}
         >
-          {optionsRight}
+        {charOptions}
+        </select>
+        
+        <label htmlFor="leftState">L State</label>
+        <select 
+          name="leftState"
+          data-callback="updateLeftStateKey"
+          value={this.props.data.leftStateKey}
+          onChange={this.handleSelectorChange}
+        >
+        {stateOptions}
+        </select>
+        
+        <label htmlFor="rightState">R State</label>
+        <select 
+          name="rightState"
+          data-callback="updateRightStateKey"
+          value={this.props.data.rightStateKey}
+          onChange={this.handleSelectorChange}
+        >
+        {stateOptions}
         </select>
       </div>
     );

@@ -17,6 +17,8 @@ export class MatchDisplay {
   rightPort: number;
   leftCharacter: string;
   rightCharacter: string;
+  leftStateKey: string;
+  rightStateKey: string;
 }
 
 export class PlayerDisplay {

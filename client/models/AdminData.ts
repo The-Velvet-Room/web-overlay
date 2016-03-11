@@ -11,10 +11,12 @@ export class CommentatorData {
 }
 
 export class MatchData {
-  leftPort: number;
-  rightPort: number;
+  leftPort: string;
+  rightPort: string;
   leftCharacter: string;
   rightCharacter: string;
+  leftStateKey: string;
+  rightStateKey: string;
 }
 
 export class PlayerData {

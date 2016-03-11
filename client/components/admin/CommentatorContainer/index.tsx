@@ -15,8 +15,8 @@ interface State { text: string }
 
 const mapStateToProps = (state: StateData) => {
   return {
-    leftCommentatorId: state.admin.commentators.leftCommentatorId || '',
-    rightCommentatorId: state.admin.commentators.rightCommentatorId || '',
+    leftCommentatorId: state.admin.commentators.leftCommentatorId,
+    rightCommentatorId: state.admin.commentators.rightCommentatorId,
     users: state.users,
   };
 }
@@ -34,9 +34,11 @@ const mapDispatchToProps = (dispatch) => {
 
 class CommentatorContainer extends React.Component<Props, State> {
   handleSelectorChange = (e: React.FormEvent) => {
+    // callback is from the 'callback' data attribute of the select element and matches a prop on the component
     const target = (e.target as HTMLSelectElement);
     const callback = target.dataset['callback'];
-    this.props[callback](target.options[target.selectedIndex].value)
+    const value = (target.options[target.selectedIndex] as HTMLOptionElement).value;
+    this.props[callback](value);
   }
 
   public render() {

@@ -33,9 +33,11 @@ const mapDispatchToProps = (dispatch) => {
 
 class PlayerContainer extends React.Component<Props, State> {
   handleSelectorChange = (e: React.FormEvent) => {
+    // callback is from the 'callback' data attribute of the select element and matches a prop on the component
     const target = (e.target as HTMLSelectElement);
     const callback = target.dataset['callback'];
-    this.props[callback](target.options[target.selectedIndex].value)
+    const value = (target.options[target.selectedIndex] as HTMLOptionElement).value;
+    this.props[callback](value);
   }
 
   public render() {

@@ -10,7 +10,7 @@ export default function tournament(state: TournamentData = new TournamentData(),
       });
     case actions.UPDATE_TOURNAMENT_NAME:
       return objectAssign({}, state, {
-        tournamentName: action.title,
+        tournamentName: action.name,
       });
     case actions.UPDATE_BRACKET_INFO:
       return objectAssign({}, state, {

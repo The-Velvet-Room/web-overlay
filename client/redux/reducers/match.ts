@@ -20,6 +20,14 @@ export default function match(state: MatchData = new MatchData(), action) {
       return objectAssign({}, state, {
         rightCharacter: action.character,
       });
+    case actions.UPDATE_LEFT_STATE_KEY:
+      return objectAssign({}, state, {
+        leftStateKey: action.stateKey,
+      });
+    case actions.UPDATE_RIGHT_STATE_KEY:
+      return objectAssign({}, state, {
+        rightStateKey: action.stateKey,
+      });
     default:
       return state;
   }
