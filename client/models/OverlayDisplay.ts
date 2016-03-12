@@ -1,33 +1,32 @@
 import User from './User';
 
 export class OverlayDisplay {
-  commentators: CommentatorDisplay;
-  match: MatchDisplay;
-  players: PlayerDisplay;
-  tournament: TournamentDisplay;
+  commentator: CommentatorDisplay;
+  game: GameDisplay;
+  idle: IdleDisplay;
 }
 
-export class CommentatorDisplay {
+export class CommentatorDisplay implements TournamentData {
   leftCommentator: User;
   rightCommentator: User;
+  tournamentName: string;
 }
 
-export class MatchDisplay {
-  leftPort: number;
-  rightPort: number;
+export class GameDisplay implements TournamentData {
+  leftPort: string;
+  rightPort: string;
   leftCharacter: string;
   rightCharacter: string;
   leftStateKey: string;
   rightStateKey: string;
-}
-
-export class PlayerDisplay {
   leftPlayer: User;
   rightPlayer: User;
 }
 
-export class TournamentDisplay {
-  currentGame: string;
-  tournamentName: string;
-  bracketInfo: string;
+export class IdleDisplay implements TournamentData { }
+
+interface TournamentData {
+  currentGame?: string;
+  tournamentName?: string;
+  bracketInfo?: string;
 }

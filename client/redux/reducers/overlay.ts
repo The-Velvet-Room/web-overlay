@@ -21,17 +21,26 @@ export default function overlay(state: display.OverlayDisplay = new display.Over
 }
 
 function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminData) {
-  const commentators = new display.CommentatorDisplay();
-  commentators.leftCommentator = state.users[adminData.commentators.leftCommentatorId];
-  commentators.rightCommentator = state.users[adminData.commentators.rightCommentatorId];
+  const commentator = new display.CommentatorDisplay();
+  commentator.leftCommentator = state.users[adminData.commentators.leftCommentatorId];
+  commentator.rightCommentator = state.users[adminData.commentators.rightCommentatorId];
+  commentator.tournamentName = adminData.tournament.tournamentName;
   
-  const match = new display.MatchDisplay();
-  match.leftPort = adminData.match.leftPort;
-  match.rightPort = adminData.match.rightPort;
-  match.leftCharacter = adminData.match.leftCharacter;
-  match.rightCharacter = adminData.match.rightCharacter;
+  const game = new display.GameDisplay();
+  game.leftPort = adminData.match.leftPort;
+  game.rightPort = adminData.match.rightPort;
+  game.leftCharacter = adminData.match.leftCharacter;
+  game.rightCharacter = adminData.match.rightCharacter;
+  game.leftPlayer = state.users[adminData.players.leftPlayerId];
+  game.rightPlayer = state.users[adminData.players.rightPlayerId];
+  game.leftStateKey = adminData.match.leftStateKey;
+  game.rightStateKey = adminData.match.rightStateKey;
   
-  const players = new display.PlayerDisplay();
+  game.bracketInfo = adminData.tournament.bracketInfo;
+  game.currentGame = adminData.tournament.currentGame;
+  game.tournamentName = adminData.tournament.tournamentName;
+  
+  const players = new display.IdleDisplay();
   players.leftPlayer = state.users[adminData.players.leftPlayerId];
   players.rightPlayer = state.users[adminData.players.rightPlayerId];
   
