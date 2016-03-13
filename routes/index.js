@@ -1,10 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var apiService = require('../services/apiService');
+var bracketService = require('../services/bracketService');
 
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'TVR' });
+});
+
+router.get('/smashgg', function(req, res) {
+    var url = "https://smash.gg/tournament/salt-in-the-city-3/brackets/11558/10844/38067";
+    bracketService.getTop8(url, function(top8) {
+        res.send(top8)
+    });
+});
+
+router.get('/challonge', function(req, res) {
+    var url = "http://lgcs.challonge.com/scspm1"
+    bracketService.getTop8(url, function(top8) {
+        res.send(top8)
+    });
 });
 
 /* GET home page. */
@@ -191,14 +206,14 @@ router.post('/api/replays', function(req, res) {
 
 //Get match information
 router.get('/api/replays', function(req, res) {
-  apiService.getReplays(function(results) { 
+  apiService.getReplays(function(results) {
     res.json(results);
   });
 });
 
 //Get match information
 router.get('/api/currentMatch', function(req, res) {
-  apiService.getCurrentMatchState(function(results) { 
+  apiService.getCurrentMatchState(function(results) {
     res.json(results);
   });
 });

@@ -1,17 +1,14 @@
-var config = require('../config');
-var request = require('request');
 var redis = require('redis');
 var pmx = require('pmx');
+var bracketService = require('../services/bracketService')
 
 var client = redis.createClient();
 var redisKey = 'web-overlay-challonge';
 
 module.exports = function(io) {
-    var challongeData = {};
+    var url = null;
     var challongePollFrequency = 10000;
     var connectedSockets = 0;
-    var challongeApiRoot = 'https://api.challonge.com/v1';
-    var challongeHash = null;
     var matches = [];
     var players = [];
     //Used to check for updates
@@ -19,23 +16,21 @@ module.exports = function(io) {
     var top8cache = {};
     var timeout = null;
 
-    // Load existing challonge data
-    client.get(redisKey, function (err, reply) {
-        if (err) {
-            console.log(err);
-        } else if (reply) {
-            challongeData = JSON.parse(reply);
-            challongeHash = challongeData.challongeApiHash;
-        }
-    });
-
     var challongeIO = io.of('/challonge');
 
     challongeIO.on('connection', function(socket) {
         // Log the new connection
         console.log('challonge user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
-        socket.emit('update challonge', challongeData);
+        // Load existing challonge data
+        client.get(redisKey, function (err, reply) {
+            if (err) {
+                console.log(err);
+            } else if (reply) {
+                socket.emit('update challonge', JSON.parse(reply));
+            }
+        });
+
         socket.emit('update challonge top8', top8cache);
         connectedSockets++;
 
@@ -52,17 +47,13 @@ module.exports = function(io) {
         });
 
         socket.on('update challonge', function(msg) {
-            var urlChanged = msg.challongeUrl !== challongeData.challongeUrl;
-            challongeData = msg;
-            if (challongeData.challongeUrl) {
-                if (!challongeHash || urlChanged) {
-                    availableMatchesCache = [];
-                    challongeHash = createChallongeHash(challongeData.challongeUrl);
-                    challongeData.challongeApiHash = challongeHash;
-                    clearTimeout(timeout);
-                    pollChallonge();
-                    client.set(redisKey, JSON.stringify(challongeData));
-                }
+            var urlChanged = msg.challongeUrl !== url;
+            url = msg.challongeUrl;
+            if (urlChanged) {
+                availableMatchesCache = [];
+                clearTimeout(timeout);
+                pollChallonge();
+                client.set(redisKey, JSON.stringify(getChallongeDataModel()));
             }
         });
 
@@ -71,22 +62,22 @@ module.exports = function(io) {
         });
 
         function pollChallonge() {
-            if (connectedSockets > 0 && challongeHash) {
-                console.log('Polling challonge for updates...');
+            if (connectedSockets > 0 && url) {
+                console.log('Polling bracket for updates...');
                 fetchChallongeData();
                 timeout = setTimeout(pollChallonge, challongePollFrequency);
             }
         }
 
         function sendChallongeUpdate() {
-            challongeData.upcomingMatches = getUpcomingMatches();
-            if (checkForMatchUpdates()) {
-                availableMatchesCache = challongeData.upcomingMatches;
-                challongeData.players = getPlayerDictionary();
-                console.log('Sending challonge update');
-                challongeIO.emit('update challonge', challongeData);
+            var upcomingMatches = getUpcomingMatches();
+            if (checkForMatchUpdates(upcomingMatches)) {
+                availableMatchesCache = upcomingMatches;
+                console.log('Sending bracket update');
+                var challongeDataModel = getChallongeDataModel();
+                challongeIO.emit('update challonge', challongeDataModel);
+                client.set(redisKey, JSON.stringify(challongeDataModel));
             }
-            client.set(redisKey, JSON.stringify(challongeData));
         }
 
         function sendTop8Update() {
@@ -102,139 +93,101 @@ module.exports = function(io) {
                 matches: [],
                 participants: []
             };
-            var participantIdList = [];
+            var participantDict = {};
             var i;
-            var match;
-            var player;
             var maxRound = 0;
             var minRound = 0;
 
             // This is inefficient, but I couldn't figure out the math formula for determining
             // which round would put you in the top 8 for winners and losers.
             for (i = 0; i < matches.length; i++) {
-                if (matches[i].match.round > maxRound) {
-                    maxRound = matches[i].match.round;
-                } else if (matches[i].match.round < minRound) {
-                    minRound = matches[i].match.round;
+                if (matches[i].round > maxRound) {
+                    maxRound = matches[i].round;
+                } else if (matches[i].round < minRound) {
+                    minRound = matches[i].round;
                 }
             }
 
-            for (i = 0; i < matches.length; i++) {
-                match = matches[i].match;
-                // Check the round so we only send matches and participants
-                // in the top 8. Winners bracket rounds are positive and losers
-                // bracket rounds are negative.
-                //
-                // The first round of top 8 losers is the 4th round back from
-                // the last round of losers, and the first round of top 8
-                // winners is the 3rd round back from the last round of winners.
+            // Check the round so we only send matches and participants
+            // in the top 8. Winners bracket rounds are positive and losers
+            // bracket rounds are negative.
+            //
+            // The first round of top 8 losers is the 4th round back from
+            // the last round of losers, and the first round of top 8
+            // winners is the 3rd round back from the last round of winners.
+            top8Object.matches = matches.filter(function(match) {
                 if (match.round && (match.round > maxRound - 3 || match.round < minRound + 4)) {
-                    top8Object.matches.push(match);
+                    participantDict[match.player1Id] = true;
+                    participantDict[match.player2Id] = true;
+                    return true;
                 }
-                participantIdList.push(match.player1_id);
-                participantIdList.push(match.player2_id);
-            }
+                return false;
+            });
 
-            // Put participant objects on the top 8 object
-            for (i = 0; i < players.length; i++) {
-                player = players[i].participant;
-                if (participantIdList.indexOf(player.id) >= 0) {
-                    top8Object.participants.push(player);
-                }
-            }
+            top8Object.participants = players.filter(function(player) {
+                return !!participantDict[player.id];
+            });
 
             return top8Object;
         }
 
         function fetchChallongeData() {
-            var headers = {
-                //Basic Auth must be encoded or request will be denied
-                'Authorization': 'Basic ' + new Buffer(config.challongeDevUsername + ':' + config.challongeApiKey).toString('base64')
-            };
-            var options = {
-                url: challongeApiRoot + '/tournaments/' + challongeHash + '.json?include_matches=1&include_participants=1',
-                method: 'GET',
-                headers: headers
-            };
+            console.log('Requesting tournament data for ' + url);
 
-            console.log('Requesting tournament data for ' + challongeData.challongeUrl);
-
-            request(options, function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    try {
-                        var challongeResponse = JSON.parse(body);
-                        matches = challongeResponse.tournament.matches;
-                        players = challongeResponse.tournament.participants;
-                        sendChallongeUpdate();
-                        sendTop8Update();
-                    } catch (e) {
-                        var errorMessage = 'Challonge response could not be parsed: ' + body;
-                        console.log(errorMessage);
-                        pmx.notify(errorMessage);
-                    }
-                }
+            bracketService.getBracketData(url, function(data) {
+                matches = data.matches;
+                players = data.players;
+                sendChallongeUpdate();
+                sendTop8Update();
             });
         }
 
         function getUpcomingMatches() {
-            var upcomingMatches = [];
-            matches.forEach(function(match){
-                if (match.match.state === 'open') {
-                    upcomingMatches.push(match);
-                }
+            return matches.filter(function(match) {
+                return match.state === 'open';
             });
-
-            return upcomingMatches;
         }
 
         function getPlayerDictionary() {
             var playerDict = {};
 
             players.forEach(function(player){
-                playerDict[player.participant.id] = player.participant.name || player.participant.username;
+                playerDict[player.id] = player.name;
             });
 
             return playerDict;
         }
 
-        function createChallongeHash(challongeUrl) {
-            var tourneyHash = challongeUrl.substring(challongeUrl.lastIndexOf('/') + 1).trim();
-
-            //If tournament belongs to an organization,
-            //it must be specified in the request
-            if (challongeUrl.split('.').length - 1 > 1) {
-                var orgHash = challongeUrl.substring(challongeUrl.lastIndexOf('http://') + 7, challongeUrl.indexOf('.'));
-                challongeHash = orgHash + '-' + tourneyHash;
-                return challongeHash;
-            }
-
-            //Standard tournament
-            challongeHash = tourneyHash;
-            return challongeHash;
-        }
-
-        function checkForMatchUpdates() {
-            if (challongeData.upcomingMatches.length !== availableMatchesCache.length) {
+        function checkForMatchUpdates(upcomingMatches) {
+            if (upcomingMatches.length !== availableMatchesCache.length) {
                 return true;
             }
             for (var i = 0; i < availableMatchesCache.length; i++) {
-                if (availableMatchesCache[i].match.id !== challongeData.upcomingMatches[i].match.id) {
+                if (availableMatchesCache[i].id !== upcomingMatches[i].id) {
                     return true;
                 }
             }
             return false;
         }
 
+        function getChallongeDataModel() {
+            return {
+                challongeUrl: url,
+                upcomingMatches: availableMatchesCache,
+                players: getPlayerDictionary(players)
+            }
+        }
+
         function clearBracket() {
             console.log('Clearing challonge data');
-            challongeHash = null;
-            challongeData = {};
+            url = null;
             matches = [];
             players = [];
             availableMatchesCache = [];
             clearTimeout(timeout);
-            socket.emit('update challonge', challongeData);
-            client.set(redisKey, JSON.stringify(challongeData));
+            var newData = getChallongeDataModel()
+            socket.emit('update challonge', newData);
+            client.set(redisKey, JSON.stringify(newData));
         }
     });
 };
