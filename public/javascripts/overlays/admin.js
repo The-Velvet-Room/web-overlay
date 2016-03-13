@@ -74,12 +74,12 @@ function createPortList(direction) {
 
     $('#port'+direction).change(function(){
         var selectedOption = $('#port'+direction+' option:selected');
+        var value =  selectedOption.val() == 'null' ? null : selectedOption.val();
 
-        if(direction == 'Left') {
-            portLeft = selectedOption.val();
-        }
-        else {
-            portRight = selectedOption.val();
+        if (direction == 'Left') {
+            portLeft = value
+        } else {
+            portRight = value
         }
         sendUpdate();
     });
