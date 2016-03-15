@@ -8,20 +8,6 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'TVR' });
 });
 
-router.get('/smashgg', function(req, res) {
-    var url = "https://smash.gg/tournament/salt-in-the-city-3/brackets/11558/10844/38067";
-    bracketService.getTop8(url, function(top8) {
-        res.send(top8)
-    });
-});
-
-router.get('/challonge', function(req, res) {
-    var url = "http://lgcs.challonge.com/scspm1"
-    bracketService.getTop8(url, function(top8) {
-        res.send(top8)
-    });
-});
-
 /* GET home page. */
 router.get('/overlays/smashchateau/game4by3', function(req, res) {
   res.render('overlays/smashchateau/game', { title: 'Smash Chateau Overlay', layout: false });
