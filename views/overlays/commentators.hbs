@@ -98,39 +98,38 @@
     }
 
     socket.on('update overlay', function(data) {
-        /*if(data.commentators != document.getElementById('commentators').innerText) {
-          $('#commentators').trigger('textChanged', data.commentators || '');
+        if(data.commentators != $('.commentators-info__text--left-top').text().trim()) {
+          $('.commentators-info__text--left-top').trigger('textChanged', data.commentators || '');
         }
-        if(data.commentators2 != document.getElementById('commentators2').innerText) {
-          $('#commentators2').trigger('textChanged', data.commentators2 || '');
+        if(data.commentators2 != $('.commentators-info__text--right-top').text().trim()) {
+          $('.commentators-info__text--right-top').trigger('textChanged', data.commentators2 || '');
         }
-        if(data.twitter != document.getElementById('twitter').innerText) {
-          $('#twitter').trigger('textChanged', data.twitter || '');
+        if(data.twitter != $('.commentators-info__text--left-bottom').text().trim()) {
+          $('.commentators-info__text--left-bottom').trigger('textChanged', data.twitter || '');
         }
-        if(data.twitter2 != document.getElementById('twitter2').innerText) {
-          $('#twitter2').trigger('textChanged', data.twitter2 || '');
-        } */
+        if(data.twitter2 != $('.commentators-info__text--right-bottom').text().trim()) {
+          $('.commentators-info__text--right-bottom').trigger('textChanged', data.twitter2 || '');
+        }
     });
     
     //TODO Wrap in UX
     $(".commentators__container").addClass("commentators__container--animate");
-
-      $(".commentators-info__top").addClass("commentators__side--animate");
-      $(".commentators__middle").addClass("commentators__middle--animate");
-      $(".commentators__middle-svg").addClass("commentators__middle-svg--animate");
-      $("svg").attr("class", ".commentators__middle-svg commentators__middle-svg--animate")
-      $(".commentators-info__bottom").addClass("commentators__side--animate");
-      $(".commentators-info__text--left-top").addClass("commentators-info__text--animate-left");
-      $(".commentators-info__text--left-bottom").addClass("commentators-info__text--animate-right");
-      $(".commentators-info__text--right-top").addClass("commentators-info__text--animate-left");
-      $(".commentators-info__text--right-bottom").addClass("commentators-info__text--animate-right");
+    $(".commentators-info__top").addClass("commentators__side--animate");
+    $(".commentators__middle").addClass("commentators__middle--animate");
+    $(".commentators__middle-svg").addClass("commentators__middle-svg--animate");
+    $("svg").attr("class", ".commentators__middle-svg commentators__middle-svg--animate")
+    $(".commentators-info__bottom").addClass("commentators__side--animate");
+    $(".commentators-info__text--left-top").addClass("commentators-info__text--animate-left");
+    $(".commentators-info__text--left-bottom").addClass("commentators-info__text--animate-right");
+    $(".commentators-info__text--right-top").addClass("commentators-info__text--animate-left");
+    $(".commentators-info__text--right-bottom").addClass("commentators-info__text--animate-right");
 
     socket.on('fire transition', function() {
       
     });
         
 
-    $('.playertext').bind('textChanged', function(e, newText){
+    $('.commentators-info__text ').bind('textChanged', function(e, newText){
         $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
             $(this).text(newText);
           }).animate({'opacity': '1', 'margin-left': '0'}, 350);
