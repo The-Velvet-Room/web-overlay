@@ -3,11 +3,11 @@ var pmx = require('pmx');
 var bracketService = require('../services/bracketService')
 
 var client = redis.createClient();
-var redisKey = 'web-overlay-challonge';
+var redisKey = 'web-overlay-bracket';
 
 module.exports = function(io) {
     var url = null;
-    var challongePollFrequency = 10000;
+    var bracketPollFrequency = 10000;
     var connectedSockets = 0;
     var matches = [];
     var players = [];
@@ -16,29 +16,29 @@ module.exports = function(io) {
     var top8cache = {};
     var timeout = null;
 
-    var challongeIO = io.of('/challonge');
+    var bracketIO = io.of('/bracket');
 
-    challongeIO.on('connection', function(socket) {
+    bracketIO.on('connection', function(socket) {
         // Log the new connection
-        console.log('challonge user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
+        console.log('bracket user connected: ' + socket.handshake.address + ' -> ' + socket.request.headers.referer);
 
-        // Load existing challonge data
+        // Load existing bracket data
         client.get(redisKey, function (err, reply) {
             if (err) {
                 console.log(err);
             } else if (reply) {
-                socket.emit('update challonge', JSON.parse(reply));
+                socket.emit('update bracket', JSON.parse(reply));
             }
         });
 
-        socket.emit('update challonge top8', top8cache);
+        socket.emit('update bracket top8', top8cache);
         connectedSockets++;
 
         // if we go from 0 to 1 socket, start polling again
-        pollChallonge();
+        pollBracket();
 
         socket.on('disconnect', function() {
-            console.log('challonge user disconnected: ' + socket.handshake.address);
+            console.log('bracket user disconnected: ' + socket.handshake.address);
             connectedSockets--;
             if (connectedSockets <= 0) {
                 connectedSockets = 0;
@@ -46,14 +46,14 @@ module.exports = function(io) {
             }
         });
 
-        socket.on('update challonge', function(msg) {
-            var urlChanged = msg.challongeUrl !== url;
-            url = msg.challongeUrl;
+        socket.on('update bracket', function(msg) {
+            var urlChanged = msg.url !== url;
+            url = msg.url;
             if (urlChanged) {
                 availableMatchesCache = [];
                 clearTimeout(timeout);
-                pollChallonge();
-                client.set(redisKey, JSON.stringify(getChallongeDataModel()));
+                pollBracket();
+                client.set(redisKey, JSON.stringify(getBracketDataModel()));
             }
         });
 
@@ -61,29 +61,29 @@ module.exports = function(io) {
             clearBracket();
         });
 
-        function pollChallonge() {
+        function pollBracket() {
             if (connectedSockets > 0 && url) {
                 console.log('Polling bracket for updates...');
-                fetchChallongeData();
-                timeout = setTimeout(pollChallonge, challongePollFrequency);
+                fetchBracketData();
+                timeout = setTimeout(pollBracket, bracketPollFrequency);
             }
         }
 
-        function sendChallongeUpdate() {
+        function sendBracketUpdate() {
             var upcomingMatches = getUpcomingMatches();
             if (checkForMatchUpdates(upcomingMatches)) {
                 availableMatchesCache = upcomingMatches;
                 console.log('Sending bracket update');
-                var challongeDataModel = getChallongeDataModel();
-                challongeIO.emit('update challonge', challongeDataModel);
-                client.set(redisKey, JSON.stringify(challongeDataModel));
+                var bracketDataModel = getBracketDataModel();
+                bracketIO.emit('update bracket', bracketDataModel);
+                client.set(redisKey, JSON.stringify(bracketDataModel));
             }
         }
 
         function sendTop8Update() {
             var top8 = getTop8();
             if (JSON.stringify(top8) !== JSON.stringify(top8cache)) {
-                challongeIO.emit('update challonge top8', top8);
+                bracketIO.emit('update bracket top8', top8);
                 top8cache = top8;
             }
         }
@@ -131,13 +131,13 @@ module.exports = function(io) {
             return top8Object;
         }
 
-        function fetchChallongeData() {
+        function fetchBracketData() {
             console.log('Requesting tournament data for ' + url);
 
             bracketService.getBracketData(url, function(data) {
                 matches = data.matches;
                 players = data.players;
-                sendChallongeUpdate();
+                sendBracketUpdate();
                 sendTop8Update();
             });
         }
@@ -170,23 +170,23 @@ module.exports = function(io) {
             return false;
         }
 
-        function getChallongeDataModel() {
+        function getBracketDataModel() {
             return {
-                challongeUrl: url,
+                url: url,
                 upcomingMatches: availableMatchesCache,
                 players: getPlayerDictionary(players)
             }
         }
 
         function clearBracket() {
-            console.log('Clearing challonge data');
+            console.log('Clearing bracket data');
             url = null;
             matches = [];
             players = [];
             availableMatchesCache = [];
             clearTimeout(timeout);
-            var newData = getChallongeDataModel()
-            socket.emit('update challonge', newData);
+            var newData = getBracketDataModel()
+            socket.emit('update bracket', newData);
             client.set(redisKey, JSON.stringify(newData));
         }
     });

@@ -80,7 +80,7 @@
     <script type="text/javascript">
     (function () {
       var socket = io('/overlay');
-      var challonge = io('/challonge');
+      var bracket = io('/bracket');
 
       createBracketLines();
 
@@ -95,7 +95,7 @@
 
       });
 
-      challonge.on('update challonge top8', function(top8) {
+      bracket.on('update bracket top8', function(top8) {
         createPlayerDivs(top8);
       });
     })();

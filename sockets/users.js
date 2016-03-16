@@ -10,7 +10,7 @@ module.exports = function(io) {
     var connectedSockets = 0;
     var userList = [];
 
-    // Load existing challonge data
+    // Load existing user data
     client.get(redisKey, function (err, reply) {
         if (err) {
             console.log(err);
@@ -71,7 +71,7 @@ module.exports = function(io) {
 
         function removeUser(user) {
             var removeIndex = userList.map(function(item) {
-                return item.id; 
+                return item.id;
              }).indexOf(user.id);
 
             removeIndex > -1 && userList.splice(removeIndex, 1);

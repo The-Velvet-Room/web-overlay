@@ -600,27 +600,27 @@ function animateTwitchData(shouldShow) {
     }
 }
 
-var challongeSocket = io('/challonge');
-var challongeMatches = [];
-var challongeUrl;
+var bracketSocket = io('/bracket');
+var bracketMatches = [];
+var bracketUrl;
 
-challongeSocket.on('update challonge', function(data){
-    if (data.challongeUrl && (data.challongeUrl !== challongeUrl || document.getElementById('challongeBracket') === null)) {
-        document.getElementById('challongeUrl').value = data.challongeUrl || '';
-        challongeUrl = data.challongeUrl;
-        embedBracket(challongeUrl);
+bracketSocket.on('update bracket', function(data){
+    if (data.url && (data.url !== bracketUrl || document.getElementById('bracketEmbed') === null)) {
+        document.getElementById('bracketUrl').value = data.url || '';
+        bracketUrl = data.url;
+        embedBracket(bracketUrl);
     }
 
     if (data.upcomingMatches) {
-        challongeMatches = data.upcomingMatches;
+        bracketMatches = data.upcomingMatches;
         createMatchList(data.players);
     }
 
-    if (!data.challongeUrl) {
-        document.getElementById('challongeUrl').value = data.challongeUrl || '';
-        challongeUrl = '';
-        $('#challongeEmbedPlaceholder').empty();
-        $('#challongeMatchListPlaceholder').empty();
+    if (!data.url) {
+        document.getElementById('bracketUrl').value = data.url || '';
+        bracketUrl = '';
+        $('#bracketEmbedPlaceholder').empty();
+        $('#bracketMatchListPlaceholder').empty();
     }
 });
 
@@ -807,33 +807,33 @@ function sendTwitchUpdate() {
     toastNotify();
 }
 
-function sendChallongeUpdate() {
-    var url = document.getElementById('challongeUrl').value;
+function sendBracketUpdate() {
+    var url = document.getElementById('bracketUrl').value;
     var data = {
-        'challongeUrl': document.getElementById('challongeUrl').value,
+        url: document.getElementById('bracketUrl').value,
     };
-    challongeSocket.emit('update challonge', data);
+    bracketSocket.emit('update bracket', data);
     toastNotify();
 }
 
 function createMatchList(players) {
     var oldVal = null;
-    var matchList = $('#challongeMatchList');
+    var matchList = $('#bracketMatchList');
     if (matchList) {
         oldVal = matchList.val();
         matchList.remove();
     }
 
     var selectList = document.createElement('select');
-    selectList.id = 'challongeMatchList';
-    document.getElementById('challongeMatchListPlaceholder').appendChild(selectList);
+    selectList.id = 'bracketMatchList';
+    document.getElementById('bracketMatchListPlaceholder').appendChild(selectList);
 
     var defaultOption = document.createElement('option');
     defaultOption.text = 'Select a match to display';
     defaultOption.value = null;
     selectList.appendChild(defaultOption);
 
-    challongeMatches.forEach(function(match){
+    bracketMatches.forEach(function(match){
         var option = document.createElement('option');
         var playerOne = players[match.player1Id];
         var playerTwo = players[match.player2Id];
@@ -845,8 +845,8 @@ function createMatchList(players) {
         selectList.appendChild(option);
     });
 
-    $('#challongeMatchList').change(function(){
-        var selectedOption = $('#challongeMatchList option:selected');
+    $('#bracketMatchList').change(function(){
+        var selectedOption = $('#bracketMatchList option:selected');
         var identifier = selectedOption.val();
         if (selectedOption.val()) {
             console.log('Updating match...');
@@ -862,9 +862,9 @@ function createMatchList(players) {
 
 function getMatchForIdentifier(identifier) {
     //Sublime Text autocompleted a backwards loop because they are fast
-    for (var i = challongeMatches.length - 1; i >= 0; i--) {
-        if (challongeMatches[i].identifier === identifier)
-            return challongeMatches[i];
+    for (var i = bracketMatches.length - 1; i >= 0; i--) {
+        if (bracketMatches[i].identifier === identifier)
+            return bracketMatches[i];
     }
 
     return null;
@@ -880,10 +880,11 @@ function toastNotify(toast) {
 }
 
 function embedBracket(url) {
-    $('#challongeEmbedPlaceholder').empty();
+    $('#bracketEmbedPlaceholder').empty();
     var embedded = document.createElement('iframe');
-    embedded.id = 'challongeBracket';
+    embedded.id = 'bracketEmbed';
     embedded.sandbox = 'allow-scripts allow-same-origin';
+    // challonge provides a module URL for embedding
     if (url.indexOf('challonge') !== -1) {
         url += '/module'
     }
@@ -892,7 +893,7 @@ function embedBracket(url) {
     embedded.height = '500';
     embedded.frameboarder = '0';
     embedded.scrolling = 'auto';
-    document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
+    document.getElementById('bracketEmbedPlaceholder').appendChild(embedded);
 }
 
 function toggleNightMode() {
@@ -936,8 +937,8 @@ $(function() {
         twitchSocket.emit('process followers');
     });
 
-    $('#challonge-clear-bracket').click(function() {
-        challongeSocket.emit('clear bracket');
+    $('#clear-bracket').click(function() {
+        bracketSocket.emit('clear bracket');
     });
 
     $("#flash-ready-button").click(function() {
