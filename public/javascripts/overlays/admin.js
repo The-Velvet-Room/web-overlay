@@ -24,14 +24,14 @@ function createCharacterList(direction) {
         option.value = character;
         selectList.appendChild(option);
     });
-    
+
     for (var i = 0; i < selectList.options.length; i++) {
         if(this['character'+direction]) {
             if(selectList.options[i].value == this['character'+direction]) {
                 selectList.options[i].selected = true;
-                break;      
+                break;
             }
-        }   
+        }
     }
 
     $('#charList'+direction).change(function(){
@@ -63,11 +63,11 @@ function createPortList(direction) {
         option.text = i+1;
         option.value = portColors[i];
         selectList.appendChild(option);
-        
+
         if(this['port'+direction]) {
             if(option.value == this['port'+direction]) {
                 //i+1 to account for default option
-                selectList.options[i+1].selected = true;    
+                selectList.options[i+1].selected = true;
             }
         }
     };
@@ -101,11 +101,11 @@ function createStateList(direction) {
         option.text = usStates[i];
         option.value = usStatesKeys[i];
         selectList.appendChild(option);
-        
+
         if(this['state'+direction] && this['state'] != ' ') {
             if(option.value == this['state'+direction]) {
                 //i+1 to account for default option
-                selectList.options[i+1].selected = true;  
+                selectList.options[i+1].selected = true;
             }
         }
     };
@@ -125,7 +125,7 @@ function createStateList(direction) {
 
 function setDropdownByText(selector, text) {
     $(selector).filter(function() {
-        return $(this).text() == text; 
+        return $(this).text() == text;
     }).prop('selected', true);
 }
 
@@ -171,8 +171,8 @@ function createSelectizedInputs() {
             if(user) {
                 $('#twitter').val(user.twitter);
             }
-            
-            
+
+
             if(dataInitialized) {
                 sendUpdate();
             }
@@ -210,7 +210,7 @@ function createSelectizedInputs() {
             if(user) {
                 $('#twitter2').val(user.twitter);
             }
-            
+
             if(dataInitialized) {
                 sendUpdate();
             }
@@ -285,7 +285,7 @@ function createSelectizedInputs() {
 
             if(user) {
                 setDropdownByText('#stateRight option', user.state);
-            } 
+            }
 
             if(dataInitialized) {
                 sendUpdate();
@@ -388,7 +388,7 @@ function createUserList(users) {
                 $('#edit-user-state').val(selectedUser.state || '');
                 $('#edit-user-facts').val(selectedUser.facts || '');
                 $('#edit-user-characters').val(selectedUser.characters || '');
-            } 
+            }
         }
     });
 }
@@ -467,7 +467,7 @@ socket.on('update overlay', function(data) {
     }
 
     document.getElementById('title').value = data.title || '';
-    document.getElementById('tourneyInfo').value = data.tourneyInfo || ''; 
+    document.getElementById('tourneyInfo').value = data.tourneyInfo || '';
     document.getElementById('twitter').value = data.twitter || '';
     document.getElementById('twitter2').value = data.twitter2 || '';
     document.getElementById('current-game').value = data.currentGame || '';
@@ -488,7 +488,7 @@ socket.on('update overlay', function(data) {
         document.getElementById('ready-radio-false').checked = true;
         document.getElementById('ready-radio-true').checked = false;
     }
-    
+
     if(!dataInitialized) {
         createStateList('Left');
         createStateList('Right');
@@ -524,7 +524,7 @@ socket.on('update overlay', function(data) {
             },
         });
     }
-    
+
 });
 
 var twitchSocket = io('/twitch');
@@ -600,29 +600,27 @@ function animateTwitchData(shouldShow) {
     }
 }
 
-var challongeSocket = io('/challonge');
-var challongeMatches = [];
-var challongeUrl;
+var bracketSocket = io('/bracket');
+var bracketMatches = [];
+var bracketUrl;
 
-challongeSocket.on('update challonge', function(data){
-    if (data.challongeUrl && (data.challongeUrl !== challongeUrl || document.getElementById('challongeBracket') === null)) {
-        document.getElementById('challongeUrl').value = data.challongeUrl || '';
-        document.getElementById('challongeApiHash').value = data.challongeApiHash || '';
-        challongeUrl = data.challongeUrl;
-        embedChallongeBracket(challongeUrl);
+bracketSocket.on('update bracket', function(data){
+    if (data.url && (data.url !== bracketUrl || document.getElementById('bracketEmbed') === null)) {
+        document.getElementById('bracketUrl').value = data.url || '';
+        bracketUrl = data.url;
+        embedBracket(bracketUrl);
     }
 
     if (data.upcomingMatches) {
-        challongeMatches = data.upcomingMatches;
+        bracketMatches = data.upcomingMatches;
         createMatchList(data.players);
     }
 
-    if (!data.challongeUrl) {
-        document.getElementById('challongeUrl').value = data.challongeUrl || '';
-        document.getElementById('challongeApiHash').value = data.challongeApiHash || '';
-        challongeUrl = '';
-        $('#challongeEmbedPlaceholder').empty();
-        $('#challongeMatchListPlaceholder').empty();
+    if (!data.url) {
+        document.getElementById('bracketUrl').value = data.url || '';
+        bracketUrl = '';
+        $('#bracketEmbedPlaceholder').empty();
+        $('#bracketMatchListPlaceholder').empty();
     }
 });
 
@@ -661,30 +659,30 @@ function swapAll() {
     var tempPlayer = document.getElementById('lplayer').value;
     document.getElementById('lplayer').value = document.getElementById('rplayer').value;
     document.getElementById('rplayer').value = tempPlayer;
-    
+
     var tempScore = document.getElementById('lscore').value;
     document.getElementById('lscore').value = document.getElementById('rscore').value;
     document.getElementById('rscore').value = tempScore;
-    
+
     var tempCharacter = window.characterLeft;
     window.characterLeft = window.characterRight;
     window.characterRight = tempCharacter;
 
     $('#charListLeft').val(window.characterLeft);
     $('#charListRight').val(window.characterRight);
-    
+
     var tempPort = window.portLeft;
     window.portLeft = window.portRight;
     window.portRight = tempPort;
     $('#portLeft').val(window.portLeft);
     $('#portRight').val(window.portRight);
-    
+
     var tempState = window.stateLeft;
     window.stateLeft = window.stateRight;
     window.stateRight = tempState;
     $('#stateLeft').val(window.stateLeft);
     $('#stateRight').val(window.stateRight);
-    
+
     sendUpdate('Information swapped.');
 }
 
@@ -744,13 +742,13 @@ function sendUpdate(infoMessage) {
         'stateRight': window.stateRight
     };
     socket.emit('update overlay', data);
-    
+
     if(infoMessage) {
         toastNotify(infoMessage);
     }
     else {
       toastNotify('Overlay data updated.');
-    }   
+    }
 }
 
 function changeLayout() {
@@ -774,7 +772,7 @@ function obsConnect() {
 // 0: Reset, 1: Update, 2: Play, -1: Init
 function playMatchIntro(label) {
     socket.emit('play intro', label);
-    toastNotify("Playing match intro at label: '" + label + "'.") 
+    toastNotify("Playing match intro at label: '" + label + "'.")
 }
 
 function sendTwitchUpdate() {
@@ -809,53 +807,52 @@ function sendTwitchUpdate() {
     toastNotify();
 }
 
-function sendChallongeUpdate() {
-    var url = document.getElementById('challongeUrl').value;
+function sendBracketUpdate() {
+    var url = document.getElementById('bracketUrl').value;
     var data = {
-        'challongeUrl': document.getElementById('challongeUrl').value,
-        'challongeApiHash': document.getElementById('challongeApiHash').value
+        url: document.getElementById('bracketUrl').value,
     };
-    challongeSocket.emit('update challonge', data);
+    bracketSocket.emit('update bracket', data);
     toastNotify();
 }
 
 function createMatchList(players) {
     var oldVal = null;
-    var matchList = $('#challongeMatchList');
+    var matchList = $('#bracketMatchList');
     if (matchList) {
         oldVal = matchList.val();
         matchList.remove();
     }
 
     var selectList = document.createElement('select');
-    selectList.id = 'challongeMatchList';
-    document.getElementById('challongeMatchListPlaceholder').appendChild(selectList);
+    selectList.id = 'bracketMatchList';
+    document.getElementById('bracketMatchListPlaceholder').appendChild(selectList);
 
     var defaultOption = document.createElement('option');
     defaultOption.text = 'Select a match to display';
     defaultOption.value = null;
     selectList.appendChild(defaultOption);
 
-    challongeMatches.forEach(function(match){
+    bracketMatches.forEach(function(match){
         var option = document.createElement('option');
-        var playerOne = players[match.match.player1_id];
-        var playerTwo = players[match.match.player2_id];
-        option.text = match.match.identifier + ': ' + playerOne + ' vs. ' + playerTwo;
-        option.value = match.match.identifier;
+        var playerOne = players[match.player1Id];
+        var playerTwo = players[match.player2Id];
+        option.text = match.identifier + ': ' + playerOne + ' vs. ' + playerTwo;
+        option.value = match.identifier;
         if (oldVal && option.value === oldVal) {
             option.selected = true;
         }
         selectList.appendChild(option);
     });
 
-    $('#challongeMatchList').change(function(){
-        var selectedOption = $('#challongeMatchList option:selected');
+    $('#bracketMatchList').change(function(){
+        var selectedOption = $('#bracketMatchList option:selected');
         var identifier = selectedOption.val();
         if (selectedOption.val()) {
             console.log('Updating match...');
             var match = getMatchForIdentifier(identifier);
-            var playerOne = players[match.match.player1_id];
-            var playerTwo = players[match.match.player2_id];
+            var playerOne = players[match.player1Id];
+            var playerTwo = players[match.player2Id];
             document.getElementById('lplayer').value = playerOne;
             document.getElementById('rplayer').value = playerTwo;
             sendUpdate();
@@ -865,9 +862,9 @@ function createMatchList(players) {
 
 function getMatchForIdentifier(identifier) {
     //Sublime Text autocompleted a backwards loop because they are fast
-    for (var i = challongeMatches.length - 1; i >= 0; i--) {
-        if (challongeMatches[i].match.identifier === identifier)
-            return challongeMatches[i];
+    for (var i = bracketMatches.length - 1; i >= 0; i--) {
+        if (bracketMatches[i].identifier === identifier)
+            return bracketMatches[i];
     }
 
     return null;
@@ -882,16 +879,21 @@ function toastNotify(toast) {
     toastr.success(toast != null ? toast : 'Overlay updated!');
 }
 
-function embedChallongeBracket(url) {
-    $('#challongeEmbedPlaceholder').empty();
+function embedBracket(url) {
+    $('#bracketEmbedPlaceholder').empty();
     var embedded = document.createElement('iframe');
-    embedded.id = 'challongeBracket';
-    embedded.src = url + '/module';
+    embedded.id = 'bracketEmbed';
+    embedded.sandbox = 'allow-scripts allow-same-origin';
+    // challonge provides a module URL for embedding
+    if (url.indexOf('challonge') !== -1) {
+        url += '/module'
+    }
+    embedded.src = url;
     embedded.width = '100%';
     embedded.height = '500';
     embedded.frameboarder = '0';
     embedded.scrolling = 'auto';
-    document.getElementById('challongeEmbedPlaceholder').appendChild(embedded);
+    document.getElementById('bracketEmbedPlaceholder').appendChild(embedded);
 }
 
 function toggleNightMode() {
@@ -935,8 +937,8 @@ $(function() {
         twitchSocket.emit('process followers');
     });
 
-    $('#challonge-clear-bracket').click(function() {
-        challongeSocket.emit('clear bracket');
+    $('#clear-bracket').click(function() {
+        bracketSocket.emit('clear bracket');
     });
 
     $("#flash-ready-button").click(function() {
