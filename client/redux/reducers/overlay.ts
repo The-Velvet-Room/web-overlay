@@ -1,13 +1,13 @@
 import * as actions from '../actions/overlay';
-import * as display from '../../models/OverlayDisplay';
+import { OverlayDisplay, CommentatorDisplay, GameDisplay, IdleDisplay, ITournamentData } from '../../models/OverlayDisplay';
 import { AdminData } from '../../models/AdminData';
 import StateData from '../../models/StateData';
 import objectAssign = require('object-assign');
 
-export default function overlay(state: display.OverlayDisplay = new display.OverlayDisplay(), action, root: StateData) {
+export default function overlay(state: OverlayDisplay = new OverlayDisplay(), action, root: StateData) : OverlayDisplay {
   switch (action.type) {
     case actions.SET_OVERLAY_DISPLAY:
-      return objectAssign({}, state, {
+      return objectAssign(new OverlayDisplay(), state, {
         commentators: action.overlay.commentators,
         match: action.overlay.match,
         players: action.overlay.players,
@@ -20,13 +20,13 @@ export default function overlay(state: display.OverlayDisplay = new display.Over
   }
 }
 
-function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminData) {
-  const commentator = new display.CommentatorDisplay();
+function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminData) : OverlayDisplay {
+  const commentator = new CommentatorDisplay();
   commentator.leftCommentator = state.users[adminData.commentators.leftCommentatorId];
   commentator.rightCommentator = state.users[adminData.commentators.rightCommentatorId];
   commentator.tournamentName = adminData.tournament.tournamentName;
-  
-  const game = new display.GameDisplay();
+
+  const game = new GameDisplay();
   game.leftPort = adminData.match.leftPort;
   game.rightPort = adminData.match.rightPort;
   game.leftCharacter = adminData.match.leftCharacter;
@@ -35,25 +35,25 @@ function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminDat
   game.rightPlayer = state.users[adminData.players.rightPlayerId];
   game.leftStateKey = adminData.match.leftStateKey;
   game.rightStateKey = adminData.match.rightStateKey;
-  
-  game.bracketInfo = adminData.tournament.bracketInfo;
-  game.currentGame = adminData.tournament.currentGame;
-  game.tournamentName = adminData.tournament.tournamentName;
-  
-  const players = new display.IdleDisplay();
-  players.leftPlayer = state.users[adminData.players.leftPlayerId];
-  players.rightPlayer = state.users[adminData.players.rightPlayerId];
-  
-  const tournament = new display.TournamentDisplay();
-  tournament.bracketInfo = adminData.tournament.bracketInfo;
-  tournament.currentGame = adminData.tournament.currentGame;
-  tournament.tournamentName = adminData.tournament.tournamentName;
-  
-  const newDisplay = new display.OverlayDisplay();
-  newDisplay.commentators = commentators;
-  newDisplay.match = match;
-  newDisplay.players = players;
-  newDisplay.tournament = tournament;
-  
+
+  const idle = new IdleDisplay();
+
+  const newDisplay = new OverlayDisplay();
+  newDisplay.commentator = commentator;
+  newDisplay.game = game;
+  newDisplay.idle = idle;
+
+  resolveInterfaces(newDisplay, adminData);
   return newDisplay;
+}
+
+function resolveInterfaces(display: OverlayDisplay, adminData: AdminData) {
+  Object.getOwnPropertyNames(display).forEach(key => {
+    const theProp = display[key];
+      if (theProp.ITournamentData) {
+        theProp.bracketInfo = adminData.tournament.bracketInfo;
+        theProp.currentGame = adminData.tournament.currentGame;
+        theProp.tournamentName = adminData.tournament.tournamentName;
+      }
+  })
 }

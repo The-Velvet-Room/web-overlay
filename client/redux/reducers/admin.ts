@@ -6,7 +6,7 @@ import players from './player';
 import tournament from './tournament';
 import objectAssign = require('object-assign');
 
-export default function admin(state: AdminData = new AdminData(), action) {
+export default function admin(state: AdminData = new AdminData(), action) : AdminData {
   switch (action.type) {
     case actions.SET_ADMIN_DATA:
       return objectAssign({}, state, {

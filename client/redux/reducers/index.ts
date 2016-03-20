@@ -5,7 +5,7 @@ import user from './user';
 import StateData from '../../models/StateData';
 import objectAssign = require('object-assign');
 
-export default function app(state: StateData = new StateData(), action) {
+export default function app(state: StateData = new StateData(), action) : StateData {
   switch (action.type) {
     default:
       return {
