@@ -24,14 +24,14 @@ function createCharacterList(direction) {
         option.value = character;
         selectList.appendChild(option);
     });
-    
+
     for (var i = 0; i < selectList.options.length; i++) {
         if(this['character'+direction]) {
             if(selectList.options[i].value == this['character'+direction]) {
                 selectList.options[i].selected = true;
-                break;      
+                break;
             }
-        }   
+        }
     }
 
     $('#charList'+direction).change(function(){
@@ -63,11 +63,11 @@ function createPortList(direction) {
         option.text = i+1;
         option.value = portColors[i];
         selectList.appendChild(option);
-        
+
         if(this['port'+direction]) {
             if(option.value == this['port'+direction]) {
                 //i+1 to account for default option
-                selectList.options[i+1].selected = true;    
+                selectList.options[i+1].selected = true;
             }
         }
     };
@@ -101,11 +101,11 @@ function createStateList(direction) {
         option.text = usStates[i];
         option.value = usStatesKeys[i];
         selectList.appendChild(option);
-        
+
         if(this['state'+direction] && this['state'] != ' ') {
             if(option.value == this['state'+direction]) {
                 //i+1 to account for default option
-                selectList.options[i+1].selected = true;  
+                selectList.options[i+1].selected = true;
             }
         }
     };
@@ -125,7 +125,7 @@ function createStateList(direction) {
 
 function setDropdownByText(selector, text) {
     $(selector).filter(function() {
-        return $(this).text() == text; 
+        return $(this).text() == text;
     }).prop('selected', true);
 }
 
@@ -171,8 +171,8 @@ function createSelectizedInputs() {
             if(user) {
                 $('#twitter').val(user.twitter);
             }
-            
-            
+
+
             if(dataInitialized) {
                 sendUpdate();
             }
@@ -210,7 +210,7 @@ function createSelectizedInputs() {
             if(user) {
                 $('#twitter2').val(user.twitter);
             }
-            
+
             if(dataInitialized) {
                 sendUpdate();
             }
@@ -285,7 +285,7 @@ function createSelectizedInputs() {
 
             if(user) {
                 setDropdownByText('#stateRight option', user.state);
-            } 
+            }
 
             if(dataInitialized) {
                 sendUpdate();
@@ -388,7 +388,7 @@ function createUserList(users) {
                 $('#edit-user-state').val(selectedUser.state || '');
                 $('#edit-user-facts').val(selectedUser.facts || '');
                 $('#edit-user-characters').val(selectedUser.characters || '');
-            } 
+            }
         }
     });
 }
@@ -467,7 +467,7 @@ socket.on('update overlay', function(data) {
     }
 
     document.getElementById('title').value = data.title || '';
-    document.getElementById('tourneyInfo').value = data.tourneyInfo || ''; 
+    document.getElementById('tourneyInfo').value = data.tourneyInfo || '';
     document.getElementById('twitter').value = data.twitter || '';
     document.getElementById('twitter2').value = data.twitter2 || '';
     document.getElementById('current-game').value = data.currentGame || '';
@@ -488,7 +488,7 @@ socket.on('update overlay', function(data) {
         document.getElementById('ready-radio-false').checked = true;
         document.getElementById('ready-radio-true').checked = false;
     }
-    
+
     if(!dataInitialized) {
         createStateList('Left');
         createStateList('Right');
@@ -524,7 +524,7 @@ socket.on('update overlay', function(data) {
             },
         });
     }
-    
+
 });
 
 var twitchSocket = io('/twitch');
@@ -661,30 +661,30 @@ function swapAll() {
     var tempPlayer = document.getElementById('lplayer').value;
     document.getElementById('lplayer').value = document.getElementById('rplayer').value;
     document.getElementById('rplayer').value = tempPlayer;
-    
+
     var tempScore = document.getElementById('lscore').value;
     document.getElementById('lscore').value = document.getElementById('rscore').value;
     document.getElementById('rscore').value = tempScore;
-    
+
     var tempCharacter = window.characterLeft;
     window.characterLeft = window.characterRight;
     window.characterRight = tempCharacter;
 
     $('#charListLeft').val(window.characterLeft);
     $('#charListRight').val(window.characterRight);
-    
+
     var tempPort = window.portLeft;
     window.portLeft = window.portRight;
     window.portRight = tempPort;
     $('#portLeft').val(window.portLeft);
     $('#portRight').val(window.portRight);
-    
+
     var tempState = window.stateLeft;
     window.stateLeft = window.stateRight;
     window.stateRight = tempState;
     $('#stateLeft').val(window.stateLeft);
     $('#stateRight').val(window.stateRight);
-    
+
     sendUpdate('Information swapped.');
 }
 
@@ -744,13 +744,13 @@ function sendUpdate(infoMessage) {
         'stateRight': window.stateRight
     };
     socket.emit('update overlay', data);
-    
+
     if(infoMessage) {
         toastNotify(infoMessage);
     }
     else {
       toastNotify('Overlay data updated.');
-    }   
+    }
 }
 
 function changeLayout() {
@@ -774,7 +774,7 @@ function obsConnect() {
 // 0: Reset, 1: Update, 2: Play, -1: Init
 function playMatchIntro(label) {
     socket.emit('play intro', label);
-    toastNotify("Playing match intro at label: '" + label + "'.") 
+    toastNotify("Playing match intro at label: '" + label + "'.")
 }
 
 function sendTwitchUpdate() {
@@ -921,6 +921,13 @@ $(function() {
         // Change/remove current tab to active
         $(this).parent('li').addClass('active').siblings().removeClass('active');
 
+        e.preventDefault();
+    });
+    $('.header__nav-item').on('click', function(e)  {
+        $('.layout').removeClass('layout--active');
+        $('.header__nav-item').removeClass('header__nav-item--active');
+        $('#' + $(this).data('layout')).addClass('layout--active');
+        $(this).addClass('header__nav-item--active');
         e.preventDefault();
     });
     $('#twitch-reset').click(function() {

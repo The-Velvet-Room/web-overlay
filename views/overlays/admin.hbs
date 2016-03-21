@@ -1,3 +1,494 @@
+<div class="admin-container">
+  <div class="header">
+    <h1 class="header__title">TVR Admin</h1>
+    <div class="header__nav">
+      <div class="header__nav-item header__nav-item--active" data-layout="main">Main</div>
+      <div class="header__nav-item" data-layout="twitch">Twitch</div>
+      <div class="header__nav-item" data-layout="challonge">Challonge</div>
+      <div class="header__nav-item" data-layout="layout">Layout</div>
+      <div class="header__nav-item" data-layout="users">Users</div>
+    </div>
+  </div>
+
+  <div class="layout layout--active" id="main">
+    <div class="layout--half">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Broadcast
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label" for="current-game">Current Game</label>
+            <input class="form__input" id="current-game" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Ready Not Ready</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Tournament Name</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Bracket Info</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Players
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Left Player</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Right Player</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--quarter">
+            <label class="form__label">Score</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--quarter">
+            <label class="form__label">Port</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--quarter">
+            <label class="form__label">Score</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--quarter">
+            <label class="form__label">Port</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Character</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Character</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Home State</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Home State</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layout--half">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Commentators
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Left Commentator</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Right Commentator</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Twitter</label>
+            <input class="form__input form__input--twitter" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Twitter</label>
+            <input class="form__input form__input--twitter" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Announcement</label>
+            <textarea class="form__input"></textarea>
+            <div class="u-align-right u-top-1">
+              <button class="button--primary">Fire Announcement</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Overlay
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--default">Swap Names</button>
+              <button class="button--default">Swap All</button>
+              <button class="button--default">Zero Scores</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Match Intro
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--default">Reset</button>
+              <button class="button--default">Play</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Misc
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--default">Toggle Night Mode</button>
+              <button class="button--default">Flash Ready Screen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Update Overlay
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--primary">Submit</button>
+              <button class="button--default">Fire Transition</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout" id="twitch">
+    <div class="layout--half">
+      <div class="micro-grid">
+        <div class="micro-grid__column--half">
+          <label class="form__label">Twitch Username</label>
+          <input class="form__input" type="text" />
+        </div>
+      </div>
+      <div class="micro-grid">
+        <div class="micro-grid__column--full">
+          <div class="u-top-1">
+            <button class="button--primary">Submit</button>
+          </div>
+          <div class="button__group u-top-1">
+            <button class="button--default">Log Out</button>
+            <button class="button--default">Reset Peak Viewers</button>
+            <button class="button--default">Process Follower Queue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout" id="challonge">
+    <div class="layout--half">
+      <div class="micro-grid">
+        <div class="micro-grid__column--half">
+          <label class="form__label">Challonge URL</label>
+          <input class="form__input" type="text" />
+        </div>
+        <div class="micro-grid__column--half">
+          <label class="form__label">Challonge Api Hash</label>
+          <input class="form__input" type="text" />
+        </div>
+      </div>
+      <div class="micro-grid">
+        <div class="micro-grid__column--full">
+          <div class="u-top-1">
+            <button class="button--primary">Submit</button>
+          </div>
+          <div class="u-top-1">
+            <button class="button--default">Clear Bracket</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout" id="layout">
+    <div class="layout--half">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Background
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">URL</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            General
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--default">Players</button>
+              <button class="button--default">Commentators</button>
+            </div>
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--default">Players/Commentators</button>
+              <button class="button--default">Empty Layout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            4 by 3
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--default">Game 1 Cam</button>
+              <button class="button--default">All 2 Cams</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            16 by 9
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <div class="button__group">
+              <button class="button--default">Game 1 Cam</button>
+              <button class="button--default">Game Full</button>
+              <button class="button--default">All 2 Cams</button>
+            </div>
+            <div class="u-top-1">
+              <button class="button--primary">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layout--half">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            OBS Remote Login
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Address</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Password</label>
+            <input class="form__input" type="text" />
+            <div class="u-top-1">
+              <button class="button--primary">Connect</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout" id="users">
+    <div class="layout--half">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Create User
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">First Name</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Last Name</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Clan Prefix String</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Gamertag</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Twitter Handle</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">City</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">State</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Facts (Comma Separated)</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Main Characters (Comma Separated)</label>
+            <input class="form__input" type="text" />
+            <div class="u-align-right u-top-1">
+              <button class="button--primary">Create User</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layout--half">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-header__title">
+            Edit User
+          </div>
+          <div class="section-header__divider"></div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Select a User</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">First Name</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Last Name</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">Clan Prefix String</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">Gamertag</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Twitter Handle</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--half">
+            <label class="form__label">City</label>
+            <input class="form__input" type="text" />
+          </div>
+          <div class="micro-grid__column--half">
+            <label class="form__label">State</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Facts (Comma Separated)</label>
+            <input class="form__input" type="text" />
+          </div>
+        </div>
+        <div class="micro-grid">
+          <div class="micro-grid__column--full">
+            <label class="form__label">Main Characters (Comma Separated)</label>
+            <input class="form__input" type="text" />
+            <div class="button__group u-align-right u-top-1">
+              <button class="button--primary">Update User</button>
+              <button class="button--default">Delete User</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <h1>{{title}}</h1>
 <div id="info" style="display:none;">Overlay Updated!</div>
 
@@ -14,10 +505,10 @@
         <div id="tab1" class="tab active">
             <form action="javascript:sendUpdate()">
                 <p>
-                    <label for="current-game">
+                    <!-- <label for="current-game">
                         Current Game
                         <input id="current-game"></input>
-                    </label>
+                    </label> -->
                     <input id="ready-radio-false" type="radio" name="readyStatus" value="false" onchange="sendUpdate()" checked>
                   Not Ready
                   <input id="ready-radio-true" type="radio" name="readyStatus" value="true" onchange="sendUpdate()">
@@ -32,14 +523,14 @@
                     <label for="tourneyInfo">
                         Bracket Info
                         <input id="tourneyInfo"></input>
-                    </label>                 
+                    </label>
                 </p>
                 <p>
                     <label for="commentators">
                         L Commentator
                         <input id="commentators"></input>
                     </label>
-                    
+
                     <label for="commentators2">
                         R Commentator
                         <input id="commentators2"></input>
@@ -50,7 +541,7 @@
                         L Twitter
                         <input id="twitter"></input>
                     </label>
-                    
+
                     <label for="twitter2">
                         R Twitter
                         <input id="twitter2"></input>
@@ -60,7 +551,7 @@
                     <label>Announcement</label>
                     <textarea id="announcement-text"></textarea>
                     <button id="announcement-btn" onclick="fireAnnouncement()">Fire announcement</button>
-                </div> 
+                </div>
                 <div>
                     <table border="2">
                         <tr>
@@ -134,7 +625,7 @@
                             <td>
                                 <button type="button" onclick="swapNames()">Swap Names</button>
                                 <button type="button" onclick="swapAll()">Swap All</button>
-                                <button type="button" onclick="zeroScores()">Zero Scores</button>                                    
+                                <button type="button" onclick="zeroScores()">Zero Scores</button>
                             </td>
                         </tr>
                         <tr>
@@ -143,7 +634,7 @@
                             </td>
                             <td>
                                 <button type="button" onclick="playMatchIntro('reset')">Reset</button>
-                                <button type="button" onclick="playMatchIntro('transition')">Play</button>                                    
+                                <button type="button" onclick="playMatchIntro('transition')">Play</button>
                             </td>
                         </tr>
                         <tr>
@@ -151,8 +642,8 @@
                                 <h3>Misc.</h3>
                             </td>
                             <td>
-                                <button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>         
-                                <button type="button" id="flash-ready-button">Flash Ready Screen</button>                                   
+                                <button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
+                                <button type="button" id="flash-ready-button">Flash Ready Screen</button>
                             </td>
                         </tr>
                         <tr>
@@ -251,7 +742,7 @@
                 <p>
                     <label for="layout-background">Background URL:</label>
                     <input id="layout-background" style="width:200px;"></input>
-                </p>      
+                </p>
                 <h3>General</h3>
                 <p>
                     <button class="layoutButton" type="button"
@@ -296,7 +787,7 @@
                 <p>
                     <input type="submit" value="Connect"></input>
                 </p>
-            </form>                
+            </form>
         </div>
 
         <div id="tab5" class="tab">
@@ -308,7 +799,7 @@
                         <input id="user-first-name"></input>
                     </label>
                 </div>
-                
+
                 <div class="user-field">
                     <label for="userLastName">
                         Last Name
@@ -367,12 +858,12 @@
 
                 <button id="create-user-btn" type="button" onclick="javascript:addUser()">Create User</button>
 
-            </div> 
+            </div>
 
             <h2>Edit User</h2>
             <p id="user-list-target"></p>
             <div id="users-edit" style="display: none;">
-                
+
                 <div id='edit-user-form'>
 
                 <div class="user-field">
@@ -388,7 +879,7 @@
                         <input id="edit-user-first-name"></input>
                     </label>
                 </div>
-                
+
                 <div class="user-field">
                     <label for="userLastName">
                         Last Name
@@ -448,12 +939,12 @@
                 <button id="update-user-btn" type="button" onclick="javascript:updateUser()">Update User</button>
                 <button id="delete-user-btn" type="button" onclick="javascript:deleteUser()">Delete User</button>
                 </div>
-            </div>           
+            </div>
         </div>
     </div>
 </div>
 
-<link rel='stylesheet' href='/stylesheets/overlays/admin.css' />
+<link rel='stylesheet' href='/stylesheets/overlays/style-admin.css' />
 <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css">
 <script src="/javascripts/constants/constants.js"></script>

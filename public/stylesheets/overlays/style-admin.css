@@ -1,0 +1,187 @@
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+    font-family: 'Raleway', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// =================================
+//
+// PAGE CONTAINER
+//
+// =================================
+
+.admin-container {
+  max-width: 1440px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+  border-bottom: 2px solid #B2FF9E;
+}
+
+.header__title {
+  font-size: 36px;
+  color: #3C1642;
+  font-weight: 900;
+  margin: 0;
+  padding-left: 3rem;
+}
+
+.header__nav {
+  font-size: 24px;
+  color: #3C1642;
+  display: flex;
+  padding-right: 3rem;
+}
+
+.header__nav-item {
+  border: 2px solid transparent;
+  border-radius: 2px;
+  padding: 0.25rem 1rem;
+}
+
+.header__nav-item--active {
+  border: 2px solid #3C1642;
+  border-radius: 2px;
+}
+
+
+
+.layout {
+  display: none;
+}
+
+.layout--active {
+  display: flex;
+}
+
+.layout--half {
+  flex: 1;
+  padding: 3rem;
+}
+
+.layout--half:first-child {
+  border-right: 1px solid #B2FF9E;
+}
+
+.layout--half:last-child {
+  border-left: 1px solid #B2FF9E;
+}
+
+
+
+.section {
+  padding-bottom: 2.25rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.section-header__title {
+  font-size: 16px;
+  color: #E0E0E0;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  white-space: nowrap;
+}
+
+.section-header__divider {
+  height: 1px;
+  background-color: #E0E0E0;
+  margin-left: 1rem;
+  width: 100%;
+}
+
+
+
+.micro-grid {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.micro-grid__column--full {
+  width: 100%;
+}
+
+.micro-grid__column--half {
+  width: 45%;
+}
+
+.micro-grid__column--quarter {
+  width: 17.5%;
+}
+
+
+
+.form__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+  color: #086375;
+}
+
+.form__input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 16px;
+  color: #3C1642;
+  border: 1px solid #CECECE;
+  border-radius: 2px;
+}
+
+
+
+.button__group > button {
+  margin-right: 1rem;
+}
+
+.button--primary {
+  background-image: linear-gradient(-180deg, #5F2368 0%, #3C1642 100%);
+  border-radius: 2px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  outline: 0;
+  border: 0;
+  padding: 0.75rem 1rem;
+}
+
+.button--default {
+  background-image: linear-gradient(-180deg, #E0E0E0 0%, #CECECE 100%);
+  border: 1px solid #CBCBCB;
+  border-radius: 2px;
+  color: #262626;
+  font-size: 16px;
+  font-weight: bold;
+  outline: 0;
+  padding: 0.75rem 1rem;
+}
+
+
+
+.u-align-right {
+  text-align: right;
+}
+
+.u-top-1 {
+  margin-top: 1rem;
+}
