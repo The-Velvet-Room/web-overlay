@@ -1,10 +1,10 @@
 import * as actions from '../actions/overlay';
-import * as display from '../../models/OverlayDisplay';
+import { OverlayDisplay, CommentatorDisplay, GameDisplay, IdleDisplay } from '../../models/OverlayDisplay';
 import { AdminData } from '../../models/AdminData';
-import StateData from '../../models/StateData';
+import StoreData from '../../models/StoreData';
 import objectAssign = require('object-assign');
 
-export default function overlay(state: display.OverlayDisplay = new display.OverlayDisplay(), action, root: StateData) {
+export default function overlay(state: OverlayDisplay = new OverlayDisplay(), action, root: StoreData) {
   switch (action.type) {
     case actions.SET_OVERLAY_DISPLAY:
       return objectAssign({}, state, {
@@ -20,13 +20,12 @@ export default function overlay(state: display.OverlayDisplay = new display.Over
   }
 }
 
-function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminData) {
-  const commentator = new display.CommentatorDisplay();
+function createOverlayDisplayFromAdminData(state: StoreData, adminData: AdminData) {
+  const commentator = new CommentatorDisplay();
   commentator.leftCommentator = state.users[adminData.commentators.leftCommentatorId];
   commentator.rightCommentator = state.users[adminData.commentators.rightCommentatorId];
-  commentator.tournamentName = adminData.tournament.tournamentName;
   
-  const game = new display.GameDisplay();
+  const game = new GameDisplay();
   game.leftPort = adminData.match.leftPort;
   game.rightPort = adminData.match.rightPort;
   game.leftCharacter = adminData.match.leftCharacter;
@@ -36,24 +35,28 @@ function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminDat
   game.leftStateKey = adminData.match.leftStateKey;
   game.rightStateKey = adminData.match.rightStateKey;
   
-  game.bracketInfo = adminData.tournament.bracketInfo;
-  game.currentGame = adminData.tournament.currentGame;
-  game.tournamentName = adminData.tournament.tournamentName;
+  const idle = new IdleDisplay();
   
-  const players = new display.IdleDisplay();
-  players.leftPlayer = state.users[adminData.players.leftPlayerId];
-  players.rightPlayer = state.users[adminData.players.rightPlayerId];
+  const newDisplay = new OverlayDisplay();
+  newDisplay.commentator = commentator;
+  newDisplay.game = game;
+  newDisplay.idle = idle;
   
-  const tournament = new display.TournamentDisplay();
-  tournament.bracketInfo = adminData.tournament.bracketInfo;
-  tournament.currentGame = adminData.tournament.currentGame;
-  tournament.tournamentName = adminData.tournament.tournamentName;
-  
-  const newDisplay = new display.OverlayDisplay();
-  newDisplay.commentators = commentators;
-  newDisplay.match = match;
-  newDisplay.players = players;
-  newDisplay.tournament = tournament;
-  
+  resolveInterfaces(newDisplay, adminData);
   return newDisplay;
+}
+
+// TODO: 100% must be a better way to fill in interfaces. This might as well
+// not even use typescript. Leaving it for now.
+function resolveInterfaces(newDisplay: OverlayDisplay, adminData: AdminData) {
+  for (const key in newDisplay) {
+    if (newDisplay.hasOwnProperty(key)) {
+      const prop = newDisplay[key];
+      if (prop.ITournamentData) {
+        prop.currentGame = adminData.tournament.currentGame;
+        prop.tournamentName = adminData.tournament.tournamentName;
+        prop.bracketInfo = adminData.tournament.bracketInfo;
+      }
+    }
+  }
 }

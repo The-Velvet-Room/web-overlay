@@ -4,7 +4,7 @@ import * as overlayActions from '../actions/overlay';
 import * as userActions from '../actions/user';
 import { AdminData } from '../../models/AdminData';
 import User from '../../../client/models/User';
-import StateData from '../../models/StateData';
+import StoreData from '../../models/StoreData';
 import objectAssign = require('object-assign');
 
 let overlaySocket: SocketIOClient.Socket = null;

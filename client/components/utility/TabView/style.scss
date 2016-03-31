@@ -1,0 +1,19 @@
+.tab-view {
+  .tab-links {
+    .tab-link {      
+      &.active {
+        background-color: lightpink;
+      }
+    }
+  }
+  
+  .tabs {
+    .tab {
+      display: none;
+      
+      &.active {
+        display: block;
+      }
+    }
+  }
+}

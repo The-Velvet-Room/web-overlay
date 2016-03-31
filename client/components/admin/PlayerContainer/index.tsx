@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as actions from '../../../redux/actions/player';
 import { connect } from 'react-redux';
-import StateData from '../../../models/StateData';
+import StoreData from '../../../models/StoreData';
 
 interface Props extends React.Props<PlayerContainer> {
   leftPlayerId?: string,
@@ -12,7 +12,7 @@ interface Props extends React.Props<PlayerContainer> {
 }
 interface State { }
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
     leftPlayerId: state.admin.players.leftPlayerId,
     rightPlayerId: state.admin.players.rightPlayerId,

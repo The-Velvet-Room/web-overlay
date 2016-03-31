@@ -3,7 +3,7 @@ import * as actions from '../../../redux/actions/match';
 import { connect } from 'react-redux';
 import { MatchData } from '../../../models/AdminData';
 import { ports, characters, usStates, usStateKeys } from '../../../../public/javascripts/constants/constants';
-import StateData from '../../../models/StateData';
+import StoreData from '../../../models/StoreData';
 
 interface Props extends React.Props<MatchContainer> {
   data?: MatchData,
@@ -16,7 +16,7 @@ interface Props extends React.Props<MatchContainer> {
 }
 interface State { }
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
     data: state.admin.match,
   };

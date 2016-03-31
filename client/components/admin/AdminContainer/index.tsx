@@ -5,6 +5,7 @@ import MatchContainer from '../MatchContainer';
 import PlayerContainer from '../PlayerContainer';
 import ActionContainer from '../ActionContainer';
 import TournamentContainer from '../TournamentContainer';
+import TabView from '../../utility/TabView';
 
 interface Props extends React.Props<AdminContainer> { }
 interface State { }
@@ -14,11 +15,13 @@ export default class AdminContainer extends React.Component<Props, State> {
     return (
       <div className="admin-container">
         <div>Admin Page</div>
-        <TournamentContainer />
-        <CommentatorContainer />
-        <PlayerContainer />
-        <MatchContainer />
-        <ActionContainer />
+        <TabView names={['main', 'challonge', 'twitch', 'match', 'action']}>
+          <TournamentContainer />
+          <CommentatorContainer />
+          <PlayerContainer />
+          <MatchContainer />
+          <ActionContainer />
+        </TabView>
       </div>
     );
   }

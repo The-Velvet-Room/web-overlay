@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import User from '../../../models/User';
-import StateData from '../../../models/StateData';
+import StoreData from '../../../models/StoreData';
 import * as actions from '../../../redux/actions/commentator';
 
 interface Props extends React.Props<CommentatorContainer> {
@@ -13,7 +13,7 @@ interface Props extends React.Props<CommentatorContainer> {
 }
 interface State { text: string }
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
     leftCommentatorId: state.admin.commentators.leftCommentatorId,
     rightCommentatorId: state.admin.commentators.rightCommentatorId,

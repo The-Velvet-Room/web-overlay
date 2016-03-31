@@ -3,7 +3,7 @@ import * as actions from '../../../redux/actions/tournament';
 import { connect } from 'react-redux';
 import { TournamentData } from '../../../models/AdminData';
 import { CONSTANT_GAMES } from '../../../../public/javascripts/constants/constants';
-import StateData from '../../../models/StateData';
+import StoreData from '../../../models/StoreData';
 
 interface Props extends React.Props<TournamentContainer> {
   data?: TournamentData,
@@ -13,7 +13,7 @@ interface Props extends React.Props<TournamentContainer> {
 }
 interface State { }
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
     data: state.admin.tournament,
   };
