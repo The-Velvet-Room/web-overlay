@@ -1,6 +1,8 @@
 .tab-view {
   .tab-links {
-    .tab-link {      
+    .tab-link {
+      cursor: pointer;
+      
       &.active {
         background-color: lightpink;
       }

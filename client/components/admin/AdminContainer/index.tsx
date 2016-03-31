@@ -15,12 +15,23 @@ export default class AdminContainer extends React.Component<Props, State> {
     return (
       <div className="admin-container">
         <div>Admin Page</div>
-        <TabView names={['main', 'challonge', 'twitch', 'match', 'action']}>
-          <TournamentContainer />
-          <CommentatorContainer />
-          <PlayerContainer />
-          <MatchContainer />
-          <ActionContainer />
+        <TabView names={['main', 'challonge', 'twitch', 'overlay']}>
+          <div>
+            <TournamentContainer />
+            <CommentatorContainer />
+            <PlayerContainer />
+            <MatchContainer />
+            <ActionContainer />
+          </div>
+          <div>
+            challonge
+          </div>
+          <div>
+            twitch
+          </div>
+          <div>
+            overlay
+          </div>
         </TabView>
       </div>
     );

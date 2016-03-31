@@ -20,7 +20,9 @@ export default class TabView extends React.Component<Props, State> {
   handleChangeTab = (e: React.MouseEvent) => {
     const target = (e.target as HTMLOListElement);
     const selectedIndex = parseInt(target.dataset['index'], 10);
-    this.setState({selectedIndex})
+    if (!isNaN(selectedIndex)) {
+      this.setState({selectedIndex})
+    }
   }
   
   public render () {
@@ -32,6 +34,7 @@ export default class TabView extends React.Component<Props, State> {
       const linkClass = cn('tab-link', {active: isSelected}); 
       links.push(
         <li
+          key={index}
           className={linkClass} 
           onClick={this.handleChangeTab}
           data-index={index}
@@ -42,7 +45,10 @@ export default class TabView extends React.Component<Props, State> {
       
       const viewClass = cn('tab', {active: isSelected});
       views.push(
-        <div className={viewClass}>
+        <div
+          key={index}
+          className={viewClass}
+        >
           {tab}
         </div>
       );
