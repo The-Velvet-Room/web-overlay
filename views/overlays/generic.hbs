@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!--Fouquet Depends-->
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:800,800italic,500,500italic' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/overlays/fouquet/style.css' />
     <title>{{title}}</title>
     <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/stylesheets/overlays/generic/generic.css' />
@@ -11,16 +18,6 @@
      <!--TODO global-->
     <script src="https://code.jquery.com/ui/1.12.0-beta.1/jquery-ui.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/overlays/global-source.css' />
-    
-    <!--Fouquet Depends-->
-    <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <title></title>
-      <meta name="description" content="">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-
-      <link href='https://fonts.googleapis.com/css?family=Raleway:800,800italic,500,500italic' rel='stylesheet' type='text/css'>
-      <link rel='stylesheet' href='/stylesheets/overlays/fouquet/style.css' />
   </head>
   <body>
   <!--TODO global-->
@@ -174,18 +171,25 @@
         $('.rState').text(data.stateRight || '');
       });
 
-      socket.on('fire transition', function() {
-        animateTransitionIn();
-        setTimeout(animateTransitionOut, 2600);
+    //TODO global
+    var transitioning = false;
+    
+    socket.on('fire transition', function() {
+      if(transitioning) {
+          return;
+      }
+      animateTransitionIn();
+      setTimeout(animateTransitionOut, 2600);
     });
-
-      function animateTransitionIn() {
-        console.log('Animating in');
-        $(".bumper-background").addClass("bumper-background--animate");
-        $(".bumper-svg").addClass("bumper-background--animate");
-        $(".bumper-svg__line").addClass("bumper-svg__line--animate");
-        $(".bumper-svg__word").addClass("bumper-svg__word--animate");
-        $(".bumper-svg__letter").addClass("bumper-svg__letter--animate");
+    
+    function animateTransitionIn() {
+      console.log('Animating in');
+      transitioning = true;
+      $(".bumper-background").addClass("bumper-background--animate");
+      $(".bumper-svg").addClass("bumper-background--animate");
+      $(".bumper-svg__line").addClass("bumper-svg__line--animate");
+      $(".bumper-svg__word").addClass("bumper-svg__word--animate");
+      $(".bumper-svg__letter").addClass("bumper-svg__letter--animate");
     }
     
     function animateTransitionOut() {
@@ -203,8 +207,9 @@
             $(".bumper-svg__word").removeClass("bumper-svg__word--animate").removeClass("bumper-svg__word--animate-out");
             $(".bumper-svg__letter").removeClass("bumper-svg__letter--animate").removeClass("bumper-svg__letter--animate-out");
             $(".bumper-background").removeClass("bumper-background--animate").removeClass("bumper-background--animate-out");
+            transitioning = false;
         }, 1400);
-    } 
+    }    
 
       function scaleFont(jQueryElement, newLength) {
         var element = jQueryElement.get()[0];
