@@ -43,7 +43,7 @@ class TournamentContainer extends React.Component<Props, State> {
   }
   
   handleInputChange = (e: React.FormEvent) => {
-    // callback is from the 'callback' data attribute of the select element and matches a prop on the component
+    // callback is from the 'callback' data attribute of the input element and matches a prop on the component
     const target = (e.target as HTMLInputElement);
     const callback = target.dataset['callback'];
     this.props[callback](target.value);
