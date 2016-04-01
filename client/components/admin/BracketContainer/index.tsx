@@ -1,54 +1,30 @@
 import * as React from 'react';
-import * as actions from '../../../redux/actions/twitch';
+import * as actions from '../../../redux/actions/bracket';
 import { connect } from 'react-redux';
-import { TwitchData } from '../../../models/AdminData';
+import { BracketData } from '../../../models/AdminData';
 import StoreData from '../../../models/StoreData';
 
-interface Props extends React.Props<TwitchContainer> {
-  data?: TwitchData,
-  updateUsername?: (name: string) => void,
-  updateTitle?: (title: string) => void,
-  updateGame?: (game: string) => void,
-  updateCurrentViewers?: (count: number) => void,
-  updatePeakViewers?: (count: number) => void,
-  updateFollowers?: (count: number) => void,
-  updateLatestFollower?: (name: string) => void,
+interface Props extends React.Props<BracketContainer> {
+  data?: BracketData,
+  updateBracketUrl?: (name: string) => void,
 }
 interface State { }
 
 const mapStateToProps = (state: StoreData) => {
   return {
-    data: state.admin.twitch,
+    data: state.admin.bracket,
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateUsername: (name: string) => {
-      dispatch(actions.updateUsername(name));
-    },
-    updateTitle: (title: string) => {
-      dispatch(actions.updateTitle(name));
-    },
-    updateGame: (game: string) => {
-      dispatch(actions.updateGame(name));
-    },
-    updateCurrentViewers: (count: number) => {
-      dispatch(actions.updateCurrentViewers(count));
-    },
-    updatePeakViewers: (count: number) => {
-      dispatch(actions.updatePeakViewers(count));
-    },
-    updateFollowers: (count: number) => {
-      dispatch(actions.updateFollowers(count));
-    },
-    updateLatestFollower: (name: string) => {
-      dispatch(actions.updateLatestFollower(name));
+    updateBracketUrl: (url: string) => {
+      dispatch(actions.updateBracketUrl(url));
     },
   };
 }
 
-class TwitchContainer extends React.Component<Props, State> {
+class BracketContainer extends React.Component<Props, State> {
   handleInputChange = (e: React.FormEvent) => {
     // callback is from the 'callback' data attribute of the input element and matches a prop on the component
     const target = (e.target as HTMLInputElement);
@@ -132,4 +108,4 @@ class TwitchContainer extends React.Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TwitchContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(BracketContainer);
