@@ -107,7 +107,7 @@
         </svg>
       </div>
     <script>
-    
+
     $(function () {
       var socket = io('/overlay');
 
@@ -121,13 +121,13 @@
 
           background.addClass(data.layout);
           container.addClass(data.layout);
-          $('.lPlayer, .rPlayer').each(function() { 
-            scaleFont($(this)); 
+          $('.lPlayer, .rPlayer').each(function() {
+            scaleFont($(this));
           });
         }
 
         if (data.background && background.css('background-image') !== 'url(' + data.background + ')')
-          background.css('background-image', 'url(' + data.background + ')');    
+          background.css('background-image', 'url(' + data.background + ')');
       });
 
       socket.on('update overlay', function(data) {
@@ -160,12 +160,13 @@
         }
 
         $('.lCharacter').attr('class', 'lCharacter');
-        if(data.lCharacter) 
+        if(data.lCharacter)
           $('.lCharacter').addClass(data.lCharacter);
 
         $('.rCharacter').attr('class', 'rCharacter');
         if(data.rCharacter)
           $('.rCharacter').addClass(data.rCharacter);
+
 
         $('.lPort').css('background-color', data.portLeft || 'transparent');
         $('.rPort').css('background-color', data.portRight || 'transparent');
@@ -209,9 +210,9 @@
         var element = jQueryElement.get()[0];
         var length = newLength || jQueryElement.text().length;
         console.log(length);
-        
+
         var layout = $('#main-container').attr('class');
-        var top = layout.indexOf('full') > -1 || layout.indexOf('4by3') > -1 ? 1028 : 812; 
+        var top = layout.indexOf('full') > -1 || layout.indexOf('4by3') > -1 ? 1028 : 812;
 
         if (length <= 7) {
           element.style.fontSize = '38px';
@@ -228,7 +229,7 @@
           element.style.fontSize = '14px';
           top += 18;
         }
-        
+
         element.style.top = top.toString() + 'px';
       }
 

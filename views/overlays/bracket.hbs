@@ -6,27 +6,27 @@
   </head>
   <body>
     <script>
-    var socket = io('/challonge');
+    var socket = io('/bracket');
     var embedString = '/module?multiplier=0.8&theme=2&match_width_multiplier=0.8';
-    var currentChallongeUrl = null;
+    var currentBracketUrl = null;
 
-    socket.on('update challonge', function(data) {
-      var url = data.challongeUrl;
+    socket.on('update bracket', function(data) {
+      var url = data.url;
 
-      if(url && url != currentChallongeUrl) {
+      if(url && url != currentBracketUrl) {
        var bracketFrame = document.getElementById('bracket-frame');
        document.body.removeChild(bracketFrame);
-       currentChallongeUrl = null;
+       currentBracketUrl = null;
       }
 
-      if(url && !currentChallongeUrl) {
-        currentChallongeUrl = url;
+      if(url && !currentBracketUrl) {
+        currentBracketUrl = url;
         var ifrm = document.createElement('iframe');
-        ifrm.setAttribute('id', 'bracket-frame'); 
-        ifrm.setAttribute('src', url+embedString); 
-        ifrm.style.width = '1920px'; 
-        ifrm.style.height = '1080px'; 
-        document.body.appendChild(ifrm); 
+        ifrm.setAttribute('id', 'bracket-frame');
+        ifrm.setAttribute('src', url+embedString);
+        ifrm.style.width = '1920px';
+        ifrm.style.height = '1080px';
+        document.body.appendChild(ifrm);
       }
     });
     </script>

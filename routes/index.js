@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var apiService = require('../services/apiService');
+var bracketService = require('../services/bracketService');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -191,14 +192,14 @@ router.post('/api/replays', function(req, res) {
 
 //Get match information
 router.get('/api/replays', function(req, res) {
-  apiService.getReplays(function(results) { 
+  apiService.getReplays(function(results) {
     res.json(results);
   });
 });
 
 //Get match information
 router.get('/api/currentMatch', function(req, res) {
-  apiService.getCurrentMatchState(function(results) { 
+  apiService.getCurrentMatchState(function(results) {
     res.json(results);
   });
 });
