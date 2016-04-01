@@ -2,82 +2,235 @@
 <html>
   <head>
     <title>{{title}}</title>
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!--Fouquet Depends-->
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='https://fonts.googleapis.com/css?family=Raleway:800,800italic,500,500italic' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/overlays/fouquet/style-commentator.css' />
+    <link rel='stylesheet' href='/stylesheets/overlays/fouquet/style.css' />
     <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
     <link rel='stylesheet' href='/stylesheets/overlays/commentators.css' />
     <script src="/socket.io/socket.io.js"></script>
 
     <!--TODO global-->
-    <script src="https://code.jquery.com/ui/1.12.0-beta.1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/overlays/global-source.css' />
-
   </head>
   <body>
-  <!--TODO global-->
-  <img src="http://i.imgur.com/qkL0ngP.png" id="transition-image" style="display: none;">
-  	<div id="container">
-  		<div id="commentators" class="playertext"></div>
-          
-          <div id="twittercontainer">
-              <img src="http://i.imgur.com/RGl4CvZ.png" class="twitter-icon">
-              <div id="twitter" class="twitter playertext"></div>
+<div class="container">
+      <div class="commentators__container">
+        <div class="commentators__side commentators__side--left">
+          <div class="commentators-info__top commentators-info__top-left">
+            <div class="commentators-info__text commentators-info__text--left-top">
+              Cam "C@m" Crockrom
+            </div>
           </div>
-          
-          <div id="commentators2" class="playertext"></div>
-          
-          <div id="twittercontainer2">
-              <img src="http://i.imgur.com/RGl4CvZ.png" class="twitter-icon">
-              <div id="twitter2" class="twitter playertext"></div>
-          </div>          
-  	</div>
+          <div class="commentators-info__bottom commentators-info__bottom-left">
+            <div class="commentators-info__text commentators-info__text--left-bottom">
+              @cam
+            </div>
+          </div>
+        </div>
+
+        <div class="commentators__middle">
+          <svg class="commentators__middle-svg" width="80%" height="80%" viewBox="0 0 635 351" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="Page-4-Copy-6" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Desktop-HD" transform="translate(-133.000000, -91.000000)">
+                <g id="Group" transform="translate(136.000000, 93.000000)">
+                  <path d="M350.618436,282.288823 C352.100041,281.822548 353.46639,281.696541 354.717524,281.910801 C355.968658,282.12506 357.03869,282.596302 357.927654,283.324542 C358.816617,284.052782 359.516254,284.968588 360.026584,286.071988 C360.536915,287.175388 360.792077,288.367074 360.792077,289.64708 C360.792077,290.895086 360.594532,292.165244 360.199437,293.45759 C359.804343,294.749936 359.244633,295.974071 358.520293,297.130033 C357.795952,298.285994 356.923464,299.328567 355.902803,300.257782 C354.882141,301.186997 353.762722,301.939285 352.544513,302.514668 L361.285943,313.011656 L358.372133,313.92866 L349.877637,303.73796 L338.518717,307.312722 L338.518717,320.176722 L336,320.969386 L336,286.889386 L350.618436,282.288823 Z M353.877952,299.503022 C354.79984,298.732893 355.590018,297.852222 356.248509,296.860985 C356.907,295.869747 357.409092,294.815743 357.7548,293.69894 C358.100508,292.582138 358.27336,291.49575 358.27336,290.439745 C358.27336,289.351739 358.067584,288.368509 357.656027,287.490025 C357.24447,286.611541 356.684761,285.899696 355.976883,285.354468 C355.269004,284.809241 354.445902,284.452285 353.507552,284.28359 C352.569202,284.114896 351.556787,284.201515 350.470276,284.543451 L338.518717,288.304722 L338.518717,305.056722 L350.815982,301.186653 C351.935418,300.834356 352.956064,300.273152 353.877952,299.503022 Z M395.263929,297.182456 C393.815248,296.038362 392.695829,294.550672 391.905639,292.719342 C391.11545,290.888012 390.720361,288.884371 390.720361,286.70836 C390.720361,284.436349 391.140143,282.128261 391.979719,279.784028 C392.819296,277.439795 393.971638,275.23716 395.436782,273.176057 C396.901925,271.114955 398.63867,269.296397 400.647069,267.72033 C402.655467,266.144262 404.828456,264.988407 407.166101,264.252727 C409.602519,263.485963 411.824894,263.290555 413.833293,263.666498 C415.841692,264.04244 417.561975,264.821037 418.994193,266.002313 C420.426412,267.183588 421.5376,268.681868 422.327789,270.497198 C423.117979,272.312528 423.513068,274.276169 423.513068,276.388179 C423.513068,278.692191 423.093286,281.016278 422.253709,283.360511 C421.414133,285.704745 420.26179,287.89938 418.796647,289.944482 C417.331504,291.989585 415.60299,293.797552 413.611053,295.368439 C411.619117,296.939325 409.454359,298.092591 407.116714,298.82827 C404.680296,299.595034 402.457921,299.798442 400.449522,299.438499 C398.441124,299.078557 396.71261,298.32655 395.263929,297.182456 Z M397.115926,295.135614 C398.350598,296.139058 399.815719,296.789959 401.511334,297.088337 C403.20695,297.386715 405.075391,297.214694 407.116714,296.57227 C409.223887,295.909122 411.125252,294.878749 412.820867,293.481118 C414.516483,292.083487 415.973373,290.481001 417.191582,288.673612 C418.409791,286.866222 419.348127,284.962935 420.006619,282.963692 C420.66511,280.96445 420.994351,279.036853 420.994351,277.180844 C420.994351,275.228834 420.648648,273.457649 419.957232,271.867235 C419.265816,270.276821 418.302787,268.979912 417.068116,267.976468 C415.833444,266.973024 414.368323,266.322123 412.672708,266.023745 C410.977092,265.725367 409.125113,265.892207 407.116714,266.52427 C405.009542,267.187417 403.099945,268.220381 401.387868,269.623193 C399.67579,271.026005 398.2189,272.628491 397.017153,274.430699 C395.815406,276.232908 394.885301,278.133605 394.22681,280.132847 C393.568318,282.13209 393.239078,284.059687 393.239078,285.915696 C393.239078,287.867706 393.576549,289.641481 394.251503,291.237076 C394.926457,292.83267 395.881255,294.13217 397.115926,295.135614 Z M457.491054,277.598979 C456.042373,276.454885 454.922954,274.967195 454.132764,273.135865 C453.342575,271.304535 452.947486,269.300895 452.947486,267.124884 C452.947486,264.852872 453.367268,262.544785 454.206844,260.200551 C455.046421,257.856318 456.198763,255.653683 457.663907,253.592581 C459.12905,251.531478 460.865795,249.71292 462.874194,248.136853 C464.882592,246.560786 467.055581,245.40493 469.393226,244.669251 C471.829644,243.902486 474.052019,243.707078 476.060418,244.083021 C478.068817,244.458964 479.7891,245.237561 481.221318,246.418836 C482.653537,247.600111 483.764725,249.098391 484.554914,250.913721 C485.345104,252.729051 485.740193,254.692692 485.740193,256.804702 C485.740193,259.108714 485.320411,261.432801 484.480834,263.777035 C483.641258,266.121268 482.488915,268.315903 481.023772,270.361006 C479.558629,272.406108 477.830115,274.214076 475.838178,275.784962 C473.846242,277.355848 471.681484,278.509114 469.343839,279.244793 C466.907421,280.011557 464.685046,280.214965 462.676647,279.855023 C460.668249,279.49508 458.939735,278.743073 457.491054,277.598979 Z M459.343051,275.552137 C460.577723,276.555581 462.042844,277.206483 463.738459,277.50486 C465.434075,277.803238 467.302516,277.631217 469.343839,276.988793 C471.451012,276.325646 473.352377,275.295272 475.047992,273.897641 C476.743608,272.50001 478.200498,270.897524 479.418707,269.090135 C480.636916,267.282746 481.575252,265.379458 482.233744,263.380216 C482.892235,261.380973 483.221476,259.453376 483.221476,257.597367 C483.221476,255.645357 482.875773,253.874172 482.184357,252.283758 C481.492941,250.693344 480.529912,249.396435 479.295241,248.392991 C478.060569,247.389547 476.595448,246.738646 474.899833,246.440268 C473.204217,246.141891 471.352238,246.308731 469.343839,246.940793 C467.236667,247.603941 465.32707,248.636905 463.614993,250.039716 C461.902915,251.442528 460.446025,253.045014 459.244278,254.847222 C458.042531,256.649431 457.112426,258.550128 456.453935,260.54937 C455.795443,262.548613 455.466203,264.47621 455.466203,266.332219 C455.466203,268.284229 455.803674,270.058005 456.478628,271.653599 C457.153582,273.249194 458.10838,274.548694 459.343051,275.552137 Z M535.373733,251.744548 L533.793362,252.241906 L519.965112,233.60179 L519.965112,263.07379 L517.446395,263.866455 L517.446395,229.786455 L519.965112,228.99379 L534.583547,248.777227 L549.201983,219.792665 L551.7207,219 L551.7207,253.08 L549.201983,253.872665 L549.201983,224.400665 L535.373733,251.744548 Z" id="ROOM" fill="#FFFFFF"></path>
+                  <path d="M139.928,112.627523 L139.928,144.499523 L137.48,145.319234 L137.48,113.447234 L125,117.626154 L125,115.418154 L152.408,106.240603 L152.408,108.448603 L139.928,112.627523 Z M208.328,121.595829 L205.88,122.41554 L205.88,106.09554 L184.376,113.29614 L184.376,129.61614 L181.928,130.435851 L181.928,96.3558509 L184.376,95.5361397 L184.376,111.08814 L205.88,103.88754 L205.88,88.3355397 L208.328,87.5158286 L208.328,121.595829 Z M264.056,102.935345 L241.352,110.537764 L241.352,76.4577643 L263.624,69 L263.624,71.208 L243.8,77.8460531 L243.8,91.2380531 L261.128,85.4357839 L261.128,87.5477839 L243.8,93.3500531 L243.8,107.510053 L264.056,100.727345 L264.056,102.935345 Z" id="THE" fill="#FFFFFF"></path>
+                  <path d="M128.5,172.5 L629.5,0.5" id="bottom-line" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square"></path>
+                  <path d="M88,346 L548.5,194.5" id="top-line" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square"></path>
+                  <path d="M545.8,63.453139 L627.016,36 M587.848,143.431122 L587.848,51.1198117 L587.848,242.791122" id="T" stroke="#FFFFFF" stroke-width="8"></path>
+                  <path d="M513.032,124.036492 L457.88,142.679315 M524.104,170.801918 L457,193.484831 L457,91.2448307 L522.808,69" id="e-2" stroke="#FFFFFF" stroke-width="8"></path>
+                  <path d="M426.431797,102.39106 L381.935797,219.671875 L378.767797,220.742742 L335.628971,131.940651" id="v-2" stroke="#FFFFFF" stroke-width="8"></path>
+                  <path d="M332.824,237.684615 L265.72,260.367528 L265.72,158.127528" id="L" stroke="#FFFFFF" stroke-width="8"></path>
+                  <path d="M220.616,225.105811 L165.464,243.748634 M231.688,271.871237 L164.584,294.554149 L164.584,192.314149 L230.392,170.069319" id="E" stroke="#FFFFFF" stroke-width="8"></path>
+                  <path d="M135.16,202.260233 L90.664,319.541049 L87.496,320.611916 L0.72820282,149.869174" id="V" stroke="#FFFFFF" stroke-width="8"></path>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <div class="commentators__side commentators__side--right">
+          <div class="commentators-info__top commentators-info__top-right">
+            <div class="commentators-info__text commentators-info__text--right-top">
+              Noah "N0@h" Swartz
+            </div>
+          </div>
+          <div class="commentators-info__bottom commentators-info__bottom-right">
+            <div class="commentators-info__text commentators-info__text--right-bottom">
+              @toaster
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <!--Transition Animation-->
+      <div class="bumper-background"></div>
+      <div class="bumper-svg">
+        <svg width="635px" height="353px" viewBox="0 0 635 353" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g id="Page-4-Copy-6" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="Desktop-HD" transform="translate(-133.000000, -91.000000)">
+              <g id="Group" transform="translate(136.000000, 93.000000)">
+                <path d="M350.618436,282.288823 C352.100041,281.822548
+                  353.46639,281.696541 354.717524,281.910801 C355.968658,
+                  282.12506 357.03869,282.596302 357.927654,283.324542
+                  C358.816617,284.052782 359.516254,284.968588 360.026584,
+                  286.071988 C360.536915,287.175388 360.792077,288.367074
+                  360.792077,289.64708 C360.792077,290.895086 360.594532,
+                  292.165244 360.199437,293.45759 C359.804343,294.749936
+                  359.244633,295.974071 358.520293,297.130033 C357.795952,
+                  298.285994 356.923464,299.328567 355.902803,300.257782
+                  C354.882141,301.186997 353.762722,301.939285 352.544513,
+                  302.514668 L361.285943,313.011656 L358.372133,313.92866
+                  L349.877637,303.73796 L338.518717,307.312722 L338.518717,
+                  320.176722 L336,320.969386 L336,286.889386 L350.618436,
+                  282.288823 Z M353.877952,299.503022 C354.79984,
+                  298.732893 355.590018,297.852222 356.248509,296.860985
+                  C356.907,295.869747 357.409092,294.815743 357.7548,293.69894
+                  C358.100508,292.582138 358.27336,291.49575 358.27336,
+                  290.439745 C358.27336,289.351739 358.067584,288.368509
+                  357.656027,287.490025 C357.24447,286.611541 356.684761,
+                  285.899696 355.976883,285.354468 C355.269004,284.809241
+                  354.445902,284.452285 353.507552,284.28359 C352.569202,
+                  284.114896 351.556787,284.201515 350.470276,284.543451
+                  L338.518717,288.304722 L338.518717,305.056722 L350.815982,
+                  301.186653 C351.935418,300.834356 352.956064,300.273152
+                  353.877952,299.503022 Z M395.263929,297.182456 C393.815248,
+                  296.038362 392.695829,294.550672 391.905639,292.719342
+                  C391.11545,290.888012 390.720361,288.884371 390.720361,
+                  286.70836 C390.720361,284.436349 391.140143,282.128261
+                  391.979719,279.784028 C392.819296,277.439795 393.971638,
+                  275.23716 395.436782,273.176057 C396.901925,271.114955
+                  398.63867,269.296397 400.647069,267.72033 C402.655467,
+                  266.144262 404.828456,264.988407 407.166101,264.252727
+                  C409.602519,263.485963 411.824894,263.290555 413.833293,
+                  263.666498 C415.841692,264.04244 417.561975,264.821037
+                  418.994193,266.002313 C420.426412,267.183588 421.5376,
+                  268.681868 422.327789,270.497198 C423.117979,272.312528
+                  423.513068,274.276169 423.513068,276.388179 C423.513068,
+                  278.692191 423.093286,281.016278 422.253709,283.360511
+                  C421.414133,285.704745 420.26179,287.89938 418.796647,
+                  289.944482 C417.331504,291.989585 415.60299,293.797552 413.611053,295.368439 C411.619117,296.939325 409.454359,298.092591 407.116714,298.82827 C404.680296,299.595034 402.457921,299.798442 400.449522,299.438499 C398.441124,299.078557 396.71261,298.32655 395.263929,297.182456 Z M397.115926,295.135614 C398.350598,296.139058 399.815719,296.789959 401.511334,297.088337 C403.20695,297.386715 405.075391,297.214694 407.116714,296.57227 C409.223887,295.909122 411.125252,294.878749 412.820867,293.481118 C414.516483,292.083487 415.973373,290.481001 417.191582,288.673612 C418.409791,286.866222 419.348127,284.962935 420.006619,282.963692 C420.66511,280.96445 420.994351,279.036853 420.994351,277.180844 C420.994351,275.228834 420.648648,273.457649 419.957232,271.867235 C419.265816,270.276821 418.302787,268.979912 417.068116,267.976468 C415.833444,266.973024 414.368323,266.322123 412.672708,266.023745 C410.977092,265.725367 409.125113,265.892207 407.116714,266.52427 C405.009542,267.187417 403.099945,268.220381 401.387868,269.623193 C399.67579,271.026005 398.2189,272.628491 397.017153,274.430699 C395.815406,276.232908 394.885301,278.133605 394.22681,280.132847 C393.568318,282.13209 393.239078,284.059687 393.239078,285.915696 C393.239078,287.867706 393.576549,289.641481 394.251503,291.237076 C394.926457,292.83267 395.881255,294.13217 397.115926,295.135614 Z M457.491054,277.598979 C456.042373,276.454885 454.922954,274.967195 454.132764,273.135865 C453.342575,271.304535 452.947486,269.300895 452.947486,267.124884 C452.947486,264.852872 453.367268,262.544785 454.206844,260.200551 C455.046421,257.856318 456.198763,255.653683 457.663907,253.592581 C459.12905,251.531478 460.865795,249.71292 462.874194,248.136853 C464.882592,246.560786 467.055581,245.40493 469.393226,244.669251 C471.829644,243.902486 474.052019,243.707078 476.060418,244.083021 C478.068817,244.458964 479.7891,245.237561 481.221318,246.418836 C482.653537,247.600111 483.764725,249.098391 484.554914,250.913721 C485.345104,252.729051 485.740193,254.692692 485.740193,256.804702 C485.740193,259.108714 485.320411,261.432801 484.480834,263.777035 C483.641258,266.121268 482.488915,268.315903 481.023772,270.361006 C479.558629,272.406108 477.830115,274.214076 475.838178,275.784962 C473.846242,277.355848 471.681484,278.509114 469.343839,279.244793 C466.907421,280.011557 464.685046,280.214965 462.676647,279.855023 C460.668249,279.49508 458.939735,278.743073 457.491054,277.598979 Z M459.343051,275.552137 C460.577723,276.555581 462.042844,277.206483 463.738459,277.50486 C465.434075,277.803238 467.302516,277.631217 469.343839,276.988793 C471.451012,276.325646 473.352377,275.295272 475.047992,273.897641 C476.743608,272.50001 478.200498,270.897524 479.418707,269.090135 C480.636916,267.282746 481.575252,265.379458 482.233744,263.380216 C482.892235,261.380973 483.221476,259.453376 483.221476,257.597367 C483.221476,255.645357 482.875773,253.874172 482.184357,252.283758 C481.492941,250.693344 480.529912,249.396435 479.295241,248.392991 C478.060569,247.389547 476.595448,246.738646 474.899833,246.440268 C473.204217,246.141891 471.352238,246.308731 469.343839,246.940793 C467.236667,247.603941 465.32707,248.636905 463.614993,250.039716 C461.902915,251.442528 460.446025,253.045014 459.244278,254.847222 C458.042531,256.649431 457.112426,258.550128 456.453935,260.54937 C455.795443,262.548613 455.466203,264.47621 455.466203,266.332219 C455.466203,268.284229 455.803674,270.058005 456.478628,271.653599 C457.153582,273.249194 458.10838,274.548694 459.343051,275.552137 Z M535.373733,251.744548 L533.793362,252.241906 L519.965112,233.60179 L519.965112,263.07379 L517.446395,263.866455 L517.446395,229.786455 L519.965112,228.99379 L534.583547,248.777227 L549.201983,219.792665 L551.7207,219 L551.7207,253.08 L549.201983,253.872665 L549.201983,224.400665 L535.373733,251.744548 Z" id="ROOM" class="bumper-svg__word" fill="#FFFFFF"></path>
+                <path d="M139.928,112.627523 L139.928,144.499523 L137.48,145.319234 L137.48,113.447234 L125,117.626154 L125,115.418154 L152.408,106.240603 L152.408,108.448603 L139.928,112.627523 Z M208.328,121.595829 L205.88,122.41554 L205.88,106.09554 L184.376,113.29614 L184.376,129.61614 L181.928,130.435851 L181.928,96.3558509 L184.376,95.5361397 L184.376,111.08814 L205.88,103.88754 L205.88,88.3355397 L208.328,87.5158286 L208.328,121.595829 Z M264.056,102.935345 L241.352,110.537764 L241.352,76.4577643 L263.624,69 L263.624,71.208 L243.8,77.8460531 L243.8,91.2380531 L261.128,85.4357839 L261.128,87.5477839 L243.8,93.3500531 L243.8,107.510053 L264.056,100.727345 L264.056,102.935345 Z" id="THE" class="bumper-svg__word" fill="#FFFFFF"></path>
+                <path d="M128.5,172.5 L629.5,0.5" id="top-line" class="bumper-svg__line" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+                <path d="M88,346 L548.5,194.5" id="bottom-line" class="bumper-svg__line" stroke="#FFFFFF" stroke-width="4" stroke-linecap="square" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+                <path d="M545.8,63.453139 L627.016,36 M587.848,143.431122 L587.848,51.1198117 L587.848,242.791122" id="T" class="bumper-svg__letter" stroke="#FFFFFF" stroke-width="4" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+                <path d="M513.032,124.036492 L457.88,142.679315 M524.104,170.801918 L457,193.484831 L457,91.2448307 L522.808,69" id="e-2" class="bumper-svg__letter" stroke="#FFFFFF" stroke-width="4" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+                <path d="M426.431797,102.39106 L381.935797,219.671875 L378.767797,220.742742 L335.628971,131.940651" id="v-2" class="bumper-svg__letter" stroke="#FFFFFF" stroke-width="4" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+                <path d="M332.824,237.684615 L265.72,260.367528 L265.72,158.127528" id="L" class="bumper-svg__letter" stroke="#FFFFFF" stroke-width="4" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+                <path d="M220.616,225.105811 L165.464,243.748634 M231.688,271.871237 L164.584,294.554149 L164.584,192.314149 L230.392,170.069319" id="E" class="bumper-svg__letter" stroke="#FFFFFF" stroke-width="4" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+                <path d="M135.16,202.260233 L90.664,319.541049 L87.496,320.611916 L0.72820282,149.869174" id="V" class="bumper-svg__letter" stroke="#FFFFFF" stroke-width="4" stroke-dashoffset="1000" stroke-dasharray="1000"></path>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
     <script>
     var processedFollowers = [];
     var socket = io('/overlay');
+    
+    socket.on('update overlay', function(data) {
+        var shouldReanimate = false;
+        if(data.commentators != $('.commentators-info__text--left-top').text().trim()) {
+          $('.commentators-info__text--left-top').trigger('textChanged', data.commentators || '');
+          shouldReanimate = true;
+        }
+        if(data.commentators2 != $('.commentators-info__text--right-top').text().trim()) {
+          $('.commentators-info__text--right-top').trigger('textChanged', data.commentators2 || '');
+          shouldReanimate = true;
+        }
+        if(data.twitter != $('.commentators-info__text--left-bottom').text().trim()) {
+          $('.commentators-info__text--left-bottom').trigger('textChanged', data.twitter || '');
+          shouldReanimate = true;
+        }
+        if(data.twitter2 != $('.commentators-info__text--right-bottom').text().trim()) {
+          $('.commentators-info__text--right-bottom').trigger('textChanged', data.twitter2 || '');
+          shouldReanimate = true;
+        }
+        
+        if(shouldReanimate) {
+            animateCommentatorNamesIn();
+            setTimeout(animateCommentatorNamesOut, 30000);
+        }
+    });
+    
+    function animateCommentatorNamesIn() {
+        $(".commentators__container").addClass("commentators__container--animate");
+        $(".commentators-info__top").addClass("commentators__side--animate");
+        $(".commentators__middle").addClass("commentators__middle--animate");
+        $(".commentators__middle-svg").addClass("commentators__middle-svg--animate");
+        $(".commentators__middle-svg").attr("class", ".commentators__middle-svg commentators__middle-svg--animate")
+        $(".commentators-info__bottom").addClass("commentators__side--animate");
+        $(".commentators-info__text--left-top").addClass("commentators-info__text--animate-left");
+        $(".commentators-info__text--left-bottom").addClass("commentators-info__text--animate-right");
+        $(".commentators-info__text--right-top").addClass("commentators-info__text--animate-left");
+        $(".commentators-info__text--right-bottom").addClass("commentators-info__text--animate-right");
+    }
+    
+    function animateCommentatorNamesOut() {
+        $(".commentators__container").removeClass("commentators__container--animate");
+        $(".commentators-info__top").removeClass("commentators__side--animate");
+        $(".commentators__middle").removeClass("commentators__middle--animate");
+        $(".commentators__middle-svg").removeClass("commentators__middle-svg--animate");
+        $(".commentators__middle-svg").attr("class", ".commentators__middle-svg")
+        $(".commentators-info__bottom").removeClass("commentators__side--animate");
+        $(".commentators-info__text--left-top").removeClass("commentators-info__text--animate-left");
+        $(".commentators-info__text--left-bottom").removeClass("commentators-info__text--animate-right");
+        $(".commentators-info__text--right-top").removeClass("commentators-info__text--animate-left");
+        $(".commentators-info__text--right-bottom").removeClass("commentators-info__text--animate-right");
+    }
 
     //TODO global
     var transitioning = false;
-    function transition() {
-      if(!transitioning) {
-        transitioning = true;
-         //Slide in first
-         $('#transition-image').effect('slide', {}, 1000, function() {
-          //Wait 2 seconds
-          setTimeout(function() {
-            //Blind out of view
-            $('#transition-image').effect('fold', {}, 1000, function() {
-              transitioning=false;
-            });
-          }, 2500);           
-         });
-      }
-    }
-
-    socket.on('update overlay', function(data) {
-        if(data.commentators != document.getElementById('commentators').innerText) {
-          $('#commentators').trigger('textChanged', data.commentators || '');
-        }
-        if(data.commentators2 != document.getElementById('commentators2').innerText) {
-          $('#commentators2').trigger('textChanged', data.commentators2 || '');
-        }
-        if(data.twitter != document.getElementById('twitter').innerText) {
-          $('#twitter').trigger('textChanged', data.twitter || '');
-        }
-        if(data.twitter2 != document.getElementById('twitter2').innerText) {
-          $('#twitter2').trigger('textChanged', data.twitter2 || '');
-        }
-    });
-
+    
     socket.on('fire transition', function() {
-      transition();
+      if(transitioning) {
+          return;
+      }
+      animateTransitionIn();
+      setTimeout(animateTransitionOut, 2600);
     });
-        
+    
+    function animateTransitionIn() {
+      console.log('Animating in');
+      transitioning = true;
+      $(".bumper-background").addClass("bumper-background--animate");
+      $(".bumper-svg").addClass("bumper-background--animate");
+      $(".bumper-svg__line").addClass("bumper-svg__line--animate");
+      $(".bumper-svg__word").addClass("bumper-svg__word--animate");
+      $(".bumper-svg__letter").addClass("bumper-svg__letter--animate");
+    }
+    
+    function animateTransitionOut() {
+        console.log('Ending animation');
+        $(".bumper-svg__line").removeClass("bumper-svg__line--animate").addClass("bumper-svg__line--animate-out");
+        $(".bumper-svg__word").removeClass("bumper-svg__word--animate").addClass("bumper-svg__word--animate-out");
+        $(".bumper-svg__letter").removeClass("bumper-svg__letter--animate").addClass("bumper-svg__letter--animate-out");
 
-    $('.playertext').bind('textChanged', function(e, newText){
-        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
-            $(this).text(newText);
-          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
-      })
+        setTimeout(function() {
+          $(".bumper-background").removeClass("bumper-background--animate").addClass("bumper-background--animate-out");
+        }, 1000);
+        
+        setTimeout(function() {
+            $(".bumper-svg__line").removeClass("bumper-svg__line--animate").removeClass("bumper-svg__line--animate-out");
+            $(".bumper-svg__word").removeClass("bumper-svg__word--animate").removeClass("bumper-svg__word--animate-out");
+            $(".bumper-svg__letter").removeClass("bumper-svg__letter--animate").removeClass("bumper-svg__letter--animate-out");
+            $(".bumper-background").removeClass("bumper-background--animate").removeClass("bumper-background--animate-out");
+            transitioning = false;
+        }, 1400);
+    }      
+
+    $('.commentators-info__text ').bind('textChanged', function(e, newText){
+        $(this).text(newText);
+    });
 
     var twitchSocket = io('/twitch');
 
