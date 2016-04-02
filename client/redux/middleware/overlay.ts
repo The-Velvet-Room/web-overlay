@@ -35,19 +35,17 @@ export default (store: Redux.Store) => {
       case adminActions.UPDATE_ADMIN_DATA:
         adminSocket.emit('update admin', store.getState().admin);
         break;
-      
+        
+      case overlayActions.UPDATE_OVERLAY_DISPLAY:
+        overlaySocket.emit('update overlay', store.getState().overlay)
+        break;
+        
       case userActions.RESET_USERS:
         userSocket.emit('reset users');
         break;
       
-      case userActions.ADD_TEST_USER:
-        const newUser = new User();
-        newUser.firstName = 'abcde';
-        newUser.lastName = 'fghij';
-        newUser.gamerTag = ((new Date().valueOf())/Math.random()*100000000).toString();
-        newUser.twitterHandle = ((new Date().valueOf())/Math.random()*100000000).toString();
-        
-        userSocket.emit('create user', newUser);
+      case userActions.ADD_OR_UPDATE_USER:
+        userSocket.emit('update user', action.user);
       default:
     }
 

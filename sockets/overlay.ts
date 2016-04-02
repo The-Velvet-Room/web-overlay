@@ -18,7 +18,7 @@ export = function (io: SocketIO.Server) {
       if (err) {
         console.log(err);
       } else if (reply) {
-        socket.emit('update overlay', JSON.parse(reply));
+        socket.emit('refresh overlay', JSON.parse(reply));
       }
     });
 
@@ -37,8 +37,8 @@ export = function (io: SocketIO.Server) {
 
     socket.on('update overlay', function(msg: OverlayDisplay) {
       client.set(redisOverlayKey, JSON.stringify(msg));
-      overlay.emit('update overlay', msg);
-      console.log('update overlay: ' + JSON.stringify(msg));
+      overlay.emit('refresh overlay', msg);
+      console.log('refresh overlay: ' + JSON.stringify(msg));
     });
 
     socket.on('flash screen', function() {

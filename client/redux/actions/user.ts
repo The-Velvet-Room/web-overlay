@@ -13,6 +13,11 @@ export function resetUsers () {
 }
 
 export const SET_USERS = 'SET_USERS';
-export function setUsers (users: Array<User>) {
+export function setUsers (users: Object) {
   return { type: SET_USERS, users };
+}
+
+export const ADD_OR_UPDATE_USER = 'ADD_OR_UPDATE_USER';
+export function addOrUpdateUser (user: User) {
+  return { type: ADD_OR_UPDATE_USER, user};
 }

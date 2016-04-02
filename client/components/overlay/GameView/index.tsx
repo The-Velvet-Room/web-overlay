@@ -8,6 +8,14 @@ interface State {}
 
 export default class GameView extends React.Component<Props, State> {
   public render() {
-    return <div></div>;
+    const display = [];
+    for (const key in this.props.gameData) {
+      display.push(<div key={this.props.gameData[key]}>{this.props.gameData[key]}</div>);
+    }
+    return (
+      <div>
+      {display}
+      </div>
+    );
   }
 }

@@ -47,18 +47,15 @@ export = function(io: SocketIO.Server) {
       socket.emit('refresh users', userHash);
     });
 
-    socket.on('update user', function(updatedUser: User) {
-      //Get current version of user and remove it
-      var currentUser = userHash[updatedUser.id];
-
-      if (currentUser) {
-        //Push the new version of the user
-        userHash[currentUser.id] = updatedUser;
-        client.set(redisKey, JSON.stringify(userHash));
-
-        //Notify clients
-        socket.emit('refresh users', userHash);
+    socket.on('update user', (user: User) => {
+      var existingUser = userHash[user.id];
+      if (!existingUser) {
+        user.id = new Date().valueOf().toString();
       }
+      
+      userHash[user.id] = user;        
+      client.set(redisKey, JSON.stringify(userHash));        
+      socket.emit('refresh users', userHash);
     });
 
     socket.on('delete user', function(userToDelete: User) {

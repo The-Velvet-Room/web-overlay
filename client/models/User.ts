@@ -9,4 +9,17 @@ export default class User {
   state: string;
   facts: Array<string>;
   characters: Object;
+  
+  constructor() {
+    this.id = '';
+    this.firstName = '';
+    this.lastName = '';
+    this.gamerTag = '';
+    this.clanPrefix = '';
+    this.twitterHandle = '';
+    this.city = '';
+    this.state = '';
+    this.facts = [];
+    this.characters = {};
+  }
 }

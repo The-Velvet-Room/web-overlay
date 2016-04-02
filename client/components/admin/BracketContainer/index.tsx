@@ -35,68 +35,6 @@ class BracketContainer extends React.Component<Props, State> {
   public render() {
     return (
       <div>
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
-        >
-        </input>
-        
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
-        >
-        </input>
-        
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
-        >
-        </input>
-        
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
-        >
-        </input>
-        
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
-        >
-        </input>
-        
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
-        >
-        </input>
-        
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
-        >
-        </input>
         <p>
         <input type="submit"/>
         </p>

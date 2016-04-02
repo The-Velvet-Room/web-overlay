@@ -8,10 +8,9 @@ export default function overlay(state: OverlayDisplay = new OverlayDisplay(), ac
   switch (action.type) {
     case actions.SET_OVERLAY_DISPLAY:
       return objectAssign({}, state, {
-        commentators: action.overlay.commentators,
-        match: action.overlay.match,
-        players: action.overlay.players,
-        tournament: action.overlay.tournament,
+        commentator: action.overlay.commentator,
+        game: action.overlay.game,
+        idle: action.overlay.idle,
       });
     case actions.CREATE_OVERLAY_DISPLAY_FROM_ADMIN_DATA:
       return createOverlayDisplayFromAdminData(root, root.admin);

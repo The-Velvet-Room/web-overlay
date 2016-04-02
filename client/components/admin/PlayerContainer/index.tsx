@@ -41,24 +41,15 @@ class PlayerContainer extends React.Component<Props, State> {
   }
 
   public render() {
-    const optionsLeft = [];
-    const optionsRight = [];
+    const options = [];
     const users = this.props.users;
-    for (const prop in users) {
-      if (users.hasOwnProperty(prop)) {
-        const user = users[prop];
+    for (const key in users) {
+      if (users.hasOwnProperty(key)) {
+        const user = users[key];
         const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
-        if (user.id === this.props.leftPlayerId) {
-          optionsLeft.push(<option key={user.id} value={user.id} selected>{name}</option>);
-        } else {
-          optionsLeft.push(<option key={user.id} value={user.id}>{name}</option>);
-        }
-        
-        if (user.id === this.props.rightPlayerId) {
-          optionsRight.push(<option key={user.id} value={user.id} selected>{name}</option>);
-        } else {
-          optionsRight.push(<option key={user.id} value={user.id}>{name}</option>);
-        }
+        options.push(
+          <option key={user.id} value={user.id}>{name}</option>
+        );
       }
     }
     
@@ -68,17 +59,19 @@ class PlayerContainer extends React.Component<Props, State> {
         <select 
           name="leftPlayer"
           data-callback="updateLeftPlayer"
+          defaultValue={this.props.leftPlayerId}
           onChange={this.handleSelectorChange}
         >
-          {optionsLeft}
+          {options}
         </select>
         <label htmlFor="rightPlayer">R Player</label>
         <select 
           name="rightPlayer"
           data-callback="updateRightPlayer"
+          defaultValue={this.props.rightPlayerId}
           onChange={this.handleSelectorChange}
         >
-          {optionsRight}
+          {options}
         </select>
       </div>
     );

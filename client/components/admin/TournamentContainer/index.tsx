@@ -56,15 +56,14 @@ class TournamentContainer extends React.Component<Props, State> {
         <select 
           name="currentGame"
           data-callback="updateCurrentGame"
+          value={this.props.data.currentGame}
           onChange={this.handleSelectorChange}
         >
         {
           CONSTANT_GAMES.map(game => {
-            if (game === this.props.data.currentGame) {
-              return <option key={game} value={game} selected>{game}</option>;
-            }
-            
-            return <option key={game} value={game}>{game}</option>
+            return (
+              <option key={game} value={game}>{game}</option>
+            );
           })
         }
         </select>   
@@ -73,19 +72,17 @@ class TournamentContainer extends React.Component<Props, State> {
         <input 
           name="tournamentName"
           data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
+          defaultValue={this.props.data.tournamentName}
           onChange={this.handleInputChange}
-        >
-        </input>
+        />
         
         <label htmlFor="bracketInfo">BracketInfo</label>
         <input 
           name="bracketInfo"
           data-callback="updateBracketInfo"
-          value={this.props.data.bracketInfo}
+          defaultValue={this.props.data.bracketInfo}
           onChange={this.handleInputChange}
-        >
-        </input>
+        />
       </div>
     );
   }
