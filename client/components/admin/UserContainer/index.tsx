@@ -83,7 +83,7 @@ class UserContainer extends React.Component<Props, State> {
     return (
       <div className="user-container">
         <div>{title}</div>
-        
+       
         <label htmlFor="user">User</label>
         <select 
           name="user"
