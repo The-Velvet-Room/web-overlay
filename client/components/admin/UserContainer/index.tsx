@@ -35,6 +35,11 @@ class UserContainer extends React.Component<Props, State> {
     };
   }
   
+  handleSelectUser = (e: React.FormEvent) => {
+    const selectedUserId = (e.target as HTMLSelectElement).value;
+    this.setState({selectedUserId})
+  }
+  
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -60,51 +65,76 @@ class UserContainer extends React.Component<Props, State> {
   }
 
   public render() {
-    const user: User = this.props.users[this.state.selectedUserId];
-    const options = [];
+    const selectedUser: User = this.props.users[this.state.selectedUserId];
+    const userOptions = [];
+    const users = this.props.users;
+    const title = selectedUser ? 'editing user' : 'create user';
+    
+    for (const key in users) {
+      if (users.hasOwnProperty(key)) {
+        const user = users[key];
+        const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
+        userOptions.push(
+          <option key={user.id} value={user.id}>{name}</option>
+        );
+      }
+    }
+    
     return (
       <div className="user-container">
+        <div>{title}</div>
+        
+        <label htmlFor="user">User</label>
+        <select 
+          name="user"
+          ref="user"
+          defaultValue={this.state.selectedUserId}
+          onChange={this.handleSelectUser}
+        >
+          {userOptions}
+        </select>
+      
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="firstName">First Name</label>
           <input 
             name="firstName"
             ref="firstName"
-            defaultValue={user ? user.firstName : ''}
+            defaultValue={selectedUser ? selectedUser.firstName : ''}
           />
           
           <label htmlFor="lastName">Last Name</label>
           <input 
             name="lastName"
             ref="lastName"
-            defaultValue={user ? user.lastName : ''}
+            defaultValue={selectedUser ? selectedUser.lastName : ''}
           />
           
           <label htmlFor="gamerTag">Gamer Tag</label>
           <input 
             name="gamerTag"
             ref="gamerTag"
-            defaultValue={user ? user.gamerTag : ''}
+            defaultValue={selectedUser ? selectedUser.gamerTag : ''}
           />
           
           <label htmlFor="clanPrefix">Clan Prefix</label>
           <input 
             name="clanPrefix"
             ref="clanPrefix"
-            defaultValue={user ? user.clanPrefix : ''}
+            defaultValue={selectedUser ? selectedUser.clanPrefix : ''}
           />
           
           <label htmlFor="twitterHandle">Twitter Handle</label>
           <input 
             name="twitterHandle"
             ref="twitterHandle"
-            defaultValue={user ? user.twitterHandle : ''}
+            defaultValue={selectedUser ? selectedUser.twitterHandle : ''}
           />
           
           <label htmlFor="city">City</label>
           <input 
             name="city"
             ref="city"
-            defaultValue={user ? user.city : ''}
+            defaultValue={selectedUser ? selectedUser.city : ''}
           />
           
           <label htmlFor="state">State</label>
@@ -126,14 +156,14 @@ class UserContainer extends React.Component<Props, State> {
           <input 
             name="facts"
             ref="facts"
-            defaultValue={user ? user.facts : ''}
+            defaultValue={selectedUser ? selectedUser.facts : ''}
           />
           
           <label htmlFor="characters">Characters</label>
           <input 
             name="characters"
             ref="characters"
-            defaultValue={user ? user.characters.toString() : ''}
+            defaultValue={selectedUser ? selectedUser.characters.toString() : ''}
           />
           <input type="submit" />
         </form>
