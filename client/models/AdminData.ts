@@ -3,6 +3,8 @@ export class AdminData {
   match: MatchData;
   players: PlayerData;
   tournament: TournamentData;
+  twitch: TwitchData;
+  bracket: BracketData;
 }
 
 export class CommentatorData {
@@ -28,4 +30,18 @@ export class TournamentData {
   currentGame: string;
   tournamentName: string;
   bracketInfo: string;
+}
+
+export class TwitchData {
+  username: string;
+  title: string;
+  game: string;
+  currentViewers: number;
+  peakViewers: number;
+  followers: number;
+  latestFollower: string;
+}
+
+export class BracketData {
+  url: string;
 }

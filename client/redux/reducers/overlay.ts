@@ -1,17 +1,16 @@
 import * as actions from '../actions/overlay';
-import { OverlayDisplay, CommentatorDisplay, GameDisplay, IdleDisplay, ITournamentData } from '../../models/OverlayDisplay';
+import { OverlayDisplay, CommentatorDisplay, GameDisplay, IdleDisplay } from '../../models/OverlayDisplay';
 import { AdminData } from '../../models/AdminData';
-import StateData from '../../models/StateData';
+import StoreData from '../../models/StoreData';
 import objectAssign = require('object-assign');
 
-export default function overlay(state: OverlayDisplay = new OverlayDisplay(), action, root: StateData) : OverlayDisplay {
+export default function overlay(state: OverlayDisplay = new OverlayDisplay(), action, root: StoreData) {
   switch (action.type) {
     case actions.SET_OVERLAY_DISPLAY:
-      return objectAssign(new OverlayDisplay(), state, {
-        commentators: action.overlay.commentators,
-        match: action.overlay.match,
-        players: action.overlay.players,
-        tournament: action.overlay.tournament,
+      return objectAssign({}, state, {
+        commentator: action.overlay.commentator,
+        game: action.overlay.game,
+        idle: action.overlay.idle,
       });
     case actions.CREATE_OVERLAY_DISPLAY_FROM_ADMIN_DATA:
       return createOverlayDisplayFromAdminData(root, root.admin);
@@ -20,11 +19,10 @@ export default function overlay(state: OverlayDisplay = new OverlayDisplay(), ac
   }
 }
 
-function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminData) : OverlayDisplay {
+function createOverlayDisplayFromAdminData(state: StoreData, adminData: AdminData) {
   const commentator = new CommentatorDisplay();
   commentator.leftCommentator = state.users[adminData.commentators.leftCommentatorId];
   commentator.rightCommentator = state.users[adminData.commentators.rightCommentatorId];
-  commentator.tournamentName = adminData.tournament.tournamentName;
 
   const game = new GameDisplay();
   game.leftPort = adminData.match.leftPort;
@@ -47,9 +45,11 @@ function createOverlayDisplayFromAdminData(state: StateData, adminData: AdminDat
   return newDisplay;
 }
 
-function resolveInterfaces(display: OverlayDisplay, adminData: AdminData) {
-  Object.getOwnPropertyNames(display).forEach(key => {
-    const theProp = display[key];
+// TODO: 100% must be a better way to fill in interfaces. This might as well
+// not even use typescript. Leaving it for now.
+function resolveInterfaces(newDisplay: OverlayDisplay, adminData: AdminData) {
+  Object.getOwnPropertyNames(newDisplay).forEach(key => {
+    const theProp = newDisplay[key];
       if (theProp.ITournamentData) {
         theProp.bracketInfo = adminData.tournament.bracketInfo;
         theProp.currentGame = adminData.tournament.currentGame;

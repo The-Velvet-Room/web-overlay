@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import User from '../../../models/User';
-import StateData from '../../../models/StateData';
+import StoreData from '../../../models/StoreData';
 import * as actions from '../../../redux/actions/commentator';
 
 interface Props extends React.Props<CommentatorContainer> {
@@ -13,7 +13,7 @@ interface Props extends React.Props<CommentatorContainer> {
 }
 interface State { text: string }
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
     leftCommentatorId: state.admin.commentators.leftCommentatorId,
     rightCommentatorId: state.admin.commentators.rightCommentatorId,
@@ -42,24 +42,20 @@ class CommentatorContainer extends React.Component<Props, State> {
   }
 
   public render() {
-    const optionsLeft = [];
-    const optionsRight = [];
+    const options = [];
     const users = this.props.users;
-    for (const prop in users) {
-      if (users.hasOwnProperty(prop)) {
-        const user = users[prop];
+    for (const key in users) {
+      if (users.hasOwnProperty(key)) {
+        const user = users[key];
         const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
-        if (user.id === this.props.leftCommentatorId) {
-          optionsLeft.push(<option key={user.id} value={user.id} selected>{name}</option>);
-        } else {
-          optionsLeft.push(<option key={user.id} value={user.id}>{name}</option>);
-        }
-        
-        if (user.id === this.props.rightCommentatorId) {
-          optionsRight.push(<option key={user.id} value={user.id} selected>{name}</option>);
-        } else {
-          optionsRight.push(<option key={user.id} value={user.id}>{name}</option>);
-        }
+        options.push(
+          <option
+            key={user.id}
+            value={user.id}
+          >
+            {name}
+          </option>
+        );
       }
     }
     
@@ -69,17 +65,19 @@ class CommentatorContainer extends React.Component<Props, State> {
         <select 
           name="leftCommentator"
           data-callback="updateLeftCommentator"
+          defaultValue={this.props.leftCommentatorId}
           onChange={this.handleSelectorChange}
         >
-          {optionsLeft}
+          {options}
         </select>
         <label htmlFor="rightCommentator">R Commentator</label>
         <select 
           name="rightCommentator"
           data-callback="updateRightCommentator"
+          defaultValue={this.props.rightCommentatorId}
           onChange={this.handleSelectorChange}
         >
-          {optionsRight}
+          {options}
         </select>
       </div>
     );

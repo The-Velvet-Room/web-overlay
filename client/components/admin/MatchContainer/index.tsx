@@ -3,7 +3,7 @@ import * as actions from '../../../redux/actions/match';
 import { connect } from 'react-redux';
 import { MatchData } from '../../../models/AdminData';
 import { ports, characters, usStates, usStateKeys } from '../../../../public/javascripts/constants/constants';
-import StateData from '../../../models/StateData';
+import StoreData from '../../../models/StoreData';
 
 interface Props extends React.Props<MatchContainer> {
   data?: MatchData,
@@ -16,7 +16,7 @@ interface Props extends React.Props<MatchContainer> {
 }
 interface State { }
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
     data: state.admin.match,
   };
@@ -56,11 +56,11 @@ class MatchContainer extends React.Component<Props, State> {
 
   public render() {
     const portOptions = ports.map(port => {
-      return <option key={port} value={port.toString()}>{port}</option>;
+      return <option key={port} value={port}>{port}</option>;
     });
     
     const charOptions = characters.map(character => {
-      return <option key={character} value={character} selected>{character}</option>;
+      return <option key={character} value={character}>{character}</option>;
     });
     
     const stateOptions = usStates.map((state, index) => {
@@ -73,7 +73,7 @@ class MatchContainer extends React.Component<Props, State> {
         <select 
           name="leftPort"
           data-callback="updateLeftPort"
-          value={this.props.data.leftPort}
+          defaultValue={this.props.data.leftPort}
           onChange={this.handleSelectorChange}
         >
         {portOptions}
@@ -83,7 +83,7 @@ class MatchContainer extends React.Component<Props, State> {
         <select 
           name="rightPort"
           data-callback="updateRightPort"
-          value={this.props.data.rightPort}
+          defaultValue={this.props.data.rightPort}
           onChange={this.handleSelectorChange}
         >
         {portOptions}
@@ -93,7 +93,7 @@ class MatchContainer extends React.Component<Props, State> {
         <select 
           name="leftCharacter"
           data-callback="updateLeftCharacter"
-          value={this.props.data.leftCharacter}
+          defaultValue={this.props.data.leftCharacter}
           onChange={this.handleSelectorChange}
         >
         {charOptions}
@@ -103,7 +103,7 @@ class MatchContainer extends React.Component<Props, State> {
         <select 
           name="rightCharacter"
           data-callback="updateRightCharacter"
-          value={this.props.data.rightCharacter}
+          defaultValue={this.props.data.rightCharacter}
           onChange={this.handleSelectorChange}
         >
         {charOptions}
@@ -113,7 +113,7 @@ class MatchContainer extends React.Component<Props, State> {
         <select 
           name="leftState"
           data-callback="updateLeftStateKey"
-          value={this.props.data.leftStateKey}
+          defaultValue={this.props.data.leftStateKey}
           onChange={this.handleSelectorChange}
         >
         {stateOptions}
@@ -123,7 +123,7 @@ class MatchContainer extends React.Component<Props, State> {
         <select 
           name="rightState"
           data-callback="updateRightStateKey"
-          value={this.props.data.rightStateKey}
+          defaultValue={this.props.data.rightStateKey}
           onChange={this.handleSelectorChange}
         >
         {stateOptions}

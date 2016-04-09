@@ -1,0 +1,21 @@
+.tab-view {
+  .tab-links {
+    .tab-link {
+      cursor: pointer;
+      
+      &.active {
+        background-color: lightpink;
+      }
+    }
+  }
+  
+  .tabs {
+    .tab {
+      display: none;
+      
+      &.active {
+        display: block;
+      }
+    }
+  }
+}

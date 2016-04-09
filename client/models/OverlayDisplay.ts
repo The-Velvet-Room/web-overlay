@@ -42,7 +42,8 @@ export class IdleDisplay implements ITournamentData {
   bracketInfo: string;
 }
 
-export interface ITournamentData {
+interface ITournamentData {
+  // TODO: Find some non jank way to check if a class implements an interface
   ITournamentData: boolean;
   currentGame: string;
   tournamentName: string;

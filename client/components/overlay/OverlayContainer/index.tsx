@@ -1,18 +1,18 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { OverlayDisplay } from '../../../models/OverlayDisplay';
-import StateData from '../../../models/StateData';
-import CommentatorView from '../CommentatorView'
-import PlayerView from '../PlayerView'
+import StoreData from '../../../models/StoreData';
+import CommentatorView from '../CommentatorView';
+import GameView from '../GameView';
 
 interface Props extends React.Props<OverlayContainer> {
-  data: OverlayDisplay,
+  overlayData: OverlayDisplay,
 }
 interface State {}
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
-    data: state.overlay,
+    overlayData: state.overlay,
   };
 }
 
@@ -25,7 +25,8 @@ class OverlayContainer extends React.Component<Props, State> {
     return (
     <div>
       <div>Web overlay</div>
-      <CommentatorView />
+      <CommentatorView commentatorData={this.props.overlayData.commentator} />
+      <GameView gameData={this.props.overlayData.game} />
     </div>
     )
   }

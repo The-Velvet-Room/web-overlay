@@ -2,10 +2,10 @@ import * as actions from '../actions/root';
 import admin from './admin';
 import overlay from './overlay';
 import user from './user';
-import StateData from '../../models/StateData';
+import StoreData from '../../models/StoreData';
 import objectAssign = require('object-assign');
 
-export default function app(state: StateData = new StateData(), action) : StateData {
+export default function app(state: StoreData = new StoreData(), action) {
   switch (action.type) {
     default:
       return {

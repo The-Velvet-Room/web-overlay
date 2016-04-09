@@ -4,6 +4,8 @@ import commentators from './commentator';
 import match from './match';
 import players from './player';
 import tournament from './tournament';
+import twitch from './twitch';
+import bracket from './bracket';
 import objectAssign = require('object-assign');
 
 export default function admin(state: AdminData = new AdminData(), action) : AdminData {
@@ -14,6 +16,8 @@ export default function admin(state: AdminData = new AdminData(), action) : Admi
         match: action.adminData.match,
         players: action.adminData.players,
         tournament: action.adminData.tournament,
+        twitch: action.adminData.twitch,
+        bracket: action.adminData.bracket,
       });
     default:
       return {
@@ -21,6 +25,8 @@ export default function admin(state: AdminData = new AdminData(), action) : Admi
         match: match(state.match, action),
         players: players(state.players, action),
         tournament: tournament(state.tournament, action),
+        twitch: twitch(state.twitch, action),
+        bracket: bracket(state.bracket, action),
       }
   }
 }

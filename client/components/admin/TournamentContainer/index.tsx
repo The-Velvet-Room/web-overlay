@@ -3,7 +3,7 @@ import * as actions from '../../../redux/actions/tournament';
 import { connect } from 'react-redux';
 import { TournamentData } from '../../../models/AdminData';
 import { CONSTANT_GAMES } from '../../../../public/javascripts/constants/constants';
-import StateData from '../../../models/StateData';
+import StoreData from '../../../models/StoreData';
 
 interface Props extends React.Props<TournamentContainer> {
   data?: TournamentData,
@@ -13,7 +13,7 @@ interface Props extends React.Props<TournamentContainer> {
 }
 interface State { }
 
-const mapStateToProps = (state: StateData) => {
+const mapStateToProps = (state: StoreData) => {
   return {
     data: state.admin.tournament,
   };
@@ -43,7 +43,7 @@ class TournamentContainer extends React.Component<Props, State> {
   }
   
   handleInputChange = (e: React.FormEvent) => {
-    // callback is from the 'callback' data attribute of the select element and matches a prop on the component
+    // callback is from the 'callback' data attribute of the input element and matches a prop on the component
     const target = (e.target as HTMLInputElement);
     const callback = target.dataset['callback'];
     this.props[callback](target.value);
@@ -56,15 +56,14 @@ class TournamentContainer extends React.Component<Props, State> {
         <select 
           name="currentGame"
           data-callback="updateCurrentGame"
+          value={this.props.data.currentGame}
           onChange={this.handleSelectorChange}
         >
         {
           CONSTANT_GAMES.map(game => {
-            if (game === this.props.data.currentGame) {
-              return <option key={game} value={game} selected>{game}</option>;
-            }
-            
-            return <option key={game} value={game}>{game}</option>
+            return (
+              <option key={game} value={game}>{game}</option>
+            );
           })
         }
         </select>   
@@ -73,19 +72,17 @@ class TournamentContainer extends React.Component<Props, State> {
         <input 
           name="tournamentName"
           data-callback="updateTournamentName"
-          value={this.props.data.tournamentName}
+          defaultValue={this.props.data.tournamentName}
           onChange={this.handleInputChange}
-        >
-        </input>
+        />
         
         <label htmlFor="bracketInfo">BracketInfo</label>
         <input 
           name="bracketInfo"
           data-callback="updateBracketInfo"
-          value={this.props.data.bracketInfo}
+          defaultValue={this.props.data.bracketInfo}
           onChange={this.handleInputChange}
-        >
-        </input>
+        />
       </div>
     );
   }
