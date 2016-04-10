@@ -1,8 +1,10 @@
 import * as React from 'react';
+import SelectOption from '../../../models/SelectOption';
 import './style.scss';
 
 interface Props extends React.Props<Select> {
-  options: HTMLOptionElement[],
+  options: SelectOption[],
+  defaultValue: string,
   onChange: (value: string) => void,
   label: string,
 }
@@ -21,16 +23,24 @@ export default class Select extends React.Component<Props, State> {
 
   public render () {
     const trimmedLabel = this.props.label.trim();
+    let defaultValue = this.props.defaultValue;
+    if (!defaultValue) {
+      defaultValue = this.props.options[0] ? this.props.options[0].value : 'No Users';
+    }
+
     return (
       <div className="select">
         <label htmlFor={trimmedLabel}>{this.props.label}</label>
         <select
           name={trimmedLabel}
-          ref={trimmedLabel}
-          defaultValue={this.props.options[0].value}
+          value={defaultValue}
           onChange={this.handleOnChange}
         >
-          {this.props.options}
+        {
+          this.props.options.map(option => {
+            return <option key={option.key} value={option.value}>{option.text}</option>;
+          })
+        }
         </select>
       </div>
     );

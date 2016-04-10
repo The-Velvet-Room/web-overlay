@@ -1,8 +1,10 @@
 import * as React from 'react';
+import * as actions from '../../../redux/actions/commentator';
 import { connect } from 'react-redux';
 import User from '../../../models/User';
 import StoreData from '../../../models/StoreData';
-import * as actions from '../../../redux/actions/commentator';
+import SelectOption from '../../../models/SelectOption';
+import Select from '../../utility/Select';
 
 interface Props extends React.Props<CommentatorContainer> {
   leftCommentatorId?: string,
@@ -43,42 +45,27 @@ class CommentatorContainer extends React.Component<Props, State> {
 
   public render() {
     const options = [];
-    const users = this.props.users;
-    for (const key in users) {
-      if (users.hasOwnProperty(key)) {
-        const user = users[key];
-        const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
-        options.push(
-          <option
-            key={user.id}
-            value={user.id}
-          >
-            {name}
-          </option>
-        );
-      }
-    }
-    
+    Object.getOwnPropertyNames(this.props.users).forEach(key => {
+      const user = this.props.users[key];
+      const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
+      options.push(new SelectOption(name, user.id));
+    });
+
     return (
       <div>
-        <label htmlFor="leftCommentator">L Commentator</label>
-        <select 
-          name="leftCommentator"
-          data-callback="updateLeftCommentator"
+        <Select
+          options={options}
           defaultValue={this.props.leftCommentatorId}
-          onChange={this.handleSelectorChange}
-        >
-          {options}
-        </select>
-        <label htmlFor="rightCommentator">R Commentator</label>
-        <select 
-          name="rightCommentator"
-          data-callback="updateRightCommentator"
+          onChange={this.props.updateLeftCommentator}
+          label="Left Commentator"
+        />
+
+        <Select
+          options={options}
           defaultValue={this.props.rightCommentatorId}
-          onChange={this.handleSelectorChange}
-        >
-          {options}
-        </select>
+          onChange={this.props.updateRightCommentator}
+          label="Right Commentator"
+        />
       </div>
     );
   }

@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as actions from '../../../redux/actions/player';
 import { connect } from 'react-redux';
 import StoreData from '../../../models/StoreData';
+import SelectOption from '../../../models/SelectOption';
+import Select from '../../utility/Select';
 
 interface Props extends React.Props<PlayerContainer> {
   leftPlayerId?: string,
@@ -42,37 +44,27 @@ class PlayerContainer extends React.Component<Props, State> {
 
   public render() {
     const options = [];
-    const users = this.props.users;
-    for (const key in users) {
-      if (users.hasOwnProperty(key)) {
-        const user = users[key];
-        const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
-        options.push(
-          <option key={user.id} value={user.id}>{name}</option>
-        );
-      }
-    }
-    
+    Object.getOwnPropertyNames(this.props.users).forEach(key => {
+      const user = this.props.users[key];
+      const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
+      options.push(new SelectOption(name, user.id));
+    });
+
     return (
       <div>
-        <label htmlFor="leftPlayer">L Player</label>
-        <select 
-          name="leftPlayer"
-          data-callback="updateLeftPlayer"
+        <Select
+          options={options}
           defaultValue={this.props.leftPlayerId}
-          onChange={this.handleSelectorChange}
-        >
-          {options}
-        </select>
-        <label htmlFor="rightPlayer">R Player</label>
-        <select 
-          name="rightPlayer"
-          data-callback="updateRightPlayer"
+          onChange={this.props.updateLeftPlayer}
+          label="Left Player"
+        />
+
+        <Select
+          options={options}
           defaultValue={this.props.rightPlayerId}
-          onChange={this.handleSelectorChange}
-        >
-          {options}
-        </select>
+          onChange={this.props.updateRightPlayer}
+          label="Right Player"
+        />
       </div>
     );
   }

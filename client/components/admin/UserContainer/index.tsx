@@ -3,6 +3,8 @@ import * as actions from '../../../redux/actions/user';
 import { connect } from 'react-redux';
 import { usStates, usStateKeys } from '../../../../public/javascripts/constants/constants';
 import StoreData from '../../../models/StoreData';
+import SelectOption from '../../../models/SelectOption';
+import Select from '../../utility/Select';
 import User from '../../../models/User';
 
 interface Props extends React.Props<UserContainer> {
@@ -66,30 +68,25 @@ class UserContainer extends React.Component<Props, State> {
 
   public render() {
     const selectedUser: User = this.props.users[this.state.selectedUserId];
-    const userOptions = [];
     const title = selectedUser ? 'editing user' : 'create user';
+    const userOptions = [];
 
     Object.getOwnPropertyNames(this.props.users).forEach(key => {
       const user = this.props.users[key];
       const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
-      userOptions.push(
-        <option key={user.id} value={user.id}>{name}</option>
-      );
+      userOptions.push(new SelectOption(name, user.id));
     });
 
     return (
       <div className="user-container">
         <div>{title}</div>
 
-        <label htmlFor="user">User</label>
-        <select
-          name="user"
-          ref="user"
+        <Select
+          options={userOptions}
           defaultValue={this.state.selectedUserId}
-          onChange={this.handleSelectUser}
-        >
-          {userOptions}
-        </select>
+          onChange={() => {}}
+          label="User"
+        />
 
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="firstName">First Name</label>
