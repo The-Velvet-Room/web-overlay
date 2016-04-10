@@ -1,4 +1,4 @@
-import { TSView } from './interface.ts';
+import { TSView } from './interface';
 
 export class IndexView implements TSView {
     static render(data: any): string {
