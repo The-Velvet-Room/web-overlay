@@ -3,7 +3,10 @@ import * as actions from '../../../redux/actions/tournament';
 import { connect } from 'react-redux';
 import { TournamentData } from '../../../models/AdminData';
 import { CONSTANT_GAMES } from '../../../../public/javascripts/constants/constants';
+import Input from '../../utility/Input';
 import StoreData from '../../../models/StoreData';
+import SelectOption from '../../../models/SelectOption';
+import Select from '../../utility/Select';
 
 interface Props extends React.Props<TournamentContainer> {
   data?: TournamentData,
@@ -41,48 +44,33 @@ class TournamentContainer extends React.Component<Props, State> {
     const value = (target.options[target.selectedIndex] as HTMLOptionElement).value;
     this.props[callback](value);
   }
-  
-  handleInputChange = (e: React.FormEvent) => {
-    // callback is from the 'callback' data attribute of the input element and matches a prop on the component
-    const target = (e.target as HTMLInputElement);
-    const callback = target.dataset['callback'];
-    this.props[callback](target.value);
-  }
 
   public render() {
+    const options = CONSTANT_GAMES.map(game => {
+      return new SelectOption(game);
+    })
+
     return (
       <div>
-        <label htmlFor="currentGame">Current Game</label>
-        <select 
-          name="currentGame"
-          data-callback="updateCurrentGame"
-          value={this.props.data.currentGame}
-          onChange={this.handleSelectorChange}
-        >
-        {
-          CONSTANT_GAMES.map(game => {
-            return (
-              <option key={game} value={game}>{game}</option>
-            );
-          })
-        }
-        </select>   
-          
-        <label htmlFor="tournamentName">Tournament Name</label>
-        <input 
-          name="tournamentName"
-          data-callback="updateTournamentName"
+        <Select
+          options={options}
+          defaultValue={this.props.data.currentGame}
+          onChange={this.props.updateCurrentGame}
+          label="Left Port"
+        />
+
+        <Input
           defaultValue={this.props.data.tournamentName}
-          onChange={this.handleInputChange}
+          onChange={this.props.updateTournamentName}
+          label="Tournament Name"
         />
-        
-        <label htmlFor="bracketInfo">BracketInfo</label>
-        <input 
-          name="bracketInfo"
-          data-callback="updateBracketInfo"
+
+        <Input
           defaultValue={this.props.data.bracketInfo}
-          onChange={this.handleInputChange}
+          onChange={this.props.updateBracketInfo}
+          label="Bracket Info"
         />
+
       </div>
     );
   }
