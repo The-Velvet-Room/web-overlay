@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import StoreData from '../../../models/StoreData';
 import SelectOption from '../../../models/SelectOption';
 import Select from '../../utility/Select';
+import SearchSelect from '../../utility/SearchSelect';
 
 interface Props extends React.Props<PlayerContainer> {
   leftPlayerId?: string,
@@ -57,6 +58,13 @@ class PlayerContainer extends React.Component<Props, State> {
           defaultValue={this.props.leftPlayerId}
           onChange={this.props.updateLeftPlayer}
           label="Left Player"
+        />
+        
+        <SearchSelect
+          onSelect={() => {}}
+          url="https://db.t0asterb0t.com/api/v1/players/search.json?query="
+          label='Test Player'
+          optionFormat='{firstName} "{nickName}" {lastName}'
         />
 
         <Select

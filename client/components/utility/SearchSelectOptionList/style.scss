@@ -1,0 +1,18 @@
+.search-option-list {
+  
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  
+  &.hidden {
+    display: none;
+  }
+  
+  .search-option {
+    cursor: pointer;
+    
+    &:highlighted {
+      background-color: purple;
+    }
+  }
+}

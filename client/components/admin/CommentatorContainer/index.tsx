@@ -35,14 +35,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class CommentatorContainer extends React.Component<Props, State> {
-  handleSelectorChange = (e: React.FormEvent) => {
-    // callback is from the 'callback' data attribute of the select element and matches a prop on the component
-    const target = (e.target as HTMLSelectElement);
-    const callback = target.dataset['callback'];
-    const value = (target.options[target.selectedIndex] as HTMLOptionElement).value;
-    this.props[callback](value);
-  }
-
   public render() {
     const options = [];
     Object.getOwnPropertyNames(this.props.users).forEach(key => {

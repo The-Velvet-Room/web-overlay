@@ -1,0 +1,10 @@
+.search-select {
+  
+  .search-option-list {
+    position: absolute;
+    
+    &.hidden {
+      display: none;
+    }
+  }
+}
