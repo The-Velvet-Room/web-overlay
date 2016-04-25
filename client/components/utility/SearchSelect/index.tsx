@@ -17,12 +17,12 @@ interface State {
 export default class SearchSelect extends React.Component<Props, State> {
   constructor(state, props) {
     super(state, props);
-    
+
     this.state = {
       options: [],
     };
   }
-  
+
   getFakeOptions = () => {
     const num = Math.ceil(Math.random() * 10);
     const arr = [];
@@ -36,26 +36,31 @@ export default class SearchSelect extends React.Component<Props, State> {
         nickName: id.toString() + i.toString() + id.toString(),
       });
     }
-    
+
     return arr;
   }
-  
+
   getNewOptions = () => {
-    const req = new XMLHttpRequest();
-    
+    var req = new XMLHttpRequest();
+    req.open('GET', this.props.url + this.state.value);
+    req.onload = (() => {
+      const options = JSON.parse(req.response);
+      this.setState({options});
+    }).bind(this);
+    req.send();
   }
-  
+
   handleOnBlur = () => {
     this.setState({options: []});
   }
 
   handleOnChange = (e: React.SyntheticEvent) => {
     const value = (e.target as HTMLInputElement).value;
-    const options = this.getFakeOptions();
-    this.setState({value, options});
+    this.setState({value});
+    const options = this.getNewOptions();
     const type = e.type;
   }
-  
+
   handleOnSelect = (selectedOption) => {
     this.setState({selectedOption});
     this.props.onSelect({selectedOption});
@@ -71,10 +76,9 @@ export default class SearchSelect extends React.Component<Props, State> {
     }
 
     return (
-      <div 
+      <div
         className="search-select"
         onBlur={this.handleOnBlur}
-        onKeyDown= {() => {console.log('some key pressed');}}
       >
         <label htmlFor={trimmedLabel}>{this.props.label}</label>
         <input
