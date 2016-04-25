@@ -10,8 +10,8 @@ interface Props extends React.Props<SearchSelect> {
 }
 interface State {
   value?: string,
-  options?: Object[],
-  selectedOption?: Object,
+  options?: any[],
+  selectedOption?: any,
 }
 
 export default class SearchSelect extends React.Component<Props, State> {
@@ -40,12 +40,12 @@ export default class SearchSelect extends React.Component<Props, State> {
     return arr;
   }
 
-  getNewOptions = () => {
+  getNewOptions = (value) => {
     var req = new XMLHttpRequest();
-    req.open('GET', this.props.url + this.state.value);
+    req.open('GET', this.props.url + value);
     req.onload = (() => {
-      const options = JSON.parse(req.response);
-      this.setState({options});
+      const options: any[] = JSON.parse(req.response);
+      this.setState({value, options});
     }).bind(this);
     req.send();
   }
@@ -56,8 +56,7 @@ export default class SearchSelect extends React.Component<Props, State> {
 
   handleOnChange = (e: React.SyntheticEvent) => {
     const value = (e.target as HTMLInputElement).value;
-    this.setState({value});
-    const options = this.getNewOptions();
+    const options = this.getNewOptions(value);
     const type = e.type;
   }
 

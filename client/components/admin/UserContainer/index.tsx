@@ -90,7 +90,7 @@ class UserContainer extends React.Component<Props, State> {
 
       Object.getOwnPropertyNames(this.props.users).forEach(key => {
         const user: User = this.props.users[key];
-        const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
+        const name = `${user.firstName} "${user.nickname}" ${user.lastName}`;
         userOptions.push(new SelectOption(name, user.id));
       });
     }
@@ -128,21 +128,21 @@ class UserContainer extends React.Component<Props, State> {
           <input
             name="gamerTag"
             ref="gamerTag"
-            defaultValue={selectedUser ? selectedUser.gamerTag : ''}
+            defaultValue={selectedUser ? selectedUser.nickname : ''}
           />
 
           <label htmlFor="clanPrefix">Clan Prefix</label>
           <input
             name="clanPrefix"
             ref="clanPrefix"
-            defaultValue={selectedUser ? selectedUser.clanPrefix : ''}
+            defaultValue={selectedUser ? selectedUser.tag : ''}
           />
 
           <label htmlFor="twitterHandle">Twitter Handle</label>
           <input
             name="twitterHandle"
             ref="twitterHandle"
-            defaultValue={selectedUser ? selectedUser.twitterHandle : ''}
+            defaultValue={selectedUser ? selectedUser.twitter : ''}
           />
 
           <label htmlFor="city">City</label>

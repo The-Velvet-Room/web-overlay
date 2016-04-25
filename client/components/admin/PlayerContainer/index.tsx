@@ -59,12 +59,12 @@ class PlayerContainer extends React.Component<Props, State> {
           onChange={this.props.updateLeftPlayer}
           label="Left Player"
         />
-        
+
         <SearchSelect
           onSelect={() => {}}
           url="https://db.t0asterb0t.com/api/v1/players/search.json?query="
           label='Test Player'
-          optionFormat='{firstName} "{nickName}" {lastName}'
+          optionFormat='{FirstName} "{Nickname}" {LastName}'
         />
 
         <Select
