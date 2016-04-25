@@ -5,7 +5,7 @@ import { usStates, usStateKeys } from '../../../../public/javascripts/constants/
 import StoreData from '../../../models/StoreData';
 import SelectOption from '../../../models/SelectOption';
 import Select from '../../utility/Select';
-import User from '../../../models/User';
+import { User } from '../../../models/User';
 
 interface Props extends React.Props<UserContainer> {
   users?: Object,
@@ -33,13 +33,13 @@ const mapDispatchToProps = (dispatch) => {
 class UserContainer extends React.Component<Props, State> {
   constructor(state: State, props: Props) {
     super(state, props);
-    
+
     let selectedUserId = '';
     const keys = Object.getOwnPropertyNames(props.users);
     if (keys.length) {
       selectedUserId = (props.users[keys[0]] as User).id;
     }
-    
+
     this.state = {
       selectedUserId,
       editing: true,
@@ -49,7 +49,7 @@ class UserContainer extends React.Component<Props, State> {
   handleSelectUser = (selectedUserId) => {
     this.setState({selectedUserId});
   }
-  
+
   toggleEditing = () => {
     const editing = !this.state.editing;
     this.setState({editing});
@@ -83,11 +83,11 @@ class UserContainer extends React.Component<Props, State> {
     let selectedUser: User;
     let title = 'Create New User';
     const userOptions = [];
-    
+
     if (this.state.editing) {
       selectedUser = this.props.users[this.state.selectedUserId];
       title = 'Update User';
-      
+
       Object.getOwnPropertyNames(this.props.users).forEach(key => {
         const user: User = this.props.users[key];
         const name = `${user.firstName} "${user.gamerTag}" ${user.lastName}`;
@@ -98,9 +98,9 @@ class UserContainer extends React.Component<Props, State> {
     return (
       <div className="user-container">
         <div>{title}</div>
-        
+
         <div style={{float: 'right', display: this.state.editing ? 'inline' : 'none'}}>
-          
+
         </div>
         <Select
           options={userOptions}

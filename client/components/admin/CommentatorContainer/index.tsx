@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as actions from '../../../redux/actions/commentator';
 import { connect } from 'react-redux';
-import User from '../../../models/User';
+import { User } from '../../../models/User';
 import StoreData from '../../../models/StoreData';
 import SelectOption from '../../../models/SelectOption';
 import Select from '../../utility/Select';

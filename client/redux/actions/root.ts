@@ -1,6 +1,6 @@
 import { AdminData } from '../../models/AdminData';
 import { OverlayDisplay } from '../../models/OverlayDisplay';
-import User from '../../models/User';
+import { User } from '../../models/User';
 
 // export const UPDATE_OVERLAY_DISPLAY = 'UPDATE_OVERLAY_DISPLAY';
 // export function updateOverlayDisplay () {

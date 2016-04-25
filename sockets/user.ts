@@ -1,4 +1,4 @@
-import User from '../client/models/User';
+import { User } from '../client/models/User';
 
 var config = require('../config');
 var request = require('request');
@@ -52,9 +52,9 @@ export = function(io: SocketIO.Server) {
       if (!existingUser) {
         user.id = new Date().valueOf().toString();
       }
-      
-      userHash[user.id] = user;        
-      client.set(redisKey, JSON.stringify(userHash));        
+
+      userHash[user.id] = user;
+      client.set(redisKey, JSON.stringify(userHash));
       socket.emit('refresh users', userHash);
     });
 
@@ -68,7 +68,7 @@ export = function(io: SocketIO.Server) {
     socket.on('refresh users', function(newHash: Object) {
       userHash = newHash;
     });
-    
+
     //This should be in all clients of this socket too
     socket.on('reset users', function () {
       userHash = {};
