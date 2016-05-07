@@ -5,7 +5,7 @@
     <ul class="tab-links">
         <li class="active"><a href="#tab1">Main</a></li>
         <li><a href="#tab2">Twitch</a></li>
-        <li><a href="#tab3">Challonge</a></li>
+        <li><a href="#tab3">Bracket</a></li>
         <li><a href="#tab4">Layout</a></li>
         <li><a href="#tab5">Users</a></li>
     </ul>
@@ -32,14 +32,14 @@
                     <label for="tourneyInfo">
                         Bracket Info
                         <input id="tourneyInfo"></input>
-                    </label>                 
+                    </label>
                 </p>
                 <p>
                     <label for="commentators">
                         L Commentator
                         <input id="commentators"></input>
                     </label>
-                    
+
                     <label for="commentators2">
                         R Commentator
                         <input id="commentators2"></input>
@@ -50,7 +50,7 @@
                         L Twitter
                         <input id="twitter"></input>
                     </label>
-                    
+
                     <label for="twitter2">
                         R Twitter
                         <input id="twitter2"></input>
@@ -60,7 +60,7 @@
                     <label>Announcement</label>
                     <textarea id="announcement-text"></textarea>
                     <button id="announcement-btn" onclick="fireAnnouncement()">Fire announcement</button>
-                </div> 
+                </div>
                 <div>
                     <table border="2">
                         <tr>
@@ -134,7 +134,7 @@
                             <td>
                                 <button type="button" onclick="swapNames()">Swap Names</button>
                                 <button type="button" onclick="swapAll()">Swap All</button>
-                                <button type="button" onclick="zeroScores()">Zero Scores</button>                                    
+                                <button type="button" onclick="zeroScores()">Zero Scores</button>
                             </td>
                         </tr>
                         <tr>
@@ -143,7 +143,7 @@
                             </td>
                             <td>
                                 <button type="button" onclick="playMatchIntro('reset')">Reset</button>
-                                <button type="button" onclick="playMatchIntro('transition')">Play</button>                                    
+                                <button type="button" onclick="playMatchIntro('transition')">Play</button>
                             </td>
                         </tr>
                         <tr>
@@ -151,8 +151,8 @@
                                 <h3>Misc.</h3>
                             </td>
                             <td>
-                                <button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>         
-                                <button type="button" id="flash-ready-button">Flash Ready Screen</button>                                   
+                                <button type="button" onclick="toggleNightMode()">Toggle Night Mode</button>
+                                <button type="button" id="flash-ready-button">Flash Ready Screen</button>
                             </td>
                         </tr>
                         <tr>
@@ -222,27 +222,22 @@
         </div>
 
         <div id="tab3" class="tab">
-            <!--Challonge Form-->
-            <form action="javascript:sendChallongeUpdate()">
-                <h2>Challonge</h2>
+            <!--Bracket Form-->
+            <form action="javascript:sendBracketUpdate()">
+                <h2>Bracket</h2>
                 <p>
-                    <label for="challongeUrl">
-                        Challonge URL:
-                        <input id="challongeUrl"></input>
-                    </label>
-
-                    <label for="challongeApiHash">
-                        Challonge Api Hash:
-                        <input id="challongeApiHash"></input>
+                    <label for="bracketUrl">
+                        Bracket URL (challonge or smash.gg):
+                        <input id="bracketUrl"></input>
                     </label>
                 </p>
-                <p id="challongeMatchListPlaceholder"></p>
-                <p id="challongeEmbedPlaceholder"></p>
+                <p id="bracketMatchListPlaceholder"></p>
+                <p id="bracketEmbedPlaceholder"></p>
                 <p>
                 <input type="submit"/>
                 </p>
             </form>
-            <button id="challonge-clear-bracket">Clear Bracket</button>
+            <button id="clear-bracket">Clear Bracket</button>
         </div>
         <div id="tab4" class="tab">
             <!--Layout Form-->
@@ -251,7 +246,7 @@
                 <p>
                     <label for="layout-background">Background URL:</label>
                     <input id="layout-background" style="width:200px;"></input>
-                </p>      
+                </p>
                 <h3>General</h3>
                 <p>
                     <button class="layoutButton" type="button"
@@ -296,7 +291,7 @@
                 <p>
                     <input type="submit" value="Connect"></input>
                 </p>
-            </form>                
+            </form>
         </div>
 
         <div id="tab5" class="tab">
@@ -308,7 +303,7 @@
                         <input id="user-first-name"></input>
                     </label>
                 </div>
-                
+
                 <div class="user-field">
                     <label for="userLastName">
                         Last Name
@@ -367,12 +362,12 @@
 
                 <button id="create-user-btn" type="button" onclick="javascript:addUser()">Create User</button>
 
-            </div> 
+            </div>
 
             <h2>Edit User</h2>
             <p id="user-list-target"></p>
             <div id="users-edit" style="display: none;">
-                
+
                 <div id='edit-user-form'>
 
                 <div class="user-field">
@@ -388,7 +383,7 @@
                         <input id="edit-user-first-name"></input>
                     </label>
                 </div>
-                
+
                 <div class="user-field">
                     <label for="userLastName">
                         Last Name
@@ -448,7 +443,7 @@
                 <button id="update-user-btn" type="button" onclick="javascript:updateUser()">Update User</button>
                 <button id="delete-user-btn" type="button" onclick="javascript:deleteUser()">Delete User</button>
                 </div>
-            </div>           
+            </div>
         </div>
     </div>
 </div>

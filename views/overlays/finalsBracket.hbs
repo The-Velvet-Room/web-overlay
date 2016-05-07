@@ -80,7 +80,7 @@
     <script type="text/javascript">
     (function () {
       var socket = io('/overlay');
-      var challonge = io('/challonge');
+      var bracket = io('/bracket');
 
       createBracketLines();
 
@@ -95,7 +95,7 @@
 
       });
 
-      challonge.on('update challonge top8', function(top8) {
+      bracket.on('update bracket top8', function(top8) {
         createPlayerDivs(top8);
       });
     })();
@@ -161,9 +161,9 @@
         // Challonge doesn't give grand finals reset a different round number
         // from grand finals, but unlike grand finals, the reset will only have
         // one prerequisite match
-        if (round === 3 && match.player1_prereq_match_id === match.player2_prereq_match_id) {
+        if (round === 3 && match.player1PrereqId === match.player2PrereqId) {
           // Only show grand finals reset if it's necessary to complete the tournament
-          if (match.player1_id === null) {
+          if (match.player1Id === null) {
             return;
           }
           showGrandFinalsReset(true);
@@ -173,28 +173,26 @@
 
         var p1Container = createElementWithClass('playerContainer');
         var p1 = createElementWithClass('player');
-        p1.textContent = lookupName(match.player1_id, top8.participants);
+        p1.textContent = lookupName(match.player1Id, top8.participants);
         p1Container.appendChild(p1);
 
         var p2Container = createElementWithClass('playerContainer');
         var p2 = createElementWithClass('player');
-        p2.textContent = lookupName(match.player2_id, top8.participants);
+        p2.textContent = lookupName(match.player2Id, top8.participants);
         p2Container.appendChild(p2);
 
-        if (match.winner_id) {
-          var scores = match.scores_csv.split('-');
-
-          if (match.winner_id === match.player1_id) {
+        if (match.state === 'complete') {
+          if (match.player1Score > match.player2Score) {
             p1Container.classList.add('winner');
           } else {
             p2Container.classList.add('winner');
           }
 
           var p1score = createElementWithClass('score');
-          p1score.textContent = scores[0];
+          p1score.textContent = match.player1Score;
 
           var p2score = createElementWithClass('score');
-          p2score.textContent = scores[1];
+          p2score.textContent = match.player2Score;
 
           p1Container.appendChild(p1score);
           p2Container.appendChild(p2score);
@@ -214,7 +212,7 @@
 
       for (var i = 0; i < players.length; i++) {
         if (players[i].id === id) {
-          return players[i].display_name;
+          return players[i].name;
         }
       }
     }
@@ -249,8 +247,8 @@
           prereqDivs.push(document.querySelector('#losers-2 .match'));
           for (i = 0; i < prereqDivs.length; i++) {
             prereqMatchId = parseInt(prereqDivs[i].dataset.matchId, 10);
-            if (prereqMatchId === match.player1_prereq_match_id
-              || prereqMatchId === match.player2_prereq_match_id) {
+            if (prereqMatchId === match.player1PrereqId
+              || prereqMatchId === match.player2PrereqId) {
               div = document.querySelector('#losers-quarters-' + (i + 1) + ' .match');
             }
           }
