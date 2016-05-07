@@ -292,11 +292,54 @@ function createSelectizedInputs() {
             }
         }
     });
+
+    $('#player-profile-input').selectize({
+       valueField: 'ID',
+       labelField: 'Nickname',
+       searchField: 'Nickname',
+       load: function(query, callback) {
+           if (!query.length) return callback();
+           $.ajax({
+               url: 'https://db.t0asterb0t.com/api/v1/players/search?query=' + encodeURIComponent(query),
+               type: 'GET',
+               error: function() {
+                   callback();
+               },
+               success: function(res) {
+                   callback(res);
+               }
+           });
+       }
+    });
+
+    $('#player-game-input').selectize({
+       valueField: 'ID',
+       labelField: 'Name',
+       searchField: 'Name',
+       load: function(query, callback) {
+           if (!query.length) return callback();
+           $.ajax({
+               url: 'https://db.t0asterb0t.com/api/v1/gametypes',
+               type: 'GET',
+               error: function() {
+                   callback();
+               },
+               success: function(res) {
+                   callback(res);
+               }
+           });
+       }
+    });
 }
 
 function generatePlayerProfile() {
-    var playerQuery = $('#player-profile-input').val() || '';
-    socket.emit('generate profile', playerQuery);
+    var playerId = $('#player-profile-input').val() || '';
+    var playerGame = $('#player-game-input').val() || '';
+    var data = {
+        player: playerId,
+        game: playerGame,
+    }
+    socket.emit('generate profile', data);
     toastNotify('Generating player profile!');
 }
 

@@ -41,7 +41,7 @@
                 Hometown
               </div>
               <!--<img class="profile__info-img--location" src="./images/nebraska.png" />-->
-              <div class="profile__info-img--location profile__info-text">Bellevue, Nebraska</div>
+              <div class="profile__info-text--location profile__info-text">Bellevue, Nebraska</div>
             </div>
           </div>
 
@@ -68,7 +68,7 @@
                 Character
               </div>
               <!--<img class="profile__info-img--character" src="./images/ryu.png" />-->
-              <div class="profile__info-img--character profile__info-text">Ryu</div>
+              <div class="profile__info-text--character profile__info-text">Ryu</div>
             </div>
             <div class="profile__column">
               <div class="profile__heading">
@@ -83,7 +83,7 @@
           <div class="profile__row profile__row--second">
             <div class="profile__column profile__column--full-width">
               <div class="profile__heading">
-                Historical Record 
+                2016 Record
               </div>
               <div class="profile__info-text profile__info__record">
                 <div class="profile__info__record-number wins">
@@ -201,7 +201,7 @@
 
     //TODO global
     var transitioning = false;
-    
+
     socket.on('fire transition', function() {
       if(transitioning) {
           return;
@@ -209,7 +209,7 @@
       animateTransitionIn();
       setTimeout(animateTransitionOut, 2600);
     });
-    
+
     function animateTransitionIn() {
       console.log('Animating in');
       transitioning = true;
@@ -219,7 +219,7 @@
       $(".bumper-svg__word").addClass("bumper-svg__word--animate");
       $(".bumper-svg__letter").addClass("bumper-svg__letter--animate");
     }
-    
+
     function animateTransitionOut() {
         console.log('Ending animation');
         $(".bumper-svg__line").removeClass("bumper-svg__line--animate").addClass("bumper-svg__line--animate-out");
@@ -229,7 +229,7 @@
         setTimeout(function() {
           $(".bumper-background").removeClass("bumper-background--animate").addClass("bumper-background--animate-out");
         }, 1000);
-        
+
         setTimeout(function() {
             $(".bumper-svg__line").removeClass("bumper-svg__line--animate").removeClass("bumper-svg__line--animate-out");
             $(".bumper-svg__word").removeClass("bumper-svg__word--animate").removeClass("bumper-svg__word--animate-out");
@@ -237,7 +237,7 @@
             $(".bumper-background").removeClass("bumper-background--animate").removeClass("bumper-background--animate-out");
             transitioning = false;
         }, 1400);
-    }    
+    }
 
     var announcing = false;
     function renderAnnouncement(newText) {
@@ -281,36 +281,38 @@
 
     //Player Profiles
     var showingPlayerProfile = false;
-    const playerSearchApi = 'https://db.t0asterb0t.com/api/v1/players/search?query=';
-    function buildTournamentResultsRequestUrl(playerId) {
-      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/tournamentresults';
+    const apiRoot = 'https://db.t0asterb0t.com/api/v1';
+
+    function buildPlayerUrl(playerId) {
+        return apiRoot + '/players/' + playerId;
     }
-    function buildMatchHistoryRequestUrl(playerId) {
-      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/matches';
+    function buildTournamentResultsRequestUrl(playerId, gametypeId) {
+      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/tournamentresults?gametype=' + gametypeId;
+    }
+    function buildMatchHistoryRequestUrl(playerId, gametypeId) {
+      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/matches?gametype=' + gametypeId;
     }
 
-    socket.on('generate profile', function(query) {
+    socket.on('generate profile', function(data) {
       if(showingPlayerProfile) {
         return;
       }
 
-      $.get(playerSearchApi+query, function(results) {
-        if(!results) {
+      $.get(buildPlayerUrl(data.player), function(player) {
+        if(!player) {
           return;
         }
 
-        //Just use first player for now
-        var firstPlayer = results[0];
-        $.get(buildTournamentResultsRequestUrl(firstPlayer.ID), function(data) {
+        $.get(buildTournamentResultsRequestUrl(player.ID, data.game), function(results) {
           if(!data) {
             return;
           }
-          
-          $.get(buildMatchHistoryRequestUrl(firstPlayer.ID), function(matches) {
-            var lastTournamentResult = data[0];
-            setPlayerData(firstPlayer, lastTournamentResult, matches);
+
+          $.get(buildMatchHistoryRequestUrl(player.ID, data.game), function(matches) {
+            var lastTournamentResult = results[0];
+            setPlayerData(player, lastTournamentResult, matches);
             animatePlayerProfile();
-          })
+          });
         });
       });
     });
@@ -327,14 +329,21 @@
       var fullName = player.FirstName + " " + player.LastName;
       $('.profile__info-text--fullname').text(fullName.trim() || 'Unknown');
 
-      var hometown = player.City + " " + player.State;
-      $('.profile__info-img--location').text(hometown.trim() || 'Parts unknown');
+      var hometown = player.City + ", " + player.State;
+      if (!player.City && !!player.State) {
+          if (!!player.State) {
+            hometown = player.State;
+          } else {
+            hometown = 'Parts Unknown'
+          }
+      }
+      $('.profile__info-text--location').text(hometown);
 
-      $('.fact-one').text(player.Facts[0] || '- No facts on file');
-      $('.fact-two').text(player.Facts[1] || '-');
-      $('.fact-three').text(player.Facts[2] || '-');
+      $('.fact-one').text(player.Facts[0] || 'No facts on file');
+      $('.fact-two').text(player.Facts[1] || '');
+      $('.fact-three').text(player.Facts[2] || '');
 
-      $('.profile__info-img--character').text(player.Characters.join(',') || 'Random');
+      $('.profile__info-text--character').text(player.Characters.join(', ') || 'Random');
       $('.profile__info-text--playstyle').text('Balanced');
 
       var seedAndPlace = ''+toOrdinalNumber(lastTournamentResult.place) +' place, '+toOrdinalNumber(lastTournamentResult.seed)+' seed';

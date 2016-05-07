@@ -880,6 +880,8 @@ video {
 
 .profile__info-text--fullname,
 .profile__info-text--playstyle,
+.profile__info-text--location,
+.profile__info-text--character,
 .profile__info-text--fact {
   font-size: 1.5rem; }
 
