@@ -18,6 +18,119 @@
     <!--TODO global-->
   <img src="http://i.imgur.com/qkL0ngP.png" id="transition-image" style="display: none;">
 
+  <div class="profile__container">
+        <div class="profile__gamertag">
+          <div class="profile__gamertag-text">
+            ic | this_guy
+          </div>
+        </div>
+        <div class="profile__info">
+
+          <div class="profile__row profile__row--first">
+            <div class="profile__column">
+              <div class="profile__heading">
+                Full Name
+              </div>
+              <div class="profile__info-text profile__info-text--fullname">
+                Joe Banana
+              </div>
+            </div>
+
+            <div class="profile__column">
+              <div class="profile__heading">
+                Hometown
+              </div>
+              <!--<img class="profile__info-img--location" src="./images/nebraska.png" />-->
+              <div class="profile__info-img--location profile__info-text">Bellevue, Nebraska</div>
+            </div>
+          </div>
+
+          <div class="profile__row profile__row--first">
+            <div class="profile__column profile__column--full-width">
+              <div class="profile__heading">
+                Facts
+              </div>
+              <div class="profile__info-text profile__info-text--fact fact-one">
+                - Enjoys JuiceStop a lot
+              </div>
+              <div class="profile__info-text profile__info-text--fact fact-two">
+                - Hates the movie Star Wars
+              </div>
+              <div class="profile__info-text profile__info-text--fact fact-three">
+                - Married with 12 kids
+              </div>
+            </div>
+          </div>
+
+          <div class="profile__row profile__row--first">
+            <div class="profile__column">
+              <div class="profile__heading">
+                Character
+              </div>
+              <!--<img class="profile__info-img--character" src="./images/ryu.png" />-->
+              <div class="profile__info-img--character profile__info-text">Ryu</div>
+            </div>
+            <div class="profile__column">
+              <div class="profile__heading">
+                Playstyle
+              </div>
+              <div class="profile__info-text profile__info-text--playstyle">
+                Button Masher
+              </div>
+            </div>
+          </div>
+
+          <div class="profile__row profile__row--second">
+            <div class="profile__column profile__column--full-width">
+              <div class="profile__heading">
+                Historical Record 
+              </div>
+              <div class="profile__info-text profile__info__record">
+                <div class="profile__info__record-number wins">
+                  12
+                  <div class="profile__info__record-heading">
+                    W
+                  </div>
+                </div>
+                <div class="profile__info__record-number losses">
+                  4
+                  <div class="profile__info__record-heading">
+                    L
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile__row profile__row--second">
+            <div class="profile__column">
+              <div class="profile__heading">
+                Last Tournament
+              </div>
+              <div class="profile__info-text profile__info-text--fact tourney-name">
+                - Beat that one guy
+              </div>
+              <div class="profile__info-text profile__info-text--fact tourney-entrants">
+                - Won the tournament
+              </div>
+              <div class="profile__info-text profile__info-text--fact tourney-location">
+                - Matches last <30 seconds
+              </div>
+            </div>
+          </div>
+          <div class="profile__row profile__row--second">
+            <div class="profile__column profile__column--full-width">
+              <div class="profile__heading">
+                Last Placing
+              </div>
+              <div class="profile__info-text profile__info-text--fact last-placing">
+                t0asterb0t at EVO
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
   <div id="announcement" style="display: none;">
   	<div id="textbox"></div>
     <img src="http://i.imgur.com/SnNgWQJ.png" id="elizabeth">
@@ -164,6 +277,181 @@
         if( char === '>' ) isTag = false;
         if (isTag) return type();
         setTimeout(type, 50);
+    }
+
+    //Player Profiles
+    var showingPlayerProfile = false;
+    const playerSearchApi = 'https://db.t0asterb0t.com/api/v1/players/search?query=';
+    function buildTournamentResultsRequestUrl(playerId) {
+      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/tournamentresults';
+    }
+    function buildMatchHistoryRequestUrl(playerId) {
+      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/matches';
+    }
+
+    socket.on('generate profile', function(query) {
+      if(showingPlayerProfile) {
+        return;
+      }
+
+      $.get(playerSearchApi+query, function(results) {
+        if(!results) {
+          return;
+        }
+
+        //Just use first player for now
+        var firstPlayer = results[0];
+        $.get(buildTournamentResultsRequestUrl(firstPlayer.ID), function(data) {
+          if(!data) {
+            return;
+          }
+          
+          $.get(buildMatchHistoryRequestUrl(firstPlayer.ID), function(matches) {
+            var lastTournamentResult = data[0];
+            setPlayerData(firstPlayer, lastTournamentResult, matches);
+            animatePlayerProfile();
+          })
+        });
+      });
+    });
+
+    //Set the DOM with our new information
+    function setPlayerData(player, lastTournamentResult, matches) {
+      var gamertag = player.Nickname;
+      if(player.Tag) {
+        gamertag = player.Tag + " | " + player.Nickname;
+      }
+
+      $('.profile__gamertag-text').text(gamertag || 'Unknown gamertag');
+
+      var fullName = player.FirstName + " " + player.LastName;
+      $('.profile__info-text--fullname').text(fullName.trim() || 'Unknown');
+
+      var hometown = player.City + " " + player.State;
+      $('.profile__info-img--location').text(hometown.trim() || 'Parts unknown');
+
+      $('.fact-one').text(player.Facts[0] || '- No facts on file');
+      $('.fact-two').text(player.Facts[1] || '-');
+      $('.fact-three').text(player.Facts[2] || '-');
+
+      $('.profile__info-img--character').text(player.Characters.join(',') || 'Random');
+      $('.profile__info-text--playstyle').text('Balanced');
+
+      var seedAndPlace = ''+toOrdinalNumber(lastTournamentResult.place) +' place, '+toOrdinalNumber(lastTournamentResult.seed)+' seed';
+
+      $('.tourney-name').text('- '+lastTournamentResult.tournament.Name);
+      $('.tourney-entrants').text('- Entrants: '+lastTournamentResult.tournament.PlayerCount);
+      $('.tourney-location').text('- '+lastTournamentResult.tournament.City+', ' + lastTournamentResult.tournament.State);
+
+      $('.last-placing').text(seedAndPlace);
+
+      var winLossRecord = parseWinLossRecord(player.ID, matches);
+
+      //Set text nodes without overwriting children
+      $('.wins')[0].childNodes[0].nodeValue = winLossRecord.wins;
+      $('.losses')[0].childNodes[0].nodeValue = winLossRecord.losses;
+    }
+
+    //Determine the win/loss record for a given player
+    //TODO Move this to velvetdb?
+    function parseWinLossRecord(playerId, matches) {
+      var wins = 0;
+      var losses = 0;
+
+      for (var i = matches.length - 1; i >= 0; i--) {
+        var match = matches[i];
+
+        if(playerId === match.Player1){
+          if(match.Player1score > match.Player2score) {
+            wins++;
+          } else {
+            losses++;
+          }
+        } else {
+          if(match.Player1score > match.Player2score) {
+            losses++;
+          } else {
+            wins++;
+          }
+        }
+      }
+
+      return {
+        wins: wins,
+        losses: losses
+      };
+    }
+
+    //Give correct ordinal suffix
+    function toOrdinalNumber(i) {
+        var j = i % 10,
+            k = i % 100;
+        if (j == 1 && k != 11) {
+            return i + "st";
+        }
+        if (j == 2 && k != 12) {
+            return i + "nd";
+        }
+        if (j == 3 && k != 13) {
+            return i + "rd";
+        }
+        return i + "th";
+    }
+
+    //Add classes to DOM that provide animation
+    function animatePlayerProfile() {
+      showingPlayerProfile = true;
+      $(".profile__container").addClass("profile--animate");
+        $(".profile__gamertag-text").addClass("profile__gamertag-text--animate");
+
+        setTimeout(function(){
+          $( ".profile__row--first" ).each(function( index ) {
+            var brains = $(this);
+            setTimeout(function(){
+              brains.addClass("profile__row--animate");
+            }, 100 * index + 1);
+          });
+        }, 1000);
+
+        setTimeout(function(){
+          $( ".profile__row--first" ).each(function( index ) {
+            var brains = $(this);
+            setTimeout(function(){
+              brains.addClass("profile__row--animate-gone");
+            }, 100 * index + 1);
+          });
+
+          $(".profile__row--first").css("display", "none");
+          $(".profile__row--second").css("display", "flex");
+
+          $( ".profile__row--second" ).each(function( index ) {
+            var brains = $(this);
+            setTimeout(function(){
+              brains.addClass("profile__row--animate");
+            }, 100 * index + 1);
+          });
+
+          setTimeout(function(){
+            $(".profile__container").removeClass("profile--animate").addClass("profile--animate-out");
+            setTimeout(function(){
+              resetPlayerProfile();
+            }, 1000);
+          }, 10000);
+        }, 10000);
+    }
+
+    //Remove animation classes from DOM
+    //Unlock built profile
+    function resetPlayerProfile() {
+      $(".profile__container").removeClass("profile--animate-out");
+      $(".profile__gamertag-text").removeClass("profile__gamertag-text--animate");
+
+      $(".profile__row--first").css("display", "flex");
+      $(".profile__row--second").css("display", "none");
+
+      $(".profile__row--first").removeClass("profile__row--animate");
+      $(".profile__row--second").removeClass("profile__row--animate");
+      showingPlayerProfile = false;
     }
   </script>
 </body>

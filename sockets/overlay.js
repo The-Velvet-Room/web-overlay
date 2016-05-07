@@ -44,6 +44,10 @@ module.exports = function (io) {
       overlay.emit('flash screen');
     });
 
+    socket.on('generate profile', function(msg) {
+      overlay.emit('generate profile', msg);
+    });
+
     socket.on('play intro', function(msg) {
       overlay.emit('play intro', msg);
       console.log('play intro: ' + JSON.stringify(msg));

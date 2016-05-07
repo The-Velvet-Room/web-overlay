@@ -294,6 +294,12 @@ function createSelectizedInputs() {
     });
 }
 
+function generatePlayerProfile() {
+    var playerQuery = $('#player-profile-input').val() || '';
+    socket.emit('generate profile', playerQuery);
+    toastNotify('Generating player profile!');
+}
+
 function addUser() {
     var newUser = {
         firstName: $('#user-first-name').val() || '',
