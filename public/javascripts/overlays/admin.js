@@ -300,7 +300,7 @@ function createSelectizedInputs() {
        load: function(query, callback) {
            if (!query.length) return callback();
            $.ajax({
-               url: 'https://db.t0asterb0t.com/api/v1/players/search?query=' + encodeURIComponent(query),
+               url: 'https://db.thevelvetroom.tv/api/v1/players/search?query=' + encodeURIComponent(query),
                type: 'GET',
                error: function() {
                    callback();
@@ -319,7 +319,7 @@ function createSelectizedInputs() {
        load: function(query, callback) {
            if (!query.length) return callback();
            $.ajax({
-               url: 'https://db.t0asterb0t.com/api/v1/gametypes',
+               url: 'https://db.thevelvetroom.tv/api/v1/gametypes',
                type: 'GET',
                error: function() {
                    callback();
