@@ -281,16 +281,16 @@
 
     //Player Profiles
     var showingPlayerProfile = false;
-    const apiRoot = 'https://db.t0asterb0t.com/api/v1';
+    const apiRoot = 'https://db.thevelvetroom.tv/api/v1';
 
     function buildPlayerUrl(playerId) {
         return apiRoot + '/players/' + playerId;
     }
     function buildTournamentResultsRequestUrl(playerId, gametypeId) {
-      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/tournamentresults?gametype=' + gametypeId;
+      return apiRoot + '/players/'+playerId+'/tournamentresults?gametype=' + gametypeId;
     }
     function buildMatchHistoryRequestUrl(playerId, gametypeId) {
-      return 'https://db.t0asterb0t.com/api/v1/players/'+playerId+'/matches?gametype=' + gametypeId;
+      return apiRoot + '/players/'+playerId+'/matches?gametype=' + gametypeId;
     }
 
     socket.on('generate profile', function(data) {
