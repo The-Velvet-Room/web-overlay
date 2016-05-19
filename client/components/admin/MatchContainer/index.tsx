@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as actions from '../../../redux/actions/match';
 import { connect } from 'react-redux';
 import { MatchData } from '../../../models/AdminData';
-import { ports, characters, usStates, usStateKeys } from '../../../../public/javascripts/constants/constants';
+import { ports, characters, usStates, usStateKeys } from '../../../../public/javascripts/constants';
 import StoreData from '../../../models/StoreData';
 import SelectOption from '../../../models/SelectOption';
 import Select from '../../utility/Select';

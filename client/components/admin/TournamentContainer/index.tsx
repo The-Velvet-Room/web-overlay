@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as actions from '../../../redux/actions/tournament';
 import { connect } from 'react-redux';
 import { TournamentData } from '../../../models/AdminData';
-import { CONSTANT_GAMES } from '../../../../public/javascripts/constants/constants';
+import { CONSTANT_GAMES } from '../../../../public/javascripts/constants';
 import Input from '../../utility/Input';
 import StoreData from '../../../models/StoreData';
 import SelectOption from '../../../models/SelectOption';

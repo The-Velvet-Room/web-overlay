@@ -6,18 +6,18 @@ export default function player(state: PlayerData = new PlayerData(), action): Pl
   switch (action.type) {
     case actions.UPDATE_LEFT_PLAYER:
       return objectAssign({}, state, {
-        leftPlayerId: action.id,
+        leftPlayer: action.user,
       });
     case actions.UPDATE_RIGHT_PLAYER:
       return objectAssign({}, state, {
-        rightPlayerId: action.id,
+        rightPlayer: action.user,
       });
     case actions.SWAP_PLAYERS:
-      const newLeftId = state.rightPlayerId;
-      const newRightId = state.leftPlayerId;
+      const newLeftPlayer = state.rightPlayer;
+      const newRightPlayer = state.leftPlayer;
       return objectAssign({}, state, {
-        leftPlayerId: newLeftId,
-        rightPlayerId: newRightId,
+        leftPlayer: newLeftPlayer,
+        rightPlayer: newRightPlayer,
       });
     default:
       return state;

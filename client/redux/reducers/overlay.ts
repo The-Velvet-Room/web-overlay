@@ -29,8 +29,8 @@ function createOverlayDisplayFromAdminData(state: StoreData, adminData: AdminDat
   game.rightPort = adminData.match.rightPort;
   game.leftCharacter = adminData.match.leftCharacter;
   game.rightCharacter = adminData.match.rightCharacter;
-  game.leftPlayer = state.users[adminData.players.leftPlayerId];
-  game.rightPlayer = state.users[adminData.players.rightPlayerId];
+  game.leftPlayer = adminData.players.leftPlayer;
+  game.rightPlayer = adminData.players.rightPlayer;
   game.leftStateKey = adminData.match.leftStateKey;
   game.rightStateKey = adminData.match.rightStateKey;
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as actions from '../../../redux/actions/user';
 import { connect } from 'react-redux';
-import { usStates, usStateKeys } from '../../../../public/javascripts/constants/constants';
+import { usStates, usStateKeys } from '../../../../public/javascripts/constants';
 import StoreData from '../../../models/StoreData';
 import SelectOption from '../../../models/SelectOption';
 import Select from '../../utility/Select';

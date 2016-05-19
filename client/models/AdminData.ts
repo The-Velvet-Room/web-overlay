@@ -1,3 +1,5 @@
+import { User } from './User';
+
 export class AdminData {
   commentators: CommentatorData;
   match: MatchData;
@@ -22,8 +24,8 @@ export class MatchData {
 }
 
 export class PlayerData {
-  leftPlayerId: string;
-  rightPlayerId: string;
+  leftPlayer: User;
+  rightPlayer: User;
 }
 
 export class TournamentData {

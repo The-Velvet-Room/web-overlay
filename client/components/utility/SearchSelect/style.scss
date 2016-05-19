@@ -1,10 +1,23 @@
 .search-select {
-  
-  .search-option-list {
-    position: absolute;
-    
-    &.hidden {
-      display: none;
+  width: 400px;
+  position: relative;
+
+  .search-select-container {
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 2px 10px 2px 10px;
+
+    input {
+      border: 0;
+      outline: none;
+      cursor: pointer;
+      width: 100%;
+
+      &:focus {
+        cursor: text;
+      }
     }
   }
 }

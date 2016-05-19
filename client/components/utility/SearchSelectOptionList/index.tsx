@@ -2,61 +2,51 @@ import * as React from 'react';
 import './style.scss';
 
 interface Props extends React.Props<SearchSelectOptionList> {
-  onSelect: (value: Object, display: string) => void,
+  onSelect: () => void,
+  onHover: (highlightedIndex: number) => void,
   options: any[],
   formatString: string,
+  hightlightedIndex: number,
 }
-interface State {
-  selectedIndex: number,
-}
+interface State { }
 
 export default class SearchSelectOptionList extends React.Component<Props, State> {
-  constructor(state, props) {
-    super(state, props);
-
-    if (this.props.options) {
-      this.props.options.forEach(option => {
-        let displayString = this.props.formatString;
-        Object.getOwnPropertyNames(option).forEach(key => {
-          displayString = displayString.replace(`{${key}}`, option[key])
-        });
-
-        option.displayString = displayString;
-      });
-    }
-
-    this.state = {
-      selectedIndex: -1,
-    };
+  handleOnSelect = (e: React.SyntheticEvent) => {
+    this.props.onSelect();
   }
 
-  handleOnSelect = (e: React.SyntheticEvent) => {
-    console.log(e.type);
-    //this.props.onSelect(this.props.data, this.state.displayString);
+  handleOnHover = (e: React.SyntheticEvent) => {
+    const target = (e.target as HTMLElement);
+    const index = parseInt(target.dataset['index'], 10);
+
+    if (!isNaN(index)) {
+      this.props.onHover(index);
+    }
   }
 
   public render () {
-    const optionsClass = this.props.options.length ? 'search-option-list' : 'search-option-list hidden';
+    const optionsClass = this.props.options.length ? 'search-select-option-list' : 'search-option-list hidden';
 
     return (
       <div
         className={optionsClass}
         onClick={this.handleOnSelect}
-        onKeyPress={this.handleOnSelect}
       >
       {
         this.props.options.map((option, index) => {
           const key = option.ID || option.Id || option.id;
-          const optionClass = index === this.state.selectedIndex ? 'search-option highlighted' : 'search-option';
+          const optionClass = index === this.props.hightlightedIndex ? 'search-select-option highlighted' : 'search-option';
           let displayString = this.props.formatString;
           Object.getOwnPropertyNames(option).forEach(key => {
-            displayString = displayString.replace(`{${key}}`, option[key])
+            displayString = displayString.replace(`{${key}}`, option[key]);
           });
 
           return (
             <div
               className={optionClass}
               key={key}
+              data-index={index}
+              onMouseEnter={this.handleOnHover}
             >
             {displayString}
             </div>
