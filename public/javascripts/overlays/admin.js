@@ -576,6 +576,24 @@ socket.on('update overlay', function(data) {
 
 });
 
+socket.on('change layout', function(data) {
+    // Update the background
+    document.getElementById('layout-background').value = data.background;
+    // Update the selected layout
+    // Remove the selectedLayout class
+    var selected = document.getElementsByClassName('selectedLayout');
+    for (var i = 0; i < selected.length; i++) {
+        selected[i].classList.remove('selectedLayout');
+    }
+    // Add it back if the button exists
+    if (data.layout) {
+        var buttons = document.querySelectorAll('button[value="' + data.layout + '"]');
+        if (buttons.length === 1) {
+            buttons[0].classList.add('selectedLayout');
+        }
+    }
+});
+
 var twitchSocket = io('/twitch');
 var twitchGame = null;
 var twitchStatus = null;
