@@ -2,14 +2,14 @@
     -webkit-clip-path: polygon(
         /* Outer border */
         0px 0px, 1920px 0px, 1920px 1080px, 0px 1080px, 0px 0px, 10px 10px, 10px 1010px,
-        /* Left name */ 30px 1030px, 450px 1030px, 470px 1070px, 480px 1070px, 
-        /* Left score */ 460px 1030px, 540px 1030px, 560px 1070px, 
-        /* Space */ 880px 1070px, 
-        /* Right score */ 900px 1030px, 980px 1030px, 960px 1070px, 
+        /* Left name */ 30px 1030px, 450px 1030px, 470px 1070px, 480px 1070px,
+        /* Left score */ 460px 1030px, 540px 1030px, 560px 1070px,
+        /* Space */ 880px 1070px,
+        /* Right score */ 900px 1030px, 980px 1030px, 960px 1070px,
         /* Right name */ 970px 1070px, 990px 1030px, 1410px 1030px, 1430px 1010px,
-        /* Player cam */ 
-        1430px 280px, 1910px 280px, 1910px 10px, 
-        1440px 10px, 1440px 280px, 1430px 280px, 1430px 10px, 
+        /* Player cam */
+        1430px 280px, 1910px 280px, 1910px 10px,
+        1440px 10px, 1440px 280px, 1430px 280px, 1430px 10px,
         /* Tourney info */ 1290px 10px, 1270px 60px, 850px 60px, 830px 30px,
         /* Logo space */ 610px 30px,
         /* Title */ 590px 60px, 170px 60px, 150px 10px, 10px 10px
@@ -31,7 +31,7 @@
     overflow-wrap: break-word;
 }
 
-#main-container.game4by3-layout-1cam .title {
+#main-container.game4by3-layout-1cam .title .playerText {
     top: 0px;
     width: 420px;
     left: 170px;
@@ -39,7 +39,7 @@
     text-align: center;
 }
 
-#main-container.game4by3-layout-1cam .tourneyInfo {
+#main-container.game4by3-layout-1cam .tourneyInfo .playerText {
     top: 0px;
     width: 420px;
     left: 850px;
@@ -82,9 +82,9 @@
     bottom: 10px;
     left: 130px;
     -webkit-transform: skew(26.5deg);
-}   
+}
 
-#main-container.game4by3-layout-1cam .lPlayer {
+#main-container.game4by3-layout-1cam .lPlayer .playerText {
     top: 1028px;
     left: 140px;
     height: 60px;
@@ -92,7 +92,7 @@
     text-align: center;
 }
 
-#main-container.game4by3-layout-1cam .lScore {
+#main-container.game4by3-layout-1cam .lScore .playerText {
     top: 1030px;
     height: 60px;
     left: 480px;
@@ -101,7 +101,7 @@
     text-align: center;
 }
 
-#main-container.game4by3-layout-1cam .rScore {
+#main-container.game4by3-layout-1cam .rScore .playerText {
     top: 1030px;
     height: 60px;
     left: 900px;
@@ -110,13 +110,13 @@
     text-align: center;
 }
 
-#main-container.game4by3-layout-1cam .rPlayer {
+#main-container.game4by3-layout-1cam .rPlayer .playerText {
     top: 1028px;
     height: 60px;
     left: 990px;
     width: 300px;
     text-align: center;
-}   
+}
 
 #main-container.game4by3-layout-1cam .rPort {
     position: absolute;

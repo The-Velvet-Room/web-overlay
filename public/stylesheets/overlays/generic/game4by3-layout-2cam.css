@@ -1,0 +1,122 @@
+
+#main-container.game4by3-layout-2cam .playerText {
+    color: white;
+    font-family: 'Oswald', cursive;
+    text-shadow: 2px 2px 2px rgb(50, 50, 50);
+}
+
+#main-container.game4by3-layout-2cam .title {
+    position: absolute;
+    width: 590px;
+    left: 365px;
+    padding-left: 10px;
+}
+
+#main-container.game4by3-layout-2cam .tourneyInfo {
+    width: 590px;
+    right: 366px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+#main-container.game4by3-layout-2cam .commentators {
+    display: none;
+}
+
+#main-container.game4by3-layout-2cam .lCharacter,
+#main-container.game4by3-layout-2cam .rCharacter  {
+    position: absolute;
+    text-align: center;
+    z-index: 2;
+    zoom: 300%;
+    top: 206px;
+}
+
+#main-container.game4by3-layout-2cam .lPlayer,
+#main-container.game4by3-layout-2cam .rPlayer,
+#main-container.game4by3-layout-2cam .title,
+#main-container.game4by3-layout-2cam .tourneyInfo {
+    overflow: hidden;
+    position: absolute;
+    background: #333;
+    font-size: 34px;
+    border-radius: 5px 5px 0 0;
+    top: 22px;
+    padding: 4px;
+}
+#main-container.game4by3-layout-2cam .lCharacter {
+    left: 18px;
+}
+
+#main-container.game4by3-layout-2cam .rCharacter {
+    right: 18px;
+}
+
+#main-container.game4by3-layout-2cam .lState,
+#main-container.game4by3-layout-2cam .rState {
+    font-family: 'state-font';
+    color: white;
+    position: absolute;
+    top: 535px;
+    font-size: 65px;
+    z-index: 2;
+}
+
+#main-container.game4by3-layout-2cam .lState {
+    left: 255px;
+}
+
+#main-container.game4by3-layout-2cam .rState {
+    right: 255px;
+}
+
+#main-container.game4by3-layout-2cam .lPort {
+    position: absolute;
+    clip-path: polygon(0 0, 50% 0, 100% 100%, 0% 100%);
+    left: 32px;
+}
+
+#main-container.game4by3-layout-2cam .lPlayer {
+    left: 32px;
+    width: 302px;
+    text-align: center;
+}
+
+#main-container.game4by3-layout-2cam .lScore,
+#main-container.game4by3-layout-2cam .rScore {
+    position: absolute;
+    top: 600px;
+    background: #333;
+    width: 310px;
+    font-size: 60px;
+    text-align: center;
+}
+
+#main-container.game4by3-layout-2cam .lPort,
+#main-container.game4by3-layout-2cam .rPort {
+    top: 600px;
+    height: 89px;
+    width: 80px;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+#main-container.game4by3-layout-2cam .lScore {
+    left: 32px;
+}
+
+#main-container.game4by3-layout-2cam .rScore {
+    right: 32px;
+}
+
+#main-container.game4by3-layout-2cam .rPlayer {
+    right: 32px;
+    width: 302px;
+    text-align: center;
+}
+
+#main-container.game4by3-layout-2cam .rPort {
+    position: absolute;
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 0% 100%);
+    right: 32px;
+}
