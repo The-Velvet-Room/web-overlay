@@ -3,6 +3,7 @@
 @import 'commentator-layout.css';
 @import 'player-commentator-layout.css';
 @import 'game4by3-layout-1cam.css';
+@import 'game4by3-layout-2cam.css';
 @import 'all4by3-layout-2cam.css';
 @import 'game16by9-layout-1cam.css';
 @import 'game16by9-layout-full.css';
@@ -34,6 +35,5 @@ a {
 }
 
 #background {
-    background-image: url(http://i.imgur.com/rL7QNS0.jpg);  
+    background-image: url(http://i.imgur.com/rL7QNS0.jpg);
 }
-  

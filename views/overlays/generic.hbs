@@ -23,14 +23,23 @@
   <!--TODO global-->
   <img src="http://i.imgur.com/qkL0ngP.png" id="transition-image" style="display: none;">
     <div id="background" class="container"></div>
+    <canvas id="background-canvas" width="1920" height="1080"></canvas>
     <div id="main-container" class="container">
-      <div class="title playerText"></div>
-      <div class="tourneyInfo playerText"></div>
+      <div class="title">
+        <span class="playerText"></span>
+      </div>
+      <div class="tourneyInfo">
+        <span class="playerText"></span>
+      </div>
       <div class="commentators playerText"></div>
       <div class="lPort"></div>
       <div class="rPort"></div>
-      <div class="lScore playerText"></div>
-      <div class="lPlayer playerText"></div>
+      <div class="lScore">
+        <span class="playerText"></span>
+      </div>
+      <div class="lPlayer">
+        <span class="playerText"></span>
+      </div>
       <div class="lIcons">
         <img class="lCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
         <p class="lState"></p>
@@ -39,8 +48,12 @@
         <img class="rCharacter" src="http://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif">
         <p class="rState"></p>
       </div>
-      <div class="rPlayer playerText"></div>
-      <div class="rScore playerText"></div>
+      <div class="rPlayer">
+        <span class="playerText"></span>
+      </div>
+      <div class="rScore">
+        <span class="playerText"></span>
+      </div>
     </div>
     <!--Transition Animation-->
       <div class="bumper-background"></div>
@@ -107,10 +120,41 @@
 
     $(function () {
       var socket = io('/overlay');
+      var layout = '';
+      var $title = $('.title > .playerText');
+      var $lPlayer = $('.lPlayer > .playerText');
+      var $rPlayer = $('.rPlayer > .playerText');
+      var $tourneyInfo = $('.tourneyInfo > .playerText');
+      var $commentators = $('.commentators > .playerText');
+      var $lScore = $('.lScore > .playerText');
+      var $rScore = $('.rScore > .playerText');
 
       socket.on('change layout', function(data) {
         var background = $('#background');
         var container = $('#main-container');
+        var canvas = $('#background-canvas');
+        var ctx = canvas[0].getContext('2d');
+        layout = data.layout;
+
+        if (data.layout === 'game4by3-layout-2cam') {
+          canvas.css({display: ''});
+          resetScaleFont($('.lPlayer'));
+          resetScaleFont($('.rPlayer'));
+          resetScaleFont($lPlayer);
+          resetScaleFont($rPlayer);
+          var image = new Image();
+          image.onload = function () {
+            ctx.drawImage(image, 0, 0);
+            ctx.clearRect(32, 80, 310, 489);
+            ctx.clearRect(365, 80, 1189, 978);
+            ctx.clearRect(1578, 80, 310, 489);
+          }
+          image.src = data.background;
+          background.css({display: 'none'});
+        } else {
+          canvas.css({display: 'none'});
+          background.css({display: ''});
+        }
 
         if (!background.hasClass(data.layout)) {
           background.attr('class', 'container');
@@ -128,33 +172,13 @@
       });
 
       socket.on('update overlay', function(data) {
-        if(data.title != document.getElementsByClassName('title')[0].innerText) {
-          $('.title').trigger('textChanged', data.title || '');
-        }
-
-        if(data.tourneyInfo != document.getElementsByClassName('tourneyInfo')[0].innerText) {
-          $('.tourneyInfo').trigger('textChanged', data.tourneyInfo || '');
-        }
-
-        if(data.commentators != document.getElementsByClassName('commentators')[0].innerText) {
-          $('.commentators').trigger('textChanged', data.commentators || '');
-        }
-
-        if(data.lplayer != document.getElementsByClassName('lPlayer')[0].innerText) {
-          $('.lPlayer').trigger('newName', data.lplayer || '');
-        }
-
-        if(data.rplayer != document.getElementsByClassName('rPlayer')[0].innerText) {
-          $('.rPlayer').trigger('newName', data.rplayer || '');
-        }
-
-        if(data.lscore != document.getElementsByClassName('lScore')[0].innerText) {
-          $('.lScore').trigger('textChanged', data.lscore || '');
-        }
-
-        if(data.rscore != document.getElementsByClassName('rScore')[0].innerText) {
-          $('.rScore').trigger('textChanged', data.rscore || '');
-        }
+        animateTextIfNecessary($title, data.title);
+        animateTextIfNecessary($lPlayer, data.lplayer, true);
+        animateTextIfNecessary($rPlayer, data.rplayer, true);
+        animateTextIfNecessary($tourneyInfo, data.tourneyInfo);
+        animateTextIfNecessary($commentators, data.commentators);
+        animateTextIfNecessary($lScore, data.lscore);
+        animateTextIfNecessary($rScore, data.rscore);
 
         $('.lCharacter').attr('class', 'lCharacter');
         if(data.lCharacter)
@@ -173,7 +197,7 @@
 
     //TODO global
     var transitioning = false;
-    
+
     socket.on('fire transition', function() {
       if(transitioning) {
           return;
@@ -181,7 +205,7 @@
       animateTransitionIn();
       setTimeout(animateTransitionOut, 2600);
     });
-    
+
     function animateTransitionIn() {
       console.log('Animating in');
       transitioning = true;
@@ -191,7 +215,7 @@
       $(".bumper-svg__word").addClass("bumper-svg__word--animate");
       $(".bumper-svg__letter").addClass("bumper-svg__letter--animate");
     }
-    
+
     function animateTransitionOut() {
         console.log('Ending animation');
         $(".bumper-svg__line").removeClass("bumper-svg__line--animate").addClass("bumper-svg__line--animate-out");
@@ -201,7 +225,7 @@
         setTimeout(function() {
           $(".bumper-background").removeClass("bumper-background--animate").addClass("bumper-background--animate-out");
         }, 1000);
-        
+
         setTimeout(function() {
             $(".bumper-svg__line").removeClass("bumper-svg__line--animate").removeClass("bumper-svg__line--animate-out");
             $(".bumper-svg__word").removeClass("bumper-svg__word--animate").removeClass("bumper-svg__word--animate-out");
@@ -209,14 +233,16 @@
             $(".bumper-background").removeClass("bumper-background--animate").removeClass("bumper-background--animate-out");
             transitioning = false;
         }, 1400);
-    }    
+    }
 
       function scaleFont(jQueryElement, newLength) {
         var element = jQueryElement.get()[0];
         var length = newLength || jQueryElement.text().length;
-        console.log(length);
 
         var layout = $('#main-container').attr('class');
+        if (layout.indexOf('game4by3-layout-2cam') > -1 || layout === 'container') {
+          return;
+        }
         var top = layout.indexOf('full') > -1 || layout.indexOf('4by3') > -1 ? 1028 : 812;
 
         if (length <= 7) {
@@ -238,25 +264,53 @@
         element.style.top = top.toString() + 'px';
       }
 
+      function resetScaleFont($element) {
+        $element.css({'top': '', 'font-size': ''});
+      }
+
       function createNameChangeEventListener(jQuerySelector) {
         var element = $(jQuerySelector);
+        var start = {
+          'opacity': '0',
+          'margin-left': layout === 'game4by3-layout-2cam' ? '0' : '-1%'
+        };
+        var end = {
+          'opacity': '1',
+          'margin-left': '0'
+        };
         element.bind('newName', function(e, newText){
-            $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
+            $(this).animate(start, 350, function() {
                 $(this).text(newText);
-              }).animate({'opacity': '1', 'margin-left': '0'}, 350);
+              }).animate(end, 350);
 
-             scaleFont(element, newText.length);
           });
       }
 
       createNameChangeEventListener('.lPlayer');
       createNameChangeEventListener('.rPlayer');
 
-      $('.playerText').bind('textChanged', function(e, newText){
-        $(this).animate({'opacity': '0', 'margin-left': '-1%'}, 350, function() {
-            $(this).text(newText);
-          }).animate({'opacity': '1', 'margin-left': '0'}, 350);
-      });
+      function animateTextIfNecessary($element, newText, scale) {
+        if (newText !== $element.text()) {
+          animateTextChanged($element, newText || '', scale);
+        }
+      }
+
+      function animateTextChanged($element, newText, scale) {
+        var start = {
+          'opacity': '0',
+          'margin-left': layout === 'game4by3-layout-2cam' ? '0' : '-1%'
+        };
+        var end = {
+          'opacity': '1',
+          'margin-left': '0'
+        };
+        $element.animate(start, 350, function() {
+          $element.text(newText);
+        }).animate(end, 350);
+        if (scale) {
+          scaleFont($element, newText.length);
+        }
+      }
 
     });
     </script>
