@@ -39,13 +39,16 @@
 #main-container.game4by3-layout-2cam .rCharacter  {
     position: absolute;
     text-align: center;
+    background-repeat: no-repeat;
     z-index: 2;
-    zoom: 300%;
-    top: 206px;
+    width: 30px;
+    height: 30px;
+    zoom: 250%;
+    top: 244px;
 }
 
 #main-container.game4by3-layout-2cam .lCharacter {
-    left: 18px;
+    left: 19px;
 }
 
 #main-container.game4by3-layout-2cam .rCharacter {
