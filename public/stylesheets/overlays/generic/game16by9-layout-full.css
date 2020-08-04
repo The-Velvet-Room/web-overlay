@@ -13,7 +13,7 @@
 }
 
 #main-container.game16by9-layout-full .playerText {
-    position: absolute;
+    /*position: absolute;*/
     color: white;
     font-size: 42px;
     font-family: 'Oswald', cursive;
@@ -32,6 +32,7 @@
     left: 404px;
     height: 60px;
     text-align: center;
+    position: absolute;
 }
 
 #main-container.game16by9-layout-full .tourneyInfo {
@@ -40,6 +41,7 @@
     left: 1096px;
     height: 60px;
     text-align: center;
+    position: absolute;
 }
 
 #main-container.game16by9-layout-full .commentators {
@@ -80,37 +82,41 @@
 }   
 
 #main-container.game16by9-layout-full .lPlayer {
-    top: 1028px;
-    left: 322px;
+    top: 1021px !important;
+    left: 206px;
     height: 50px;
-    width: 300px;
+    width: 426px;
     text-align: center;
+    position: absolute;
 }
 
 #main-container.game16by9-layout-full .lScore {
-    top: 1030px;
+    top: 1024px;
     height: 60px;
     left: 662px;
     width: 60px;
     font-size: 38px;
     text-align: center;
+    position: absolute;
 }
 
 #main-container.game16by9-layout-full .rScore {
-    top: 1030px;
+    top: 1024px;
     height: 60px;
     left: 1198px;
     width: 60px;
     font-size: 38px;
     text-align: center;
+    position: absolute;
 }
 
 #main-container.game16by9-layout-full .rPlayer {
-    top: 1028px;
+    top: 1021px !important;
     height: 50px;
     left: 1288px;
-    width: 300px;
+    width: 426px;
     text-align: center;
+    position: absolute;
 }   
 
 #main-container.game16by9-layout-full .rPort {
@@ -130,6 +136,7 @@
     bottom: -20px;
     left: -40px;
     font-size: 36px;
+    position: absolute;
 }
 
 #main-container.game16by9-layout-full .rIcons {

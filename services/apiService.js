@@ -1,6 +1,5 @@
 //TODO Break into separate services
 
-var config = require('../config');
 var request = require('request');
 var redis = require('redis');
 var pmx = require('pmx');

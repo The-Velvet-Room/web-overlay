@@ -9,7 +9,7 @@ a {
 #container {
 	width: 1920px;
 	height: 1080px;
-	background: url(http://i.imgur.com/OD9SMnr.png);
+	background: url(../../../hudl_overlay.png);
 	position: relative;
 }
 
@@ -27,7 +27,7 @@ a {
 
 #lplayer {
 	top: 68px;
-	left: 330px;
+	left: 470px;
 	height: 60px;
 	width: 429px;
 	text-align: center;
@@ -37,7 +37,7 @@ a {
 #lscore {
 	top: 68px;
 	height: 60px;
-	left: 280px;
+	left: 398px;
 	width: 50px;
 	text-align: center;
 	font-size: 28px;
@@ -47,7 +47,7 @@ a {
 #rplayer {
 	top: 68px;
 	height: 60px;
-	left: 1150px;
+	left: 1020px;
 	width: 429px;
 	text-align: center;
 	font-size: 28px;
@@ -58,7 +58,7 @@ a {
 	width: 50px;
 	text-align: center;	
 	top: 68px;
-	left: 1590px;
+	left: 1470px;
 	width: 50px;
 	text-align: center;
 	font-size: 28px;
